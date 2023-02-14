@@ -38,9 +38,7 @@ bool triangls_intersection_2D(Triangle t0, Triangle t1, Ort u, Ort v) {
     return true;
 }
 
-bool intersection_of_2_triangles(Triangle t1, Triangle t2) {
-
-// 1) DO ! : check t1 and t2 on degeneracy !
+bool intersection_of_triangle_and_triangle(Triangle t1, Triangle t2) {
 
 // 2) :
     Plane plane1(t1);
@@ -111,4 +109,40 @@ bool intersection_of_2_triangles(Triangle t1, Triangle t2) {
     // triangle_projection on int_line
     // intersect_of_intervals
 }
+
+bool intersection_of_points(Triangle t1, Triangle t2) {}
+bool intersection_of_point_and_line(Triangle t1, Triangle t2) {}
+bool intersection_of_point_and_triangle(Triangle t1, Triangle t2) {}
+bool intersection_of_lines(Triangle t1, Triangle t2) {}
+bool intersection_of_line_and_triangle(Triangle t1, Triangle t2) {}
+bool intersection_of_2_triangles(Triangle t1, Triangle t2) {
+
+// 1) DO ! : check t1 and t2 on degeneracy !
+    switch (t1.status_)
+    {
+        case Triangle::point:
+        {   
+            if      (t2.status_ == Triangle::point) return intersection_of_points(t1, t2);
+            else if (t2.status_ == Triangle::line)  return intersection_of_point_and_line(t1, t2);
+            else if (t2.status_ == Triangle::triangle) return intersection_of_point_and_triangle(t1, t2);
+            break;
+        }
+        case Triangle::line:
+        {
+            if      (t2.status_ == Triangle::point) return intersection_of_point_and_line(t2, t1);
+            else if (t2.status_ == Triangle::line)  return intersection_of_lines(t1, t2);
+            else if (t2.status_ == Triangle::triangle) return intersection_of_line_and_triangle(t1, t2);
+            break;
+        }
+        case Triangle::triangle:
+        {
+            if      (t2.status_ == Triangle::point) return intersection_of_point_and_triangle(t2, t1);
+            else if (t2.status_ == Triangle::line)  return intersection_of_line_and_triangle(t2, t1);
+            else if (t2.status_ == Triangle::triangle) return intersection_of_triangle_and_triangle(t1, t2);
+            break;
+        }
+
+    }
+}
+
 }
