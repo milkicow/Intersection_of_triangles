@@ -12,7 +12,7 @@ public:
 
     Vector v0_, v1_, v2_; // radius - vector 
 
-    Triangle(Vector v0 = 0, Vector v1 = 0, Vector v2 = 0) : v0_(v0), v1_(v1), v2_(v2) {
+    Triangle(const Vector& v0 = 0, const Vector& v1 = 0, const Vector& v2 = 0) : v0_(v0), v1_(v1), v2_(v2) {
         if      (!is_equal(v0, v1) && !is_equal(v0, v2) && !is_equal(v1, v2)) status_ = triangle;
         else if ((is_equal(v0, v1) && !is_equal(v0, v2)) || (is_equal(v0, v2) && !is_equal(v0, v1)) || (is_equal(v1, v2) && !is_equal(v1, v0))) status_ = line;
         else if (is_equal(v0, v1) && is_equal(v0, v2)) status_ = point;
@@ -36,6 +36,10 @@ public:
             case 2: return v2_; break;
             default: std::cout << "incorrect number of verticle in triangle\n"; exit(EXIT_FAILURE);
         }
+    }
+
+    bool operator==(const Triangle& t) {
+        return(t.v0_ == v0_ && t.v1_ == v1_ && t.v2_ == v2_);
     }
 
     void rotate_clockwise() { std::swap(v0_, v1_); std::swap(v2_, v1_); }

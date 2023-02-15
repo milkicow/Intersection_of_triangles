@@ -7,10 +7,10 @@ std::ostream& operator<<(std::ostream& out, const Plane& plane) {
     return out;
 }
 
-Line intersection_of_2_planes(Plane p1, Plane p2) // ! already get info about intersection of planes !
-{   
-    Line ret;
-    ret.direction_ = cross(p1.normal(), p2.normal());
+Line intersection_of_2_planes(Plane p1, Plane p2) {// ! already get info about intersection of planes !
+   
+    Line tmp;
+    tmp.direction_ = cross(p1.normal(), p2.normal());
 
     double s1 = -p1.d_;
     double s2 = -p2.d_;
@@ -22,19 +22,22 @@ Line intersection_of_2_planes(Plane p1, Plane p2) // ! already get info about in
     double a = (s2 * n1n2 - s1 * n2sqr) / (n1n2 * n1n2 - n1sqr * n2sqr);
     double b = (s1 * n1n2 - s2 * n1sqr) / (n1n2 * n1n2 - n1sqr * n2sqr);
 
-    ret.point_ = a * p1.normal() + b * p2.normal();
+    tmp.point_ = a * p1.normal() + b * p2.normal();
 
-    return ret;
+    return tmp;
 }
 
-Vector triangle_plane_dist(const Triangle& tr, const Plane& plane)
-{   
-    Vector ret;
-    ret.x_ = (plane.a_ * tr.v0_.x_ + plane.b_ * tr.v0_.y_ + plane.c_ * tr.v0_.z_ + plane.d_) / plane.normal_length();
-    ret.y_ = (plane.a_ * tr.v1_.x_ + plane.b_ * tr.v1_.y_ + plane.c_ * tr.v1_.z_ + plane.d_) / plane.normal_length();
-    ret.z_ = (plane.a_ * tr.v2_.x_ + plane.b_ * tr.v2_.y_ + plane.c_ * tr.v2_.z_ + plane.d_) / plane.normal_length();
+double point_plane_dist(const Vector& vec, const Plane& plane) {
+    return (plane.a_ * vec.x_ + plane.b_ * vec.y_ + plane.c_ * vec.z_ + plane.d_) / plane.normal_length();
+}
 
-    return ret;
+Vector triangle_plane_dist(const Triangle& tr, const Plane& plane) {   
+    Vector tmp;
+    tmp.x_ = point_plane_dist(tr.v0_, plane);
+    tmp.y_ = point_plane_dist(tr.v1_, plane);
+    tmp.z_ = point_plane_dist(tr.v2_, plane);
+
+    return tmp;
 }
 
 }

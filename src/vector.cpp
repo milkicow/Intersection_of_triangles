@@ -40,14 +40,14 @@ double det(const Vector& v0, const Vector& v1, const Vector& v2)
     return v0.x_ * v1.y_ * v2.z_ - v0.x_ * v2.y_ * v1.z_ - v0.y_ * v1.x_ * v2.z_ + v0.y_ * v2.x_ * v1.z_ + v0.z_ * v1.x_ * v2.y_ - v0.z_ * v2.x_ * v1.y_;
 }
 
-Vector perpendicular(Vector side, Ort u, Ort v) { // maybe -> abs(normal) = 1 ?!
+Vector perpendicular(const Vector& side, Ort u, Ort v) { // maybe -> abs(normal) = 1 ?!
     Vector tmp;
     tmp[x] = side[v];
     tmp[y] = -side[u];
     return tmp; 
 }
 
-Ort max_ort_component(Vector vec) {
+Ort max_ort_component(const Vector& vec) {
     double max = std::max({abs(vec.x_), abs(vec.y_), abs(vec.z_)});
 
     if (is_equal(max, abs(vec.x_))) return Ort::x;

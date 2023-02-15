@@ -62,4 +62,33 @@ bool intersect_of_intervals(std::vector<Vector> segment1, std::vector<Vector> se
     if (cmp_zero(v10 * v11) == -1 || cmp_zero(v10 * v11) == 0) return true;
     else return false;
 }
+
+double distance_lines(const Line& line1, const Line& line2) {
+
+    Vector u = line1.point_ - line2.point_;
+    double a = line1.direction_ * line1.direction_;
+    double b = line1.direction_ * line2.direction_;
+    double c = line2.direction_ * line2.direction_;
+    double d = line1.direction_ * u;
+    double e = line2.direction_ * u;
+
+    double det = a * c - b * b;
+    double t, s;
+
+    if(is_equal(det, 0)) {
+        if (b > c) t = d / b;
+        else       t = e / c;
+    }
+    else {
+        double invdet = 1 / det;
+        s = (b * e - d * c) * invdet;
+        t = (a * e - b * d) * invdet;
+    }
+
+    return (u + s * line1.direction_ + t * line2.direction_).length();
+}
+
+bool intersection(Line line1, Line line2) {
+    return is_equal(distance_lines(line1, line2), 0);
+}
 }

@@ -12,7 +12,7 @@ public:
     double a_, b_, c_, d_;
 
     Plane(double a = 0, double b = 0, double c = 0, double d = 0) : a_(a), b_(b), c_(c), d_(d) {};
-    Plane(Triangle tr) {
+    Plane(const Triangle& tr) {
         Vector v1(tr.v1_ - tr.v0_), v2(tr.v2_ - tr.v0_);
         //std::cout << v1 << v2;
 
@@ -37,6 +37,7 @@ public:
 
 std::ostream& operator<<(std::ostream& out, const Plane& plane);
 Vector triangle_plane_dist(const Triangle& tr, const Plane& plane);
+double point_plane_dist(const Vector& vec, const Plane& plane);
 Line intersection_of_2_planes(Plane p1, Plane p2);
 
 }

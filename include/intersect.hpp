@@ -4,12 +4,19 @@
 #include "triangle.hpp"
 #include "plane.hpp"
 #include "line.hpp"
+#include "segment.hpp"
 
 namespace Geo3D
 {
 
 void compute_interval(const Triangle& triangle, const Vector& normal, double& min, double& max);
-bool triangls_intersection_2D(Triangle t0, Triangle t1, Ort u, Ort v);
-bool intersection_of_2_triangles(Triangle t1, Triangle t2);
+bool triangls_intersection_2D(const Triangle& t0, const Triangle& t1, Ort u, Ort v);
+
+bool intersection(const Vector& point1, const Vector& point2); // point and point
+bool intersection(const Vector& point, const Segment& segment);
+bool intersection(const Vector& point, const Triangle& triangle);
+bool intersection(const Segment& segment1, const Segment& segment2);
+bool intersection(const Segment& segment, const Triangle& triangle);
+bool intersection(const Triangle& triangle1, const Triangle& triangle2);
 
 }

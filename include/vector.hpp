@@ -65,7 +65,7 @@ Vector operator/(const Vector& vec, double num);
 bool operator==(const Vector& lhs, const Vector& rhs);
 Vector cross(const Vector& lhs, const Vector& rhs);
 double det(const Vector& v0, const Vector& v1, const Vector& v2);
-Vector perpendicular(Vector side, Ort u, Ort v);
-Ort max_ort_component(Vector vec);
+Vector perpendicular(const Vector& side, Ort u, Ort v);
+Ort max_ort_component(const Vector& vec);
 
 }
