@@ -76,6 +76,7 @@ double distance_lines(const Line& line1, const Line& line2) {
     double t, s;
 
     if(is_equal(det, 0)) {
+        s = 0;
         if (b > c) t = d / b;
         else       t = e / c;
     }

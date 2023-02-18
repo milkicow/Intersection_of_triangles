@@ -7,16 +7,15 @@ namespace Geo3D
 struct Triangle final
 {
 public:
-    enum Status { triangle = 0b100, line = 0b010, point = 0b001 };
+    enum Status { triangle = 0b100, segment = 0b010, point = 0b001 };
     Status status_;
 
     Vector v0_, v1_, v2_; // radius - vector 
 
     Triangle(const Vector& v0 = 0, const Vector& v1 = 0, const Vector& v2 = 0) : v0_(v0), v1_(v1), v2_(v2) {
-        if      (!is_equal(v0, v1) && !is_equal(v0, v2) && !is_equal(v1, v2)) status_ = triangle;
-        else if ((is_equal(v0, v1) && !is_equal(v0, v2)) || (is_equal(v0, v2) && !is_equal(v0, v1)) || (is_equal(v1, v2) && !is_equal(v1, v0))) status_ = line;
-        else if (is_equal(v0, v1) && is_equal(v0, v2)) status_ = point;
-
+        if (is_equal(v0, v1) && is_equal(v0, v2)) status_ = point;
+        else if (!is_equal(v0, v1) && !is_equal(v0, v2) && !is_equal(v1, v2) && !is_equal(cross(v1 - v0, v2 - v0), 0)) status_ = triangle;
+        else status_ = segment;
         //std::cout << v0_ << v1_ << v2_ << std::endl;
     };
 

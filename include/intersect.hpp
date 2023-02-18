@@ -17,6 +17,8 @@ bool intersection(const Vector& point, const Segment& segment);
 bool intersection(const Vector& point, const Triangle& triangle);
 bool intersection(const Segment& segment1, const Segment& segment2);
 bool intersection(const Segment& segment, const Triangle& triangle);
-bool intersection(const Triangle& triangle1, const Triangle& triangle2);
+bool triangles_intersection(const Triangle& triangle1, const Triangle& triangle2);
+Vector point_of_intersection(Line line1, Line line2);
+bool degenerate_intersection(const Triangle& triangle1, const Triangle& triangle2);
 
 }

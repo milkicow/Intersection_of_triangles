@@ -38,13 +38,30 @@ bool triangls_intersection_2D(const Triangle& t0, const Triangle& t1, Ort u, Ort
     return true;
 }
 
+Vector point_of_intersection(Line line1, Line line2) {
+    Vector vector;
+
+    double tmp = det(line1.direction_, line2.direction_, cross(line1.direction_, line2.direction_));
+    double determinant = det(line2.point_ - line1.point_, line2.direction_, cross(line1.direction_, line2.direction_));
+
+    double t = determinant / tmp;
+
+    vector.x_ = line1.point_[x] + t * line1.direction_[x];
+    vector.y_ = line1.point_[y] + t * line1.direction_[y];
+    vector.z_ = line1.point_[z] + t * line1.direction_[z];
+
+    return vector;
+}
+
 bool intersection(const Vector& point1, const Vector& point2) // point and point
 {
     return point1 == point2;
 }
 
 bool intersection(const Vector& point, const Segment& segment)
-{
+{   
+    std::cout << "in small func\n";
+    std::cout << point << segment;
     return (segment.point_belongs(point));
 }
 
@@ -64,10 +81,11 @@ bool intersection(const Segment& segment1, const Segment& segment2) {
 
     if (!intersection(line1, line2)) return false;
     else {
-        //need info about common point of lines
+        Vector general_point = point_of_intersection(line1, line2);
+        return (segment1.point_belongs(general_point) && segment2.point_belongs(general_point));
     }
 }
-bool intersection(const Segment& segment, const Triangle& triangle) { // do not ended !!!
+bool intersection(const Segment& segment, const Triangle& triangle) {
 
     Vector p, s, q, side1, side2;
     double t, u, v, tmp;
@@ -78,7 +96,14 @@ bool intersection(const Segment& segment, const Triangle& triangle) { // do not 
 
     p = cross(line.direction_, side2);
     tmp = p * side1;
-    if (is_equal(tmp, 0)) return false;
+    if (is_equal(tmp, 0)) {
+
+        Segment segment1(triangle.v0_, triangle.v1_);
+        Segment segment2(triangle.v0_, triangle.v2_);
+        Segment segment3(triangle.v1_, triangle.v2_);
+
+        return intersection(segment, segment1) || intersection(segment, segment2) || intersection(segment, segment3);
+    }   
 
     tmp = 1 / tmp;
     s = line.point_ - triangle.v0_;
@@ -93,11 +118,14 @@ bool intersection(const Segment& segment, const Triangle& triangle) { // do not 
     t = tmp * side2 * q;
 
     Vector intersection = line.point_ + t * line.direction_;
-    return true;
+    return segment.point_belongs(intersection);
 }
 
-bool intersection(const Triangle& triangle1, const Triangle& triangle2) {
+bool triangles_intersection(const Triangle& triangle1, const Triangle& triangle2) {
 
+    if (triangle1.status_ != Triangle::triangle || triangle2.status_ != Triangle::triangle) {
+        return degenerate_intersection(triangle1, triangle2);
+    }
 // 2) :
     Plane plane1(triangle1);
     //std::cout << plane1;
@@ -167,6 +195,75 @@ bool intersection(const Triangle& triangle1, const Triangle& triangle2) {
     // triangle_projection on int_line
     // intersect_of_intervals
 }
+
+bool degenerate_intersection(const Triangle& triangle1, const Triangle& triangle2) {
+
+    switch(triangle1.status_) 
+    {
+        case Triangle::triangle:
+        {
+            if (triangle2.status_ == Triangle::segment) {
+                std::cout << "triangle and segment\n";
+                Segment segment2(triangle2);
+                return intersection(segment2, triangle1);
+            }
+            else if (triangle2.status_ == Triangle::point) {
+                std::cout << "triangle and point\n";
+                Vector point2 = triangle2.v0_;
+                return intersection(point2, triangle1);
+            }
+            break;
+        }
+        case Triangle::segment: 
+        {
+            Segment segment1(triangle1);
+            if (triangle2.status_ == Triangle::triangle) {
+                std::cout << "segment and triangle\n";
+                return intersection(segment1, triangle2);
+            }
+            else if (triangle2.status_ == Triangle::segment) {
+                std::cout << "segment and segment\n";
+                Segment segment2(triangle2);
+                return intersection(segment1, segment2);
+            }
+            else if (triangle2.status_ == Triangle::point) {
+                std::cout << "segment and point\n";
+                Vector point2 = triangle2.v0_;
+                return intersection(point2, segment1);
+            }
+            break;
+        }
+        case Triangle::point:
+        {
+            Vector point1 = triangle1.v0_; 
+            if (triangle2.status_ == Triangle::triangle) {
+                std::cout << "point and triangle\n";
+                return intersection(point1, triangle2);
+            }
+            else if (triangle2.status_ == Triangle::segment) {
+                std::cout << "point and segment\n";
+                Segment segment2(triangle2);
+                return intersection(point1, segment2);
+            }
+            else if (triangle2.status_ == Triangle::point) {
+                std::cout << "point and point\n";
+                Vector point2 = triangle2.v0_;
+                return intersection(point1, point2);
+            }
+            break;
+        }
+        default:
+        {
+            std::cout << "Can't define status of triangle1\n";
+            exit(EXIT_FAILURE);
+        }
+    }
+    return false;
+}
+
+
+
+
 
 // bool intersection_of_points(Triangle t1, Triangle t2) {
 //     return t1 == t2;
