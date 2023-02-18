@@ -45,5 +45,6 @@ public:
 };
 
 std::ostream& operator<<(std::ostream& out, const Triangle& tr);
+std::istream& operator>>(std::istream& in, Triangle& t);
 
 }

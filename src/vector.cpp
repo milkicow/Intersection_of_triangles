@@ -56,5 +56,9 @@ Ort max_ort_component(const Vector& vec) {
     else std::cout << "can't define max\n"; exit(EXIT_FAILURE);
 
 }
+
+std::istream& operator>>(std::istream& in, Vector& vec) {
+    return in >> vec.x_ >> vec.y_ >> vec.z_;
+}
 }
 

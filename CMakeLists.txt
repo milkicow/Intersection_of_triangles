@@ -26,3 +26,5 @@ target_include_directories(intersect
 install(TARGETS intersect
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         COMPONENT intersect)
+
+add_subdirectory(test)

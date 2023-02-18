@@ -21,16 +21,15 @@ public:
     }
 
     bool point_belongs(const Vector& point) const {
-        std::cout << "ABOBA\n";
         if((v1_ - v0_).normalized() != (point - v0_).normalized() && !is_equal(point, v0_)) {
-            std::cout << "returned false\n";
+            //std::cout << "returned false\n";
             return false;
         }
         double t = (point - v0_).length() / (v1_ - v0_).length();
-        std::cout << "t = " << t << std::endl;
+        //std::cout << "t = " << t << std::endl;
         if (t < 1 || is_equal(t, 1)) 
         {   
-            std::cout << "in if\n";
+            //std::cout << "in if\n";
             return true;
         }
         else return false;

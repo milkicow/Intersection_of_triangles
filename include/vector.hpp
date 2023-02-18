@@ -56,6 +56,8 @@ public:
 };
 
 std::ostream& operator<<(std::ostream& out, const Vector& vector);
+std::istream& operator>>(std::istream& in, Vector& vec);
+
 bool is_equal(const Vector& lhs, const Vector& rhs);
 Vector operator+(const Vector& lhs, const Vector& rhs);
 Vector operator-(const Vector& lhs, const Vector& rhs);
@@ -67,5 +69,4 @@ Vector cross(const Vector& lhs, const Vector& rhs);
 double det(const Vector& v0, const Vector& v1, const Vector& v2);
 Vector perpendicular(const Vector& side, Ort u, Ort v);
 Ort max_ort_component(const Vector& vec);
-
 }

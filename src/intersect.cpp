@@ -60,8 +60,6 @@ bool intersection(const Vector& point1, const Vector& point2) // point and point
 
 bool intersection(const Vector& point, const Segment& segment)
 {   
-    std::cout << "in small func\n";
-    std::cout << point << segment;
     return (segment.point_belongs(point));
 }
 
@@ -149,7 +147,7 @@ bool triangles_intersection(const Triangle& triangle1, const Triangle& triangle2
     if (plane1.normal() == plane2.normal()) {
         if (plane1.d_ != plane2.d_) return false;
         else {
-            std::cout << "plane1.normal() == plane2.normal()" << std::endl;
+            //std::cout << "plane1.normal() == plane2.normal()" << std::endl;
 
             Ort ort = max_ort_component(plane1.normal());
             
@@ -203,12 +201,12 @@ bool degenerate_intersection(const Triangle& triangle1, const Triangle& triangle
         case Triangle::triangle:
         {
             if (triangle2.status_ == Triangle::segment) {
-                std::cout << "triangle and segment\n";
+                //std::cout << "triangle and segment\n";
                 Segment segment2(triangle2);
                 return intersection(segment2, triangle1);
             }
             else if (triangle2.status_ == Triangle::point) {
-                std::cout << "triangle and point\n";
+                //std::cout << "triangle and point\n";
                 Vector point2 = triangle2.v0_;
                 return intersection(point2, triangle1);
             }
@@ -218,16 +216,16 @@ bool degenerate_intersection(const Triangle& triangle1, const Triangle& triangle
         {
             Segment segment1(triangle1);
             if (triangle2.status_ == Triangle::triangle) {
-                std::cout << "segment and triangle\n";
+                //std::cout << "segment and triangle\n";
                 return intersection(segment1, triangle2);
             }
             else if (triangle2.status_ == Triangle::segment) {
-                std::cout << "segment and segment\n";
+                //std::cout << "segment and segment\n";
                 Segment segment2(triangle2);
                 return intersection(segment1, segment2);
             }
             else if (triangle2.status_ == Triangle::point) {
-                std::cout << "segment and point\n";
+                //std::cout << "segment and point\n";
                 Vector point2 = triangle2.v0_;
                 return intersection(point2, segment1);
             }
@@ -237,16 +235,16 @@ bool degenerate_intersection(const Triangle& triangle1, const Triangle& triangle
         {
             Vector point1 = triangle1.v0_; 
             if (triangle2.status_ == Triangle::triangle) {
-                std::cout << "point and triangle\n";
+                //std::cout << "point and triangle\n";
                 return intersection(point1, triangle2);
             }
             else if (triangle2.status_ == Triangle::segment) {
-                std::cout << "point and segment\n";
+                //std::cout << "point and segment\n";
                 Segment segment2(triangle2);
                 return intersection(point1, segment2);
             }
             else if (triangle2.status_ == Triangle::point) {
-                std::cout << "point and point\n";
+                //std::cout << "point and point\n";
                 Vector point2 = triangle2.v0_;
                 return intersection(point1, point2);
             }

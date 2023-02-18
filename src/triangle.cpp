@@ -7,4 +7,14 @@ std::ostream& operator<<(std::ostream& out, const Triangle& tr) {
     return out;
 }
 
+std::istream& operator>>(std::istream& in, Triangle& triangle) {
+    Vector vec1, vec2, vec3;
+    in >> vec1 >> vec2 >> vec3;
+
+    Triangle ret(vec1, vec2, vec3);
+    triangle = ret;
+
+    return in;
+}
+
 }
