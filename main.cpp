@@ -14,7 +14,7 @@ int main()
 
     Geo3D::Triangle t2(v21, v22, v23);
 
-    td::cout << Geo3D::triangles_intersection(t1, t2) << std::endl;
+    std::cout << Geo3D::triangles_intersection(t1, t2) << std::endl;
 
     return 0;
 }
