@@ -4,7 +4,7 @@ namespace Geo3D
 {
 
 std::ostream& operator<<(std::ostream& out, const Line& line) {
-    out << line.point_ << line.direction_ << "\n";
+    out << "direction = " << line.direction_ << "point = " << line.point_ << "\n";
     return out;
 }
 
@@ -75,9 +75,9 @@ double distance_lines(const Line& line1, const Line& line2) {
     double t, s;
 
     if(is_equal(det, 0)) {
-        s = 0;
-        if (b > c) t = d / b;
-        else       t = e / c;
+        std::cout << "case when det = 0\n";
+        t = 0;
+        s = - d / a;
     }
     else {
         double invdet = 1 / det;
@@ -85,10 +85,17 @@ double distance_lines(const Line& line1, const Line& line2) {
         t = (a * e - b * d) * invdet;
     }
 
-    return (u + s * line1.direction_ + t * line2.direction_).length();
+    std::cout << "s = " << s << " t = " << t << std::endl;
+    std::cout << "u = " << u;
+    std::cout << "line1.direction_ * s = " << s * line1.direction_;
+    std::cout << "line2.direction_ * t = " << t * line2.direction_;
+    std::cout << "u + s * line1.direction_ = " << u + s * line1.direction_;
+
+    std::cout << "vector_distance = " << u + s * line1.direction_ - t * line2.direction_ << std::endl;
+    return (u + s * line1.direction_ - t * line2.direction_).length();
 }
 
-bool intersection(Line line1, Line line2) {
+bool intersection(const Line& line1, const Line& line2) {
     return is_equal(distance_lines(line1, line2), 0);
 }
 }

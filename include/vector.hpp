@@ -16,7 +16,7 @@ public:
     }
 
     Vector& operator+=(const Vector& rhs) {
-        x_ += rhs.x_; y_ += rhs.y_; z_ = rhs.z_;
+        x_ += rhs.x_; y_ += rhs.y_; z_ += rhs.z_;
         return *this;
     }
 

@@ -34,17 +34,21 @@ void TestBody(const std::string& path, int testNumber) {
     file.close();  
 }
 
-
-
-TEST(TestTriangles, triangle_and_segment) {       
-    const int NUMBER_OF_TEST = 9;
-    std::string path = static_cast<std::string> (PROJECT_DIR_PATH) + "/test/triangle_and_segment.txt";
+TEST(TestTriangles, triangle_and_triangle) {       
+    const int NUMBER_OF_TEST = 15;
+    std::string path = static_cast<std::string> (PROJECT_DIR_PATH) + "/test/triangle_and_triangle.txt";
     ::TestBody(path, NUMBER_OF_TEST);
 }
 
-TEST(TestTriangles, segment_and_segment) {       
-    const int NUMBER_OF_TEST = 11;
-    std::string path = static_cast<std::string> (PROJECT_DIR_PATH) + "/test/segment_and_segment.txt";
+TEST(TestTriangles, segment_and_point) {       
+    const int NUMBER_OF_TEST = 4;
+    std::string path = static_cast<std::string> (PROJECT_DIR_PATH) + "/test/segment_and_point.txt";
+    ::TestBody(path, NUMBER_OF_TEST);
+}
+
+TEST(TestTriangles, point_and_point) {       
+    const int NUMBER_OF_TEST = 3;
+    std::string path = static_cast<std::string> (PROJECT_DIR_PATH) + "/test/point_and_point.txt";
     ::TestBody(path, NUMBER_OF_TEST);
 }
 
@@ -54,25 +58,19 @@ TEST(TestTriangles, triangle_and_point) {
     ::TestBody(path, NUMBER_OF_TEST);
 }
 
+TEST(TestTriangles, segment_and_segment) {       
+    const int NUMBER_OF_TEST = 11;
+    std::string path = static_cast<std::string> (PROJECT_DIR_PATH) + "/test/segment_and_segment.txt";
+    ::TestBody(path, NUMBER_OF_TEST);
+}
 
-TEST(TestTriangles, point_and_point) {       
-    const int NUMBER_OF_TEST = 3;
-    std::string path = static_cast<std::string> (PROJECT_DIR_PATH) + "/test/point_and_point.txt";
+TEST(TestTriangles, triangle_and_segment) {       
+    const int NUMBER_OF_TEST = 9;
+    std::string path = static_cast<std::string> (PROJECT_DIR_PATH) + "/test/triangle_and_segment.txt";
     ::TestBody(path, NUMBER_OF_TEST);
 }
 
 
-TEST(TestTriangles, segment_and_point) {       
-    const int NUMBER_OF_TEST = 4;
-    std::string path = static_cast<std::string> (PROJECT_DIR_PATH) + "/test/segment_and_point.txt";
-    ::TestBody(path, NUMBER_OF_TEST);
-}
-
-TEST(TestTriangles, triangle_and_triangle) {       
-    const int NUMBER_OF_TEST = 15;
-    std::string path = static_cast<std::string> (PROJECT_DIR_PATH) + "/test/triangle_and_triangle.txt";
-    ::TestBody(path, NUMBER_OF_TEST);
-}
 
 
 int main(int argc, char **argv) {

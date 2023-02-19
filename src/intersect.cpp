@@ -69,6 +69,7 @@ bool intersection(const Vector& point, const Triangle& triangle) {
     if (point_plane_dist(point, plane) != 0) return false;
 
     Vector start(0, 0, 0);
+    if (point_plane_dist(start, plane) == 0) start += plane.normal().normalized();
     Segment segment(start, point);
     return intersection(segment, triangle);
 }
@@ -77,8 +78,13 @@ bool intersection(const Segment& segment1, const Segment& segment2) {
     Line line1 (segment1.v1_ - segment1.v0_, segment1.v0_);
     Line line2 (segment2.v1_ - segment2.v0_, segment2.v0_);
 
+    std::cout << "line 1:\n" << line1;
+    std::cout << "line 2:\n" << line2;
+
     if (!intersection(line1, line2)) return false;
     else {
+        if(is_equal(line1.direction_.normalized(), line2.direction_.normalized())) return true;
+        std::cout << "in else\n";
         Vector general_point = point_of_intersection(line1, line2);
         return (segment1.point_belongs(general_point) && segment2.point_belongs(general_point));
     }
@@ -94,13 +100,16 @@ bool intersection(const Segment& segment, const Triangle& triangle) {
 
     p = cross(line.direction_, side2);
     tmp = p * side1;
+
     if (is_equal(tmp, 0)) {
+
+        std::cout << "segment in plane\n";
 
         Segment segment1(triangle.v0_, triangle.v1_);
         Segment segment2(triangle.v0_, triangle.v2_);
         Segment segment3(triangle.v1_, triangle.v2_);
 
-        return intersection(segment, segment1) || intersection(segment, segment2) || intersection(segment, segment3);
+        return intersection(segment, segment1) || intersection(segment, segment2) || intersection(segment, segment3) || intersection(segment.v0_, triangle);
     }   
 
     tmp = 1 / tmp;

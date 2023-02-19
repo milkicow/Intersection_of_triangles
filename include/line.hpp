@@ -21,5 +21,5 @@ Triangle triangle_projection(Triangle triangle, Line line);
 Segment interval_on_line(Triangle t, Vector dist, Line int_line);
 bool intersect_of_intervals(Segment segment1, Segment segment2);
 double distance_lines(const Line& line0, const Line& line1);
-bool intersection(Line line1, Line line2);
+bool intersection(const Line& line1, const Line& line2);
 }
