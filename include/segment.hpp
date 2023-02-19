@@ -1,6 +1,7 @@
+#pragma once
 #include "header.hpp"
 #include "vector.hpp"
-#include "line.hpp"
+#include "triangle.hpp"
 
 namespace Geo3D 
 {
@@ -9,7 +10,7 @@ struct Segment final{
 public:
     Vector v0_, v1_;
 
-    Segment(const Vector& v0, const Vector& v1) : v0_(v0), v1_(v1) {};
+    Segment(const Vector& v0 = {0, 0, 0}, const Vector& v1 = {0, 0, 0}) : v0_(v0), v1_(v1) {};
     Segment(const Triangle& triangle) {
         Segment candidate1(triangle.v0_, triangle.v1_);
         Segment candidate2(triangle.v0_, triangle.v2_);

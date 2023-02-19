@@ -10,6 +10,11 @@ public:
 
     Vector(double x = 0, double y = 0, double z = 0) : x_(x), y_(y), z_(z) {}; 
 
+    Vector& operator-() {
+        x_ = -x_; y_ = -y_; z_ = -z_;
+        return *this;
+    }
+
     Vector& operator+=(const Vector& rhs) {
         x_ += rhs.x_; y_ += rhs.y_; z_ = rhs.z_;
         return *this;

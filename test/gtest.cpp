@@ -25,20 +25,16 @@ void TestBody(const std::string& path, int testNumber) {
         EXPECT_EQ(func_res, actual_result);
         
         if (func_res == actual_result) {
-            std::cout << "test " << i << " PASSED \n";
+            std::cout << "\ntest " << i << " PASSED \n\n";
         }
         else {
-            std::cout << "test " << i << " FAILED \n";
+            std::cout << "\ntest " << i << " FAILED \n\n";
         }
     }
     file.close();  
 }
 
-TEST(TestTriangles, triangle_and_triangle) {       
-    const int NUMBER_OF_TEST = 16;
-    std::string path = static_cast<std::string> (PROJECT_DIR_PATH) + "/test/triangle_and_triangle.txt";
-    ::TestBody(path, NUMBER_OF_TEST);
-}
+
 
 TEST(TestTriangles, triangle_and_segment) {       
     const int NUMBER_OF_TEST = 9;
@@ -69,6 +65,12 @@ TEST(TestTriangles, point_and_point) {
 TEST(TestTriangles, segment_and_point) {       
     const int NUMBER_OF_TEST = 4;
     std::string path = static_cast<std::string> (PROJECT_DIR_PATH) + "/test/segment_and_point.txt";
+    ::TestBody(path, NUMBER_OF_TEST);
+}
+
+TEST(TestTriangles, triangle_and_triangle) {       
+    const int NUMBER_OF_TEST = 15;
+    std::string path = static_cast<std::string> (PROJECT_DIR_PATH) + "/test/triangle_and_triangle.txt";
     ::TestBody(path, NUMBER_OF_TEST);
 }
 

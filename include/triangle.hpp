@@ -13,9 +13,18 @@ public:
     Vector v0_, v1_, v2_; // radius - vector 
 
     Triangle(const Vector& v0 = 0, const Vector& v1 = 0, const Vector& v2 = 0) : v0_(v0), v1_(v1), v2_(v2) {
-        if (is_equal(v0, v1) && is_equal(v0, v2)) status_ = point;
-        else if (!is_equal(v0, v1) && !is_equal(v0, v2) && !is_equal(v1, v2) && !is_equal(cross(v1 - v0, v2 - v0), 0)) status_ = triangle;
-        else status_ = segment;
+        if (is_equal(v0, v1) && is_equal(v0, v2)) {
+            std::cout << "status = point\n";
+            status_ = point;
+        }
+        else if (!is_equal(v0, v1) && !is_equal(v0, v2) && !is_equal(v1, v2) && !is_equal(cross(v1 - v0, v2 - v0), 0)) {
+            std::cout << "status = triangle\n";
+            status_ = triangle;
+        }
+        else {
+            std::cout << "status = segment\n";
+            status_ = segment;
+        }
         //std::cout << v0_ << v1_ << v2_ << std::endl;
     };
 

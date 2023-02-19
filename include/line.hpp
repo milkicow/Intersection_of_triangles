@@ -2,6 +2,7 @@
 #include "header.hpp"
 #include "vector.hpp"
 #include "triangle.hpp"
+#include "segment.hpp"
 
 namespace Geo3D
 {
@@ -17,8 +18,8 @@ public:
 
 std::ostream& operator<<(std::ostream& out, const Line& line);
 Triangle triangle_projection(Triangle triangle, Line line);
-std::vector<Vector> interval_on_line(Triangle t, Vector dist, Line int_line);
-bool intersect_of_intervals(std::vector<Vector> segment1, std::vector<Vector> segment2);
+Segment interval_on_line(Triangle t, Vector dist, Line int_line);
+bool intersect_of_intervals(Segment segment1, Segment segment2);
 double distance_lines(const Line& line0, const Line& line1);
 bool intersection(Line line1, Line line2);
 }

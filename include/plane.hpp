@@ -21,15 +21,19 @@ public:
     }
 
     Vector normal() {
-        return Vector(this -> a_, this -> b_, this -> c_);
+        return Vector(a_, b_, c_);
     }
 
     double normal_length() const {
-        return sqrt(this->a_ * this->a_ + this->b_ * this->b_ + this->c_ * this->c_);
+        return sqrt(a_ * a_ + b_ * b_ + c_ * c_);
     }
 
-    Plane normalized() {
-        return Plane(this->a_ / this->normal_length(), this->b_ / this->normal_length(), this->c_ / this->normal_length(), this->d_ / this->normal_length());
+    void normalized() {
+        double tmp = sqrt(a_ * a_ + b_ * b_ + c_ * c_ + d_ * d_);
+        a_ /= tmp;
+        b_ /= tmp;
+        c_ /= tmp;
+        d_ /= tmp;
     }
 };
 

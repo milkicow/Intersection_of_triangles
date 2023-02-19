@@ -32,6 +32,8 @@ double point_plane_dist(const Vector& vec, const Plane& plane) {
 }
 
 Vector triangle_plane_dist(const Triangle& tr, const Plane& plane) {   
+    //std::cout << "triangle = " << tr;
+    //std::cout << "plane = " << plane;
     Vector tmp;
     tmp.x_ = point_plane_dist(tr.v0_, plane);
     tmp.y_ = point_plane_dist(tr.v1_, plane);
