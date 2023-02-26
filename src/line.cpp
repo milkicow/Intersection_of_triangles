@@ -22,8 +22,8 @@ Segment interval_on_line(Triangle t, Vector dist, Line int_line) {
     while(!(cmp_zero(dist.x_) == cmp_zero(dist.y_) && cmp_zero(dist.x_) != cmp_zero(dist.z_)) &&
     (cmp_zero(dist.x_) != cmp_zero(dist.y_) && cmp_zero(dist.x_) != cmp_zero(dist.z_) && cmp_zero(dist.y_) != cmp_zero(dist.z_) && cmp_zero(dist.z_) != 1))
     {   
-        std::cout << cmp_zero(dist.x_) << cmp_zero(dist.y_) << cmp_zero(dist.z_) << std::endl;
-        LOX
+        // std::cout << cmp_zero(dist.x_) << cmp_zero(dist.y_) << cmp_zero(dist.z_) << std::endl;
+        
         t.rotate_clockwise();
         dist.rotate_clockwise();
         // std::cout << "rotated clockwise\n";
@@ -31,7 +31,7 @@ Segment interval_on_line(Triangle t, Vector dist, Line int_line) {
         // std::cout << "distance:\n" << dist;
     }
 
-    LOX
+    
     Triangle t_projection = triangle_projection(t, int_line);
 
     //std::cout << "triangle:\n" << t;
@@ -39,7 +39,7 @@ Segment interval_on_line(Triangle t, Vector dist, Line int_line) {
     //std::cout << t_projection;
 
     Segment segment;
-    LOX
+    
     segment.v0_  = t_projection[0] + (t_projection[2] - t_projection[0]).length() * abs(dist.x_) / (abs(dist.x_) + abs(dist.z_)) * int_line.direction_.normalized();
     segment.v1_  = t_projection[1] + (t_projection[2] - t_projection[1]).length() * abs(dist.y_) / (abs(dist.y_) + abs(dist.z_)) * int_line.direction_.normalized();
 
@@ -75,7 +75,7 @@ double distance_lines(const Line& line1, const Line& line2) {
     double t, s;
 
     if(is_equal(det, 0)) {
-        std::cout << "case when det = 0\n";
+        // std::cout << "case when det = 0\n";
         t = 0;
         s = - d / a;
     }
@@ -85,13 +85,13 @@ double distance_lines(const Line& line1, const Line& line2) {
         t = (a * e - b * d) * invdet;
     }
 
-    std::cout << "s = " << s << " t = " << t << std::endl;
-    std::cout << "u = " << u;
-    std::cout << "line1.direction_ * s = " << s * line1.direction_;
-    std::cout << "line2.direction_ * t = " << t * line2.direction_;
-    std::cout << "u + s * line1.direction_ = " << u + s * line1.direction_;
+    // std::cout << "s = " << s << " t = " << t << std::endl;
+    // std::cout << "u = " << u;
+    // std::cout << "line1.direction_ * s = " << s * line1.direction_;
+    // std::cout << "line2.direction_ * t = " << t * line2.direction_;
+    // std::cout << "u + s * line1.direction_ = " << u + s * line1.direction_;
 
-    std::cout << "vector_distance = " << u + s * line1.direction_ - t * line2.direction_ << std::endl;
+    // std::cout << "vector_distance = " << u + s * line1.direction_ - t * line2.direction_ << std::endl;
     return (u + s * line1.direction_ - t * line2.direction_).length();
 }
 

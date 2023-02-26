@@ -5,8 +5,8 @@
 #include <vector>
 
 #define LOX std::cerr << "NORMALLY IN " << __FILE__ << " in " <<  __PRETTY_FUNCTION__ << " in LINE = " << __LINE__ << std::endl;
-#undef LOX
-#define LOX 
+// #undef LOX
+// #define LOX 
 
 namespace Geo3D
 {

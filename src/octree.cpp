@@ -49,7 +49,7 @@ int get_octant(const Vector& left_bottom, const Vector& right_top, const Triangl
     return octant[0];
 }
 
-void create_octree_node(std::unique_ptr<OctreeNode> parent, int octant) {
+void create_octree_node(std::unique_ptr<OctreeNode>& parent, int octant) {
 
     Vector center = (parent->left_bottom_ + parent->right_top_) / 2;
     Vector left_bottom, right_top;
@@ -68,7 +68,7 @@ void create_octree_node(std::unique_ptr<OctreeNode> parent, int octant) {
 }
 
 
-void split_triangles(std::unique_ptr<OctreeNode> octree_node) {
+void split_triangles(std::unique_ptr<OctreeNode>& octree_node) {
     if (octree_node->triangles_.size() <= 2 || (octree_node->right_top_ - octree_node->left_bottom_).length() < 1) return;
 
     for (auto it = octree_node->triangles_.begin(); it != octree_node->triangles_.end(); ++it) {
@@ -76,30 +76,29 @@ void split_triangles(std::unique_ptr<OctreeNode> octree_node) {
 
         if (octant == -1) continue; 
 
-        if (!octree_node->children_[octant]) create_octree_node(std::move(octree_node), octant);
+        if (!octree_node->children_[octant]) create_octree_node(octree_node, octant);
         octree_node->children_[octant]->triangles_.push_back(*it);
         octree_node->triangles_.erase(it);
     }
 
     for (int i = 0; i != 8; ++i) {
-        if (octree_node->children_[i]) split_triangles(std::move(octree_node->children_[i]));
+        if (octree_node->children_[i]) split_triangles(octree_node->children_[i]);
     }
 }
 
 void Octree::fill_tree(const std::vector<Triangle>& triangles) {
 
     Triangle tmp;
-    for(int i = 0; i != root_->triangles_.size(); ++i) {
+    
+    for(int i = 0; i != triangles.size(); ++i) {
         tmp = triangles[i];
-        tmp.number = i;
-
         root_->triangles_.push_back(tmp);
     }
 
     left_bottom_max_ = get_left_bottom_(triangles);
     right_top_max_ = get_right_top_(triangles);
 
-    split_triangles(std::move(root_));
+    split_triangles(root_);
 }
 
 }

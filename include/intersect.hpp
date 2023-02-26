@@ -21,5 +21,8 @@ bool intersection(const Segment& segment, const Triangle& triangle);
 bool triangles_intersection(const Triangle& triangle1, const Triangle& triangle2);
 Vector point_of_intersection(Line line1, Line line2);
 bool degenerate_intersection(const Triangle& triangle1, const Triangle& triangle2);
+int receive_triangles();
+int intersections(std::unique_ptr<OctreeNode>& octree_node);
+void intersections_with_children(std::unique_ptr<OctreeNode>& octree_node, const Triangle& triangle, int& intersection);
 
 }
