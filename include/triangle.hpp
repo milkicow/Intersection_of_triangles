@@ -11,6 +11,7 @@ public:
     Status status_;
 
     Vector v0_, v1_, v2_; // radius - vector 
+    int number; // number of the triangle that have intersection
 
     Triangle(const Vector& v0 = 0, const Vector& v1 = 0, const Vector& v2 = 0) : v0_(v0), v1_(v1), v2_(v2) {
         if (is_equal(v0, v1) && is_equal(v0, v2)) {

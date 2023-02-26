@@ -60,5 +60,6 @@ Ort max_ort_component(const Vector& vec) {
 std::istream& operator>>(std::istream& in, Vector& vec) {
     return in >> vec.x_ >> vec.y_ >> vec.z_;
 }
+
 }
 

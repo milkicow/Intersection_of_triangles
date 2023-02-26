@@ -11,7 +11,7 @@
 namespace Geo3D
 {
 const double epsilon = 10e-6;
-enum Ort {x = 0b100, y = 0b010, z = 0b001};
+enum Ort {x = 0, y = 1, z = 2};
 
 inline bool is_equal(double arg1, double arg2 = 0) {
     if (abs(arg1 - arg2) < epsilon) return true;

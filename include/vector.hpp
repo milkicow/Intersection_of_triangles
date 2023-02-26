@@ -39,7 +39,7 @@ public:
 
     Vector projection_on(const Vector& vec) const;
 
-    double& operator[](Ort ort) {
+    double& operator[](int ort) {
         switch (ort) {
             case Ort::x: return this->x_; break;
             case Ort::y: return this->y_; break;
@@ -48,7 +48,7 @@ public:
         }
     }
 
-    const double& operator[](Ort ort) const{
+    const double& operator[](int ort) const{
         switch (ort) {
             case Ort::x: return this->x_; break;
             case Ort::y: return this->y_; break;
@@ -58,6 +58,9 @@ public:
     }
 
     void rotate_clockwise() {std::swap(y_, z_); std::swap(x_, y_);};
+
+    double max_coord() const { return std::max({x_, y_, z_}); }
+    double min_coord() const { return std::min({x_, y_, z_}); }
 };
 
 std::ostream& operator<<(std::ostream& out, const Vector& vector);

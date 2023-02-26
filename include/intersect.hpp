@@ -5,6 +5,7 @@
 #include "plane.hpp"
 #include "line.hpp"
 #include "segment.hpp"
+#include "octree.hpp"
 
 namespace Geo3D
 {

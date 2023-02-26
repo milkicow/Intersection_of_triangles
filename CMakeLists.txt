@@ -17,6 +17,7 @@ set(SOURCE ${PROJECT_SOURCE_DIR}/src/line.cpp
            ${PROJECT_SOURCE_DIR}/src/vector.cpp
            ${PROJECT_SOURCE_DIR}/src/intersect.cpp
            ${PROJECT_SOURCE_DIR}/src/segment.cpp
+           ${PROJECT_SOURCE_DIR}/src/octree.cpp
            ${PROJECT_SOURCE_DIR}/main.cpp         )
         
 add_executable(intersect ${SOURCE})
