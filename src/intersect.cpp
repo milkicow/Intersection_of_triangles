@@ -200,17 +200,17 @@ bool triangles_intersection(const Triangle& triangle1, const Triangle& triangle2
 // 8) :
     Line int_line = intersection_of_2_planes(plane1, plane2);
     
-    //std::cout << "int_line = " << int_line;
+    std::cout << "int_line = " << int_line;
 
 // 9) :
     //std::cout << "last point of alghoritm" << std::endl;
 
     Segment segment1 = interval_on_line(triangle1, dist1, int_line);
-    //std::cout << "segment 1:\n"<< segment1.v0_ << segment1.v1_;
+    std::cout << "segment 1:\n"<< segment1.v0_ << segment1.v1_; // incorrect !!!
     
 
     Segment segment2 = interval_on_line(triangle2, dist2, int_line);
-    //std::cout << "segment 2:\n"<< segment2.v0_ << segment2.v1_;
+    std::cout << "segment 2:\n"<< segment2.v0_ << segment2.v1_;
     
     //std::cout << "last ret\n";
     return intersect_of_intervals(segment1, segment2);
@@ -293,17 +293,38 @@ int receive_triangles_without_octree() {
     for (int i = 0; i != number_of_triangles; ++i) {
         std::cin >> tmp;
         triangles.push_back(tmp);
+        triangles[i].number_ = i;
     }
 
     int intersect = 0;
+    std::vector<bool> status(number_of_triangles);
 
     for (auto it1 = triangles.begin(); it1 != triangles.end(); ++it1) {
         for (auto it2 = it1 + 1; it2 != triangles.end(); ++it2) {
             if (triangles_intersection(*it1, *it2)) {
+                status[it1->number_] = true;
+                status[it2->number_] = true;
+                std::cout << it1->number_ << " и " << it2->number_ << " пересекаются\n";
                 ++intersect;
             }
         }
     }
+
+    for (int i = 0; i != number_of_triangles; ++i) {
+        if (status[i]) {
+            std::cout << i << std::endl;
+        }
+    }
+
+    // for (int i = 0; i != number_of_triangles; ++i) {
+    //     for (int j = 0; j != number_of_triangles; ++j) {
+    //         if (status[i] && status[j]) {
+    //             if (triangles_intersection(triangles[i], triangles[j]) && i != j) {
+    //                 std::cout << i << " и " << j << " пересекаются\n";
+    //             }
+    //         }
+    //     }
+    // }
 
     return intersect;
 }
@@ -319,46 +340,63 @@ int receive_triangles() {
     for (int i = 0; i != number_of_triangles; ++i) {
         std::cin >> tmp;
         triangles.push_back(tmp);
+        triangles[i].number_ = i;
     }
 
     Octree octree;
     octree.fill_tree(triangles);
 
-    int number_of_intersections = intersections(octree.get_root_());
+    std::vector<bool> status(number_of_triangles);
+
+    int number_of_intersections = intersections(octree.get_root_(), status);
+
+    for (int i = 0; i != number_of_triangles; ++i) {
+        if (status[i]) {
+            std::cout << i << std::endl;
+            std::cout << triangles[i];
+        }
+    }
     return number_of_intersections;
 
 }
 
-int intersections(std::unique_ptr<OctreeNode>& octree_node) {
+int intersections(std::unique_ptr<OctreeNode>& octree_node, std::vector<bool>& status) {
 
     int intersection = 0;
     if(octree_node == nullptr) return intersection;
 
     for (auto first_it = octree_node->triangles_.begin(); first_it != octree_node->triangles_.end(); ++first_it) {
         for (auto second_it = first_it + 1; second_it != octree_node->triangles_.end(); ++second_it) {
-            if (triangles_intersection(*first_it, *second_it)) ++intersection;
+            if (triangles_intersection(*first_it, *second_it)) {
+                ++intersection;
+                status[first_it->number_] = true;
+                status[second_it->number_] = true;
+            }
         }
-
-        intersections_with_children(octree_node, *first_it, intersection);
+        intersections_with_children(octree_node, *first_it, intersection, status);
     }
 
     for (int child = 0; child != 8; ++child) {
         if (octree_node->children_[child] == nullptr) continue;
-        intersection += intersections(octree_node->children_[child]);
+        intersection += intersections(octree_node->children_[child], status);
     }
     return intersection;
 }
 
-void intersections_with_children(std::unique_ptr<OctreeNode>& octree_node, const Triangle& triangle, int& intersection) {
+void intersections_with_children(std::unique_ptr<OctreeNode>& octree_node, const Triangle& triangle, int& intersection, std::vector<bool>& status) {
     
     for (int child = 0; child != 8; ++child) {
         if (octree_node->children_[child] == nullptr) continue;
 
         for (auto it = octree_node->children_[child]->triangles_.begin(); it != octree_node->children_[child]->triangles_.end(); ++it) {
-            if (triangles_intersection(triangle, *it)) ++intersection;
+            if (triangles_intersection(triangle, *it)) {
+                ++intersection;
+                status[triangle.number_] = true;
+                status[it->number_] = true;
+            }
         }
 
-        intersections_with_children(octree_node->children_[child], triangle, intersection);
+        intersections_with_children(octree_node->children_[child], triangle, intersection, status);
     }
 }
 

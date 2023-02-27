@@ -23,7 +23,7 @@ Vector point_of_intersection(Line line1, Line line2);
 bool degenerate_intersection(const Triangle& triangle1, const Triangle& triangle2);
 int receive_triangles();
 int receive_triangles_without_octree();
-int intersections(std::unique_ptr<OctreeNode>& octree_node);
-void intersections_with_children(std::unique_ptr<OctreeNode>& octree_node, const Triangle& triangle, int& intersection);
+int intersections(std::unique_ptr<OctreeNode>& octree_node, std::vector<bool>& status);
+void intersections_with_children(std::unique_ptr<OctreeNode>& octree_node, const Triangle& triangle, int& intersection, std::vector<bool>& status);
 
 }

@@ -38,6 +38,7 @@ void create_octree_node(std::unique_ptr<OctreeNode>& parent, int octant) {
 
 void split_triangles(std::unique_ptr<OctreeNode>& octree_node) {
     if (octree_node->triangles_.size() <= 2 || (octree_node->right_top_ - octree_node->left_bottom_).length() < 1) return;
+
     auto it = octree_node->triangles_.begin();
 
     while (it != octree_node->triangles_.end()) {

@@ -5,8 +5,8 @@ int main()
 {   
     auto start = std::chrono::steady_clock::now();
 
-    std::cout << Geo3D::receive_triangles() << std::endl;
-    //std::cout << Geo3D::receive_triangles_without_octree() << std::endl;
+    //std::cout << Geo3D::receive_triangles() << std::endl;
+    std::cout << Geo3D::receive_triangles_without_octree() << std::endl;
 
     auto end = std::chrono::steady_clock::now();
 

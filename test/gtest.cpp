@@ -22,7 +22,7 @@ void TestBody(const std::string& path, int testNumber) {
         file >> first >> second >> actual_result;
         
         auto func_res = Geo3D::triangles_intersection(first, second);
-        
+
         EXPECT_EQ(func_res, actual_result);
         
         if (func_res == actual_result) {
@@ -36,7 +36,7 @@ void TestBody(const std::string& path, int testNumber) {
 }
 
 TEST(TestTriangles, triangle_and_triangle) {       
-    const int NUMBER_OF_TEST = 15;
+    const int NUMBER_OF_TEST = 16;
     std::string path = static_cast<std::string> (PROJECT_DIR_PATH) + "/test/triangle_and_triangle.txt";
     ::TestBody(path, NUMBER_OF_TEST);
 }

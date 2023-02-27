@@ -9,6 +9,7 @@ struct Triangle final
 public:
     enum Status { triangle = 0b100, segment = 0b010, point = 0b001 };
     Status status_;
+    int number_;
 
     Vector v0_, v1_, v2_; // radius - vector 
     // int number; // number of the triangle that have intersection

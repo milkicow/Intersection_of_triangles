@@ -10,7 +10,7 @@
 
 namespace Geo3D
 {
-const double epsilon = 10e-6;
+const double epsilon = 10e-7;
 enum Ort {x = 0, y = 1, z = 2};
 
 inline bool is_equal(double arg1, double arg2 = 0) {

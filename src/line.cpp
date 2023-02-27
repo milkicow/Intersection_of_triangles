@@ -35,8 +35,8 @@ Segment interval_on_line(Triangle t, Vector dist, Line int_line) {
     Triangle t_projection = triangle_projection(t, int_line);
 
     //std::cout << "triangle:\n" << t;
-    //std::cout << "triangle projection:\n";
-    //std::cout << t_projection;
+    std::cout << "triangle projection:\n";
+    std::cout << t_projection;
 
     Segment segment;
     
