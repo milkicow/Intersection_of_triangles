@@ -321,15 +321,8 @@ int receive_triangles() {
         triangles.push_back(tmp);
     }
 
-    // for (int i = 0; i != number_of_triangles; ++i) {
-    //     tmp = triangles.pop_back();
-    //     std::cout << tmp << std::endl;
-    // }
-
     Octree octree;
     octree.fill_tree(triangles);
-
-    //std::cout << octree.get_root_() << std::endl;
 
     int number_of_intersections = intersections(octree.get_root_());
     return number_of_intersections;
@@ -340,8 +333,6 @@ int intersections(std::unique_ptr<OctreeNode>& octree_node) {
 
     int intersection = 0;
     if(octree_node == nullptr) return intersection;
-
-    std::cout << "octree_node->triangles_.size() = " << octree_node->triangles_.size() << std::endl;
 
     for (auto first_it = octree_node->triangles_.begin(); first_it != octree_node->triangles_.end(); ++first_it) {
         for (auto second_it = first_it + 1; second_it != octree_node->triangles_.end(); ++second_it) {

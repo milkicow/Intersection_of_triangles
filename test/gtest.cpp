@@ -22,6 +22,7 @@ void TestBody(const std::string& path, int testNumber) {
         file >> first >> second >> actual_result;
         
         auto func_res = Geo3D::triangles_intersection(first, second);
+        
         EXPECT_EQ(func_res, actual_result);
         
         if (func_res == actual_result) {
