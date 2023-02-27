@@ -42,8 +42,8 @@ public:
 
 };
 
-Vector get_right_top_(const std::vector<Triangle>& triangles);
-Vector get_left_bottom_(const std::vector<Triangle>& triangles);
+// Vector get_right_top_(const std::vector<Triangle>& triangles);
+// Vector get_left_bottom_(const std::vector<Triangle>& triangles);
 int get_octant(const Vector& left_bottom, const Vector& right_top, const Triangle& triangle);
 void create_octree_node(const OctreeNode& parent, int octant);
 void split_triangles(std::unique_ptr<OctreeNode>& octree_node);

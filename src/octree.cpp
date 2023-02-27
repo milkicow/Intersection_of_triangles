@@ -2,39 +2,7 @@
 
 namespace Geo3D
 {
-
-Vector get_right_top_(const std::vector<Triangle>& triangles) {
-    double max_coord_ = 0;
-
-    for (int i = 0; i != triangles.size(); ++i) {
-        if (triangles[i].v0_.max_coord() > triangles[i].v1_.max_coord() || is_equal(triangles[i].v0_.max_coord(), triangles[i].v1_.max_coord())
-        &&  (triangles[i].v0_.max_coord() > triangles[i].v2_.max_coord() || is_equal(triangles[i].v0_.max_coord(), triangles[i].v2_.max_coord())))
-            max_coord_ = triangles[i].v0_.max_coord();
-        else if (triangles[i].v1_.max_coord() > triangles[i].v2_.max_coord() || is_equal(triangles[i].v1_.max_coord(), triangles[i].v2_.max_coord()))
-            max_coord_ = triangles[i].v1_.max_coord();
-        else 
-            max_coord_ = triangles[i].v2_.max_coord();
-    }
-
-    return {max_coord_, max_coord_, max_coord_};
-}
-
-Vector get_left_bottom_(const std::vector<Triangle>& triangles) {
-    double min_coord_ = 0;
-
-    for (int i = 0; i != triangles.size(); ++i) {
-        if (triangles[i].v0_.min_coord() < triangles[i].v1_.min_coord() || is_equal(triangles[i].v0_.min_coord(), triangles[i].v1_.min_coord())
-        && (triangles[i].v0_.min_coord() < triangles[i].v2_.min_coord() || is_equal(triangles[i].v0_.min_coord(), triangles[i].v2_.min_coord())))
-            min_coord_ = triangles[i].v0_.min_coord();
-        else if (triangles[i].v1_.min_coord() < triangles[i].v2_.min_coord() || is_equal(triangles[i].v1_.min_coord(), triangles[i].v2_.min_coord()))
-            min_coord_ = triangles[i].v1_.min_coord();
-        else 
-            min_coord_ = triangles[i].v2_.min_coord();
-    }
-
-    return {min_coord_, min_coord_, min_coord_};
-}
-
+    
 int get_octant(const Vector& left_bottom, const Vector& right_top, const Triangle& triangle) {
     Vector center = (right_top + left_bottom) / 2 ;
     int octant[3]{}; // 3 field for each point of triangle
@@ -89,14 +57,18 @@ void split_triangles(std::unique_ptr<OctreeNode>& octree_node) {
 void Octree::fill_tree(const std::vector<Triangle>& triangles) {
 
     Triangle tmp;
-    
+    double max_coord_abs = 0;
+
     for(int i = 0; i != triangles.size(); ++i) {
         tmp = triangles[i];
         root_->triangles_.push_back(tmp);
+
+        if (tmp.max_coord_abs() > max_coord_abs) max_coord_abs = tmp.max_coord_abs();
     }
 
-    left_bottom_max_ = get_left_bottom_(triangles);
-    right_top_max_ = get_right_top_(triangles);
+    Vector origin{0, 0, 0};
+    right_top_max_ = {max_coord_abs, max_coord_abs, max_coord_abs};
+    left_bottom_max_ =  origin - right_top_max_;
 
     split_triangles(root_);
 }
