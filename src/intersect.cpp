@@ -284,6 +284,30 @@ bool degenerate_intersection(const Triangle& triangle1, const Triangle& triangle
     return false;
 }
 
+int receive_triangles_without_octree() {
+    int number_of_triangles = 0;
+    std::cin >> number_of_triangles;
+
+    std::vector<Triangle> triangles;
+    Triangle tmp;
+    for (int i = 0; i != number_of_triangles; ++i) {
+        std::cin >> tmp;
+        triangles.push_back(tmp);
+    }
+
+    int intersect = 0;
+
+    for (auto it1 = triangles.begin(); it1 != triangles.end(); ++it1) {
+        for (auto it2 = it1 + 1; it2 != triangles.end(); ++it2) {
+            if (triangles_intersection(*it1, *it2)) {
+                ++intersect;
+            }
+        }
+    }
+
+    return intersect;
+}
+
 
 int receive_triangles() {
 
@@ -316,6 +340,8 @@ int intersections(std::unique_ptr<OctreeNode>& octree_node) {
 
     int intersection = 0;
     if(octree_node == nullptr) return intersection;
+
+    std::cout << "octree_node->triangles_.size() = " << octree_node->triangles_.size() << std::endl;
 
     for (auto first_it = octree_node->triangles_.begin(); first_it != octree_node->triangles_.end(); ++first_it) {
         for (auto second_it = first_it + 1; second_it != octree_node->triangles_.end(); ++second_it) {

@@ -32,7 +32,6 @@ private:
     std::unique_ptr<OctreeNode> root_;
 
 public:
-    Vector left_bottom_max_, right_top_max_;
     Octree() : root_(std::make_unique<OctreeNode>()) {}
 
     // Vector& get_left_bottom_() { return left_bottom_max_; }

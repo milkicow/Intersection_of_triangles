@@ -37,7 +37,12 @@ void create_octree_node(std::unique_ptr<OctreeNode>& parent, int octant) {
 
 
 void split_triangles(std::unique_ptr<OctreeNode>& octree_node) {
+
+    std::cout << "size of octant = " << (octree_node->right_top_ - octree_node->left_bottom_).length() << std::endl;
+
     if (octree_node->triangles_.size() <= 2 || (octree_node->right_top_ - octree_node->left_bottom_).length() < 1) return;
+
+    std::cout << "not returned\n";
 
     for (auto it = octree_node->triangles_.begin(); it != octree_node->triangles_.end(); ++it) {
         int octant = get_octant(octree_node->left_bottom_, octree_node->right_top_, *it);
@@ -67,8 +72,8 @@ void Octree::fill_tree(const std::vector<Triangle>& triangles) {
     }
 
     Vector origin{0, 0, 0};
-    right_top_max_ = {max_coord_abs, max_coord_abs, max_coord_abs};
-    left_bottom_max_ =  origin - right_top_max_;
+    root_->right_top_ = {max_coord_abs, max_coord_abs, max_coord_abs};
+    root_->left_bottom_ =  origin - root_->right_top_;
 
     split_triangles(root_);
 }
