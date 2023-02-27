@@ -19,10 +19,10 @@ Triangle triangle_projection(Triangle triangle, Line line) {
 
 Segment interval_on_line(Triangle t, Vector dist, Line int_line) {
 
-    while(!(cmp_zero(dist.x_) == cmp_zero(dist.y_) && cmp_zero(dist.x_) != cmp_zero(dist.z_)) &&
+    while(!(cmp_zero(dist.x_) == cmp_zero(dist.y_) && cmp_zero(dist.x_) != cmp_zero(dist.z_)) && 
     (cmp_zero(dist.x_) != cmp_zero(dist.y_) && cmp_zero(dist.x_) != cmp_zero(dist.z_) && cmp_zero(dist.y_) != cmp_zero(dist.z_) && cmp_zero(dist.z_) != 1))
     {   
-        // std::cout << cmp_zero(dist.x_) << cmp_zero(dist.y_) << cmp_zero(dist.z_) << std::endl;
+        std::cout << cmp_zero(dist.x_) << cmp_zero(dist.y_) << cmp_zero(dist.z_) << std::endl;
         
         t.rotate_clockwise();
         dist.rotate_clockwise();
@@ -31,7 +31,7 @@ Segment interval_on_line(Triangle t, Vector dist, Line int_line) {
         // std::cout << "distance:\n" << dist;
     }
 
-    
+    std::cout << cmp_zero(dist.x_) << cmp_zero(dist.y_) << cmp_zero(dist.z_) << std::endl;
     Triangle t_projection = triangle_projection(t, int_line);
 
     //std::cout << "triangle:\n" << t;
@@ -40,8 +40,8 @@ Segment interval_on_line(Triangle t, Vector dist, Line int_line) {
 
     Segment segment;
     
-    segment.v0_  = t_projection[0] + (t_projection[2] - t_projection[0]).length() * abs(dist.x_) / (abs(dist.x_) + abs(dist.z_)) * int_line.direction_.normalized();
-    segment.v1_  = t_projection[1] + (t_projection[2] - t_projection[1]).length() * abs(dist.y_) / (abs(dist.y_) + abs(dist.z_)) * int_line.direction_.normalized();
+    segment.v0_  = t_projection[0] + (t_projection[2] - t_projection[0]) * abs(dist.x_) / (abs(dist.x_) + abs(dist.z_));
+    segment.v1_  = t_projection[1] + (t_projection[2] - t_projection[1]) * abs(dist.y_) / (abs(dist.y_) + abs(dist.z_));
 
     return segment;
 }
