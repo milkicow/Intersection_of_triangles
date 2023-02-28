@@ -51,19 +51,8 @@ Segment interval_on_line(Triangle t, Vector dist, Line int_line) { //incorrect !
 }
 
 bool intersect_of_intervals(Segment segment1, Segment segment2) {
-
-    //std::cout << segment2[1] << segment1[1];
-    Vector v00 = segment2.v0_ - segment1.v0_;
-    Vector v01 = segment2.v0_ - segment1.v1_;
-
-    //std::cout << "v00 = " << v00 << "v01 = " << v01 ;
-    if (cmp_zero(v00 * v01) == -1 || cmp_zero(v00 * v01) == 0) return true;
-
-    Vector v10 = segment2.v1_ - segment1.v0_;
-    Vector v11 = segment2.v1_ - segment1.v1_;
-
-    if (cmp_zero(v10 * v11) == -1 || cmp_zero(v10 * v11) == 0) return true;
-    else return false;
+    return (segment1.point_belongs(segment2.v0_) || segment1.point_belongs(segment2.v1_) || 
+    segment2.point_belongs(segment1.v0_) || segment2.point_belongs(segment1.v1_));
 }
 
 double distance_lines(const Line& line1, const Line& line2) {

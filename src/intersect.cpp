@@ -158,10 +158,6 @@ bool triangles_intersection(const Triangle& triangle1, const Triangle& triangle2
     
 // 6) :
     //std::cout << plane1.normal() << plane2.normal();
-    
-    // plane1.normalized();
-    // plane2.normalized();
-
     //std::cout << plane1.normal() << plane2.normal();
 
     if (is_equal(plane1.normalized().normal(), plane2.normalized().normal()) || is_equal(plane1.normalized().normal(), -plane2.normalized().normal())) {
@@ -206,11 +202,10 @@ bool triangles_intersection(const Triangle& triangle1, const Triangle& triangle2
     //std::cout << "last point of alghoritm" << std::endl;
 
     Segment segment1 = interval_on_line(triangle1, dist1, int_line);
-    // std::cout << "segment 1:\n"<< segment1.v0_ << segment1.v1_; // incorrect !!!
+    //std::cout << "segment 1:\n"<< segment1.v0_ << segment1.v1_; // incorrect !!!
     
-
     Segment segment2 = interval_on_line(triangle2, dist2, int_line);
-    // std::cout << "segment 2:\n"<< segment2.v0_ << segment2.v1_;
+    //std::cout << "segment 2:\n"<< segment2.v0_ << segment2.v1_;
     
     //std::cout << "last ret\n";
     return intersect_of_intervals(segment1, segment2);
@@ -304,7 +299,7 @@ int receive_triangles_without_octree() {
             if (triangles_intersection(*it1, *it2)) {
                 status[it1->number_] = true;
                 status[it2->number_] = true;
-                std::cout << it1->number_ << " и " << it2->number_ << " пересекаются\n";
+                //std::cout << it1->number_ << " и " << it2->number_ << " пересекаются\n";
                 ++intersect;
             }
         }
@@ -326,7 +321,7 @@ int receive_triangles_without_octree() {
     //     }
     // }
 
-    return intersect;
+    return intersect * 2;
 }
 
 
@@ -353,10 +348,10 @@ int receive_triangles() {
     for (int i = 0; i != number_of_triangles; ++i) {
         if (status[i]) {
             std::cout << i << std::endl;
-            std::cout << triangles[i];
+            //std::cout << triangles[i];
         }
     }
-    return number_of_intersections;
+    return number_of_intersections * 2;
 
 }
 

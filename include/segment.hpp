@@ -26,6 +26,8 @@ public:
             //std::cout << "returned false\n";
             return false;
         }
+        if (is_equal(v0_, v1_)) return is_equal(v0_, point);
+
         double t = (point - v0_).length() / (v1_ - v0_).length();
         //std::cout << "t = " << t << std::endl;
         if (t < 1 || is_equal(t, 1)) 

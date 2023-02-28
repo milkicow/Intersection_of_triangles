@@ -25,12 +25,12 @@ void TestBody(const std::string& path, int testNumber) {
 
         EXPECT_EQ(func_res, actual_result);
         
-        if (func_res == actual_result) {
-            std::cout << "\ntest " << i << " PASSED \n\n";
-        }
-        else {
-            std::cout << "\ntest " << i << " FAILED \n\n";
-        }
+        // if (func_res == actual_result) {
+        //     std::cout << "\ntest " << i << " PASSED \n\n";
+        // }
+        // else {
+        //     std::cout << "\ntest " << i << " FAILED \n\n";
+        // }
     }
     file.close();  
 }
