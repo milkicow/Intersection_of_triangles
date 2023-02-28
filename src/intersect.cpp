@@ -139,7 +139,7 @@ bool triangles_intersection(const Triangle& triangle1, const Triangle& triangle2
     
 // 2) :
     Plane plane1(triangle1);
-    //std::cout << plane1;
+    // std::cout << "plane1 = " << plane1;
     
 
 // 3) :
@@ -154,18 +154,18 @@ bool triangles_intersection(const Triangle& triangle1, const Triangle& triangle2
     
 // 5) :
     Plane plane2(triangle2);
-    //std::cout << "plane2 = "<< plane2;
+    // std::cout << "plane2 = "<< plane2;
     
 // 6) :
     //std::cout << plane1.normal() << plane2.normal();
     
-    plane1.normalized();
-    plane2.normalized();
+    // plane1.normalized();
+    // plane2.normalized();
 
     //std::cout << plane1.normal() << plane2.normal();
 
-    if (is_equal(plane1.normal(), plane2.normal()) || is_equal(plane1.normal(), -plane2.normal())) {
-        if (plane1.d_ != plane2.d_) return false;
+    if (is_equal(plane1.normalized().normal(), plane2.normalized().normal()) || is_equal(plane1.normalized().normal(), -plane2.normalized().normal())) {
+        if (plane1.normalized().d_ != plane2.normalized().d_) return false;
         else {
             //std::cout << "plane1.normal() == plane2.normal()" << std::endl;
 
@@ -186,10 +186,10 @@ bool triangles_intersection(const Triangle& triangle1, const Triangle& triangle2
     
 
 // 7) :
-    //std::cout << "plane2.2 = " << plane2;
+    // std::cout << "plane2 = " << plane2;
     Vector dist1 = triangle_plane_dist(triangle1, plane2);
 
-    //std::cout << "dist1 = " << dist1;
+    // std::cout << "dist1 = " << dist1;
 
     int dist1_sign = cmp_zero(dist1.x_) + cmp_zero(dist1.y_) + cmp_zero(dist1.z_);
     if (dist1_sign == 3 || dist1_sign == -3) return false;
@@ -200,17 +200,17 @@ bool triangles_intersection(const Triangle& triangle1, const Triangle& triangle2
 // 8) :
     Line int_line = intersection_of_2_planes(plane1, plane2);
     
-    std::cout << "int_line = " << int_line;
+    //std::cout << "int_line = " << int_line;
 
 // 9) :
     //std::cout << "last point of alghoritm" << std::endl;
 
     Segment segment1 = interval_on_line(triangle1, dist1, int_line);
-    std::cout << "segment 1:\n"<< segment1.v0_ << segment1.v1_; // incorrect !!!
+    // std::cout << "segment 1:\n"<< segment1.v0_ << segment1.v1_; // incorrect !!!
     
 
     Segment segment2 = interval_on_line(triangle2, dist2, int_line);
-    std::cout << "segment 2:\n"<< segment2.v0_ << segment2.v1_;
+    // std::cout << "segment 2:\n"<< segment2.v0_ << segment2.v1_;
     
     //std::cout << "last ret\n";
     return intersect_of_intervals(segment1, segment2);

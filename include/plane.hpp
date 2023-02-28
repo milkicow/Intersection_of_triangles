@@ -28,12 +28,9 @@ public:
         return sqrt(a_ * a_ + b_ * b_ + c_ * c_);
     }
 
-    void normalized() {
-        double tmp = sqrt(a_ * a_ + b_ * b_ + c_ * c_ + d_ * d_);
-        a_ /= tmp;
-        b_ /= tmp;
-        c_ /= tmp;
-        d_ /= tmp;
+    Plane normalized() {
+        double tmp = normal_length();
+        return {a_ / tmp, b_ / tmp, c_ / tmp, d_ / tmp};
     }
 };
 

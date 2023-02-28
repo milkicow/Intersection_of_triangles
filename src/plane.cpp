@@ -28,7 +28,7 @@ Line intersection_of_2_planes(Plane p1, Plane p2) {// ! already get info about i
 }
 
 double point_plane_dist(const Vector& vec, const Plane& plane) {
-    return (plane.a_ * vec.x_ + plane.b_ * vec.y_ + plane.c_ * vec.z_ + plane.d_) / plane.normal_length();
+    return (plane.a_ * vec.x_ + plane.b_ * vec.y_ + plane.c_ * vec.z_ + plane.d_);
 }
 
 Vector triangle_plane_dist(const Triangle& tr, const Plane& plane) {   

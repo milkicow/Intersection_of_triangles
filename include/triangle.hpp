@@ -52,7 +52,7 @@ public:
         return(t.v0_ == v0_ && t.v1_ == v1_ && t.v2_ == v2_);
     }
 
-    void rotate_clockwise() { std::swap(v0_, v1_); std::swap(v2_, v1_); }
+    void rotate_clockwise() { std::swap(v0_, v2_); std::swap(v2_, v1_); }
 
     double max_coord_abs() const { return std::max({v0_.max_coord_abs(), v1_.max_coord_abs(), v2_.max_coord_abs()}); }
 };

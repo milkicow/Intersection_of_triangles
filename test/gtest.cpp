@@ -35,12 +35,6 @@ void TestBody(const std::string& path, int testNumber) {
     file.close();  
 }
 
-TEST(TestTriangles, triangle_and_triangle) {       
-    const int NUMBER_OF_TEST = 16;
-    std::string path = static_cast<std::string> (PROJECT_DIR_PATH) + "/test/triangle_and_triangle.txt";
-    ::TestBody(path, NUMBER_OF_TEST);
-}
-
 TEST(TestTriangles, segment_and_point) {       
     const int NUMBER_OF_TEST = 4;
     std::string path = static_cast<std::string> (PROJECT_DIR_PATH) + "/test/segment_and_point.txt";
@@ -71,7 +65,11 @@ TEST(TestTriangles, triangle_and_segment) {
     ::TestBody(path, NUMBER_OF_TEST);
 }
 
-
+TEST(TestTriangles, triangle_and_triangle) {       
+    const int NUMBER_OF_TEST = 18;
+    std::string path = static_cast<std::string> (PROJECT_DIR_PATH) + "/test/triangle_and_triangle.txt";
+    ::TestBody(path, NUMBER_OF_TEST);
+}
 
 
 int main(int argc, char **argv) {

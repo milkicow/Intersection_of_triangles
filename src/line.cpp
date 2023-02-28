@@ -17,12 +17,13 @@ Triangle triangle_projection(Triangle triangle, Line line) {
     return tmp;
 } 
 
-Segment interval_on_line(Triangle t, Vector dist, Line int_line) {
+Segment interval_on_line(Triangle t, Vector dist, Line int_line) { //incorrect !!!
 
     while(!(cmp_zero(dist.x_) == cmp_zero(dist.y_) && cmp_zero(dist.x_) != cmp_zero(dist.z_)) && 
-    (cmp_zero(dist.x_) != cmp_zero(dist.y_) && cmp_zero(dist.x_) != cmp_zero(dist.z_) && cmp_zero(dist.y_) != cmp_zero(dist.z_) && cmp_zero(dist.z_) != 1))
+    //!(cmp_zero(dist.x_) != 0 && cmp_zero(dist.y_) != 0 && cmp_zero(dist.x_) != cmp_zero(dist.y_) && cmp_zero(dist.z_) == 0))
+    !(cmp_zero(dist.x_) != cmp_zero(dist.y_) && cmp_zero(dist.x_) != cmp_zero(dist.z_) && cmp_zero(dist.y_) != cmp_zero(dist.z_) && cmp_zero(dist.z_) == 1))
     {   
-        std::cout << cmp_zero(dist.x_) << cmp_zero(dist.y_) << cmp_zero(dist.z_) << std::endl;
+        // std::cout << cmp_zero(dist.x_) << cmp_zero(dist.y_) << cmp_zero(dist.z_) << std::endl;
         
         t.rotate_clockwise();
         dist.rotate_clockwise();
@@ -31,18 +32,21 @@ Segment interval_on_line(Triangle t, Vector dist, Line int_line) {
         // std::cout << "distance:\n" << dist;
     }
 
-    std::cout << cmp_zero(dist.x_) << cmp_zero(dist.y_) << cmp_zero(dist.z_) << std::endl;
+    // std::cout << cmp_zero(dist.x_) << cmp_zero(dist.y_) << cmp_zero(dist.z_) << std::endl;
     Triangle t_projection = triangle_projection(t, int_line);
 
-    //std::cout << "triangle:\n" << t;
-    std::cout << "triangle projection:\n";
-    std::cout << t_projection;
+    // std::cout << "triangle:\n" << t;
+    // std::cout << "triangle projection:\n";
+    // std::cout << t_projection;
 
     Segment segment;
     
-    segment.v0_  = t_projection[0] + (t_projection[2] - t_projection[0]) * abs(dist.x_) / (abs(dist.x_) + abs(dist.z_));
-    segment.v1_  = t_projection[1] + (t_projection[2] - t_projection[1]) * abs(dist.y_) / (abs(dist.y_) + abs(dist.z_));
+    // segment.v0_  = t_projection[0] + (t_projection[2] - t_projection[0]) * std::abs(dist.x_) / (std::abs(dist.x_) + std::abs(dist.z_));
+    // segment.v1_  = t_projection[1] + (t_projection[2] - t_projection[1]) * std::abs(dist.y_) / (std::abs(dist.y_) + std::abs(dist.z_));
 
+    segment.v0_ = t_projection[2] + (t_projection[1] - t_projection[2]) * abs(dist.z_) / (abs(dist.z_) + abs(dist.y_));
+    segment.v1_ = t_projection[2] + (t_projection[0] - t_projection[2]) * abs(dist.z_) / (abs(dist.z_) + abs(dist.x_));
+    
     return segment;
 }
 
