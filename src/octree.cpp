@@ -75,7 +75,7 @@ void Octree::fill_tree(const std::vector<Triangle>& triangles) {
     }
 
     root_->right_top_ = {max_coord_abs, max_coord_abs, max_coord_abs};
-    root_->left_bottom_ = -root_->right_top_;
+    root_->left_bottom_ = {-max_coord_abs, -max_coord_abs, -max_coord_abs};
 
     split_triangles(root_);
 }

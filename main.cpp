@@ -3,14 +3,14 @@
 
 int main()
 {   
-    auto start = std::chrono::steady_clock::now();
+    //auto start = std::chrono::steady_clock::now();
 
-    std::cout << Geo3D::receive_triangles() << std::endl;
-    //std::cout << Geo3D::receive_triangles_without_octree() << std::endl;
+    Geo3D::receive_triangles();
+    //Geo3D::receive_triangles_without_octree();
 
-    auto end = std::chrono::steady_clock::now();
+    //auto end = std::chrono::steady_clock::now();
 
-    std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " milliseconds\n";
+    //std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " milliseconds\n";
 
     return 0;
 }
