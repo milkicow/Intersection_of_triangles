@@ -26,7 +26,7 @@ public:
     }
 
     double operator*(const Vector& rhs) const {
-        return this -> x_ * rhs.x_ + this -> y_ * rhs.y_ + this -> z_ * rhs.z_;
+        return x_ * rhs.x_ + y_ * rhs.y_ + z_ * rhs.z_;
     }
 
     double length() const {
@@ -44,16 +44,16 @@ public:
             case Ort::x: return this->x_; break;
             case Ort::y: return this->y_; break;
             case Ort::z: return this->z_; break;
-            default: std::cout << "incorrect number of coordinate in Vector\n"; exit(EXIT_FAILURE);
+            default: throw std::invalid_argument("invalid_argument = " + std::to_string(ort));
         }
     }
 
-    const double& operator[](int ort) const{
+    const double& operator[](int ort) const {
         switch (ort) {
             case Ort::x: return this->x_; break;
             case Ort::y: return this->y_; break;
             case Ort::z: return this->z_; break;
-            default: std::cout << "incorrect number of coordinate in Vector\n"; exit(EXIT_FAILURE);
+            default: throw std::invalid_argument("invalid_argument = " + std::to_string(ort));
         }
     }
 

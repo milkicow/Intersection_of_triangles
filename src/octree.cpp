@@ -1,9 +1,10 @@
 #include "octree.hpp"
+#include "intersect.hpp"
 
 namespace Geo3D
 {
     
-int get_octant(const Vector& left_bottom, const Vector& right_top, const Triangle& triangle) {
+int OctreeNode::get_octant(const Vector& left_bottom, const Vector& right_top, const Triangle& triangle) {
     Vector center = (right_top + left_bottom) / 2 ;
     int octant[3]{}; // 3 field for each point of triangle
 
@@ -17,48 +18,48 @@ int get_octant(const Vector& left_bottom, const Vector& right_top, const Triangl
     return octant[0];
 }
 
-void create_octree_node(std::unique_ptr<OctreeNode>& parent, int octant) {
+void OctreeNode::create_octree_node(int octant) {
 
-    Vector center = (parent->left_bottom_ + parent->right_top_) / 2;
-    Vector left_bottom, right_top;
+    Vector center = (left_bottom_ + right_top_) / 2;
+    Vector child_left_bottom, child_right_top;
 
     for (int coord = 0; coord != 3; ++coord) {
         if ((octant >> coord) & 1) {
-            left_bottom[coord] = center[coord];
-            right_top[coord] = parent->right_top_[coord];
+            child_left_bottom[coord] = center[coord];
+            child_right_top[coord] = right_top_[coord];
         }
         else {
-            left_bottom[coord] = parent->left_bottom_[coord];
-            right_top[coord] = center[coord];
+            child_left_bottom[coord] = left_bottom_[coord];
+            child_right_top[coord] = center[coord];
         }
     }
-    parent->children_[octant] = std::make_unique<OctreeNode>(left_bottom, right_top);
+    children_[octant] = std::make_unique<OctreeNode>(child_left_bottom, child_right_top);
 }
 
 
-void split_triangles(std::unique_ptr<OctreeNode>& octree_node) {
-    if (octree_node->triangles_.size() <= 2 || (octree_node->right_top_ - octree_node->left_bottom_).length() < 1) return;
+void OctreeNode::split_triangles() {
+    if (triangles_.size() <= 2 || (right_top_ - left_bottom_).length() < 1) return;
 
-    auto it = octree_node->triangles_.begin();
+    auto it = triangles_.begin();
 
-    while (it != octree_node->triangles_.end()) {
-        int octant = get_octant(octree_node->left_bottom_, octree_node->right_top_, *it);
+    while (it != triangles_.end()) {
+        int octant = get_octant(left_bottom_, right_top_, *it);
 
         if (octant == -1) {
             ++it;
             continue; 
         }
 
-        if (!octree_node->children_[octant]) {
-            create_octree_node(octree_node, octant);
+        if (!children_[octant]) {
+            create_octree_node(octant);
         }
         
-        octree_node->children_[octant]->triangles_.push_back(*it);
-        octree_node->triangles_.erase(it);        
+        children_[octant]->triangles_.push_back(*it);
+        triangles_.erase(it);        
     }
 
     for (int i = 0; i != 8; ++i) {
-        if (octree_node->children_[i]) split_triangles(octree_node->children_[i]);
+        if (children_[i]) children_[i]->split_triangles();
     }
 }
 
@@ -77,7 +78,45 @@ void Octree::fill_tree(const std::vector<Triangle>& triangles) {
     root_->right_top_ = {max_coord_abs, max_coord_abs, max_coord_abs};
     root_->left_bottom_ = {-max_coord_abs, -max_coord_abs, -max_coord_abs};
 
-    split_triangles(root_);
+    root_->split_triangles();
+}
+
+int OctreeNode::intersections(std::vector<bool>& status) {
+
+    int intersection = 0;
+
+    for (auto first_it = triangles_.begin(); first_it != triangles_.end(); ++first_it) {
+        for (auto second_it = first_it + 1; second_it != triangles_.end(); ++second_it) {
+            if (triangles_intersection(*first_it, *second_it)) {
+                ++intersection;
+                status[first_it->number_] = true;
+                status[second_it->number_] = true;
+            }
+        }
+        intersections_with_children(*first_it, intersection, status);
+    }
+
+    for (int child = 0; child != 8; ++child) {
+        if (children_[child] == nullptr) continue;
+        intersection += children_[child]->intersections(status);
+    }
+    return intersection;
+}
+
+void OctreeNode::intersections_with_children(const Triangle& triangle, int& intersection, std::vector<bool>& status) {
+
+    for (int child = 0; child != 8; ++child) {
+        if (children_[child] == nullptr) continue;
+
+        for (auto it = children_[child]->triangles_.begin(); it != children_[child]->triangles_.end(); ++it) {
+            if (triangles_intersection(triangle, *it)) {
+                ++intersection;
+                status[triangle.number_] = true;
+                status[it->number_] = true;
+            }
+        }
+        children_[child]->intersections_with_children(triangle, intersection, status);
+    }
 }
 
 }

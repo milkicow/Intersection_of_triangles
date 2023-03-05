@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
-#include <assert.h>
-#include <math.h>
+#include <cassert>
+#include <cmath>
 #include <vector>
 
 #define LOX std::cerr << "NORMALLY IN " << __FILE__ << " in " <<  __PRETTY_FUNCTION__ << " in LINE = " << __LINE__ << std::endl;

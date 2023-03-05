@@ -35,7 +35,7 @@ public:
             case 0: return v0_; break;
             case 1: return v1_; break;
             case 2: return v2_; break;
-            default: std::cout << "incorrect number of verticle in triangle\n"; exit(EXIT_FAILURE);
+            default: throw std::invalid_argument("invalid_argument = " + std::to_string(i));
         }
     }
 
@@ -44,7 +44,7 @@ public:
             case 0: return v0_; break;
             case 1: return v1_; break;
             case 2: return v2_; break;
-            default: std::cout << "incorrect number of verticle in triangle\n"; exit(EXIT_FAILURE);
+            default: throw std::invalid_argument("invalid_argument = " + std::to_string(i));
         }
     }
 

@@ -52,9 +52,7 @@ Ort max_ort_component(const Vector& vec) {
 
     if (is_equal(max, abs(vec.x_))) return Ort::x;
     else if (is_equal(max, abs(vec.y_))) return Ort::y;
-    else if (is_equal(max, abs(vec.z_))) return Ort::z;
-    else std::cout << "can't define max\n"; exit(EXIT_FAILURE);
-
+    else return Ort::z;
 }
 
 std::istream& operator>>(std::istream& in, Vector& vec) {
