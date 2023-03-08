@@ -28,8 +28,8 @@ Segment interval_on_line(Triangle t, Vector dist, Line int_line) {
     Triangle t_projection = triangle_projection(t, int_line);
 
     Segment segment;
-    segment.v0_ = t_projection[2] + (t_projection[1] - t_projection[2]) * abs(dist.z_) / (abs(dist.z_) + abs(dist.y_));
-    segment.v1_ = t_projection[2] + (t_projection[0] - t_projection[2]) * abs(dist.z_) / (abs(dist.z_) + abs(dist.x_));
+    segment.v0_ = t_projection[2] + (t_projection[1] - t_projection[2]) * std::abs(dist.z_) / (std::abs(dist.z_) + std::abs(dist.y_));
+    segment.v1_ = t_projection[2] + (t_projection[0] - t_projection[2]) * std::abs(dist.z_) / (std::abs(dist.z_) + std::abs(dist.x_));
     
     return segment;
 }

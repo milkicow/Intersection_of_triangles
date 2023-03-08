@@ -59,8 +59,7 @@ public:
 
     void rotate_clockwise() {std::swap(y_, z_); std::swap(x_, y_);};
 
-    double max_coord_abs() const { return std::max({abs(x_), abs(y_), abs(z_)}); }
-    // double min_coord() const { return std::min({x_, y_, z_}); }
+    double max_coord_abs() const { return std::max({std::abs(x_), std::abs(y_), std::abs(z_)}); }
 };
 
 std::ostream& operator<<(std::ostream& out, const Vector& vector);
