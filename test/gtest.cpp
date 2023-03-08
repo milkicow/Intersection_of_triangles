@@ -66,7 +66,7 @@ TEST(TestTriangles, triangle_and_segment) {
 }
 
 TEST(TestTriangles, triangle_and_triangle) {       
-    const int NUMBER_OF_TEST = 18;
+    const int NUMBER_OF_TEST = 19;
     std::string path = static_cast<std::string> (PROJECT_DIR_PATH) + "/test/triangle_and_triangle.txt";
     ::TestBody(path, NUMBER_OF_TEST);
 }

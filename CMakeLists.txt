@@ -11,16 +11,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS        OFF)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-set(SOURCE ${PROJECT_SOURCE_DIR}/src/line.cpp
-           ${PROJECT_SOURCE_DIR}/src/plane.cpp
-           ${PROJECT_SOURCE_DIR}/src/triangle.cpp
-           ${PROJECT_SOURCE_DIR}/src/vector.cpp
-           ${PROJECT_SOURCE_DIR}/src/intersect.cpp
-           ${PROJECT_SOURCE_DIR}/src/segment.cpp
-           ${PROJECT_SOURCE_DIR}/src/octree.cpp
-           ${PROJECT_SOURCE_DIR}/main.cpp         )
-        
-add_executable(intersect ${SOURCE})
+set(SOURCE ${PROJECT_SOURCE_DIR}/main.cpp)
+aux_source_directory(./src SRC_LIST)
+add_executable(intersect ${SOURCE} ${SRC_LIST})
+
 target_include_directories(intersect
                             PRIVATE include)
 
