@@ -1,7 +1,14 @@
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
-file(GLOB CPP_SOURCES ../src/*.cpp)
+file(GLOB CPP_SOURCES ../src/intersect.cpp
+                      ../src/line.cpp 
+                      ../src/octree.cpp 
+                      ../src/plane.cpp 
+                      ../src/segment.cpp 
+                      ../src/triangle.cpp 
+                      ../src/vector.cpp)
+                      
 add_executable(tests ${CPP_SOURCES} gtest.cpp)
 target_include_directories(tests PRIVATE ../include)
  
