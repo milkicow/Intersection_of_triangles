@@ -19,6 +19,9 @@
 #include <algorithm>
 #include <chrono>
 
+#include "triangle.hpp"
+#include "vector.hpp"
+
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
 
@@ -70,7 +73,7 @@ struct SwapChainSupportDetails {
 };
 
 struct Vertex {
-    glm::vec2 pos;
+    glm::vec3 pos;
     glm::vec3 color;
 
     static VkVertexInputBindingDescription getBindingDescription() {
@@ -86,7 +89,7 @@ struct Vertex {
         std::array<VkVertexInputAttributeDescription, 2> attributeDescriptions{};
         attributeDescriptions[0].binding = 0;
         attributeDescriptions[0].location = 0;
-        attributeDescriptions[0].format = VK_FORMAT_R32G32_SFLOAT;
+        attributeDescriptions[0].format = VK_FORMAT_R32G32B32_SFLOAT;
         attributeDescriptions[0].offset = offsetof(Vertex, pos);
 
         attributeDescriptions[1].binding = 0;
@@ -104,15 +107,8 @@ struct UniformBufferObject {
     glm::mat4 proj;
 };
 
-const std::vector<Vertex> vertices = {
-    {{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
-    {{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}},
-    {{0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
-};
-
-const std::vector<uint16_t> indices = {
-    0, 1, 2
-};
+std::vector<Vertex> vertices;
+std::vector<uint16_t> indices;
 
 class HelloTriangleApplication {
 public:
@@ -1254,8 +1250,27 @@ private:
     }
 };
 
-int vulkan() {
+glm::vec3 vector_cast_vec3(Geo3D::Vector vec);
+
+int vulkan(const std::vector<Geo3D::Triangle>& triangles, std::vector<bool>& status) {
     HelloTriangleApplication app;
+    vertices.reserve(triangles.size() * 3);
+    indices.reserve(triangles.size() * 3);
+
+    glm::vec3 red  = {1.0f, 0.0f, 0.0f};
+    glm::vec3 blue = {0.0f, 0.0f, 1.0f};
+    glm::vec3 color;
+
+    int verticle = 0;
+    
+    for (auto it = triangles.begin(); it != triangles.end(); ++it) {
+        if (status[verticle]) color = red;
+        else color = blue;
+
+        vertices.push_back({vector_cast_vec3(it->v0_), color}); indices.push_back(verticle);
+        vertices.push_back({vector_cast_vec3(it->v1_), color}); indices.push_back(verticle); ++verticle;
+        vertices.push_back({vector_cast_vec3(it->v2_), color}); indices.push_back(verticle); ++verticle;
+    }
 
     try {
         app.run();
@@ -1265,4 +1280,11 @@ int vulkan() {
     }
 
     return EXIT_SUCCESS;
+}
+
+glm::vec3 vector_cast_vec3(Geo3D::Vector vec) {
+    glm::vec3 tmp;
+    tmp.x = vec.x_; tmp.y = vec.y_; tmp.z = vec.z_;
+
+    return tmp;
 }

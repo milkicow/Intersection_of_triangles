@@ -1,6 +1,9 @@
 #include "intersect.hpp"
 #include "octree.hpp"
 
+
+int vulkan(const std::vector<Geo3D::Triangle>& triangles, std::vector<bool>& status);
+
 namespace Geo3D 
 {
 
@@ -322,6 +325,7 @@ int receive_triangles() {
             std::cout << i << std::endl;
         }
     }
+    vulkan(triangles, status);
     return number_of_intersections * 2;
 
 }
