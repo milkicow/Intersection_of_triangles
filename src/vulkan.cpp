@@ -116,15 +116,16 @@ struct UniformBufferObject {
     glm::mat4 proj;
 };
 
-std::vector<Vertex> vertices = {
-    {{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
-    {{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}},
-    {{0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}},
-    {{-0.5f, 0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}}
-};
-std::vector<uint16_t> indices = {
-    0, 1, 2, 2, 3, 0
-};
+std::vector<Vertex> vertices; // = {
+//     {{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
+//     {{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}},
+//     {{0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}},
+//     {{-0.5f, 0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}}
+// };
+std::vector<uint16_t> indices; // = 
+// {
+//     0, 1, 2, 2, 3, 0
+// };
 
 class HelloTriangleApplication {
 public:
@@ -1119,18 +1120,18 @@ private:
 
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
     {   
-        const float speed = 0.2;
+        const float speed = 1.0;
 
-        if (key == GLFW_KEY_W && action == GLFW_PRESS) {
+        if (key == GLFW_KEY_W) {
             viewer_position += glm::normalize (camera_direction) * speed;
         }
-        else if (key == GLFW_KEY_S && action == GLFW_PRESS) {
+        else if (key == GLFW_KEY_S) {
             viewer_position -= glm::normalize (camera_direction) * speed;
         }
-        else if (key == GLFW_KEY_A && action == GLFW_PRESS) {
+        else if (key == GLFW_KEY_A) {
             viewer_position -= glm::normalize (glm::cross (camera_direction, camera_up)) * speed; 
         }
-        else if (key == GLFW_KEY_D && action == GLFW_PRESS) {
+        else if (key == GLFW_KEY_D) {
             viewer_position += glm::normalize (glm::cross (camera_direction, camera_up)) * speed;
         }
     }
@@ -1168,7 +1169,7 @@ private:
         UniformBufferObject ubo{};
         ubo.model = glm::mat4(1.0f);
         ubo.view = glm::lookAt(viewer_position, viewer_position + camera_direction, camera_up);
-        ubo.proj = glm::perspective(glm::radians(45.0f), swapChainExtent.width / (float) swapChainExtent.height, 0.1f, 100.0f);
+        ubo.proj = glm::perspective(glm::radians(45.0f), swapChainExtent.width / (float) swapChainExtent.height, 0.1f, 1000.0f);
         ubo.proj[1][1] *= -1;
 
         memcpy(uniformBuffersMapped[currentImage], &ubo, sizeof(ubo));
@@ -1323,23 +1324,30 @@ glm::vec3 vector_cast_vec3(Geo3D::Vector vec);
 
 int vulkan(const std::vector<Geo3D::Triangle>& triangles, std::vector<bool>& status) {
     HelloTriangleApplication app;
-    // vertices.reserve(triangles.size() * 3);
-    // indices.reserve(triangles.size() * 3);
+    vertices.reserve(triangles.size() * 3);
+    indices.reserve(triangles.size() * 3);
 
-    // glm::vec3 red  = {1.0f, 1.0f, 1.0f};
-    // glm::vec3 blue = {1.0f, 1.0f, 1.0f};
-    // glm::vec3 color;
+    glm::vec3 red  = {1.0f, 0.0f, 0.0f};
+    glm::vec3 blue = {0.0f, 0.0f, 1.0f};
+    glm::vec3 color;
 
-    // int verticle = 0;
-    
-    // for (auto it = triangles.begin(); it != triangles.end(); ++it) {
-    //     if (status[verticle]) color = red;
-    //     else color = blue;
+    int verticle = 0;
+    for (int i = 0; i != triangles.size(); ++i) {
+        if (status[i]) {
+            color = red;
+        }
+        else color = blue;
 
-    //     vertices.push_back({vector_cast_vec3(it->v0_), color}); indices.push_back(verticle);
-    //     vertices.push_back({vector_cast_vec3(it->v1_), color}); indices.push_back(verticle); ++verticle;
-    //     vertices.push_back({vector_cast_vec3(it->v2_), color}); indices.push_back(verticle); ++verticle;
-    // }
+        vertices.push_back({vector_cast_vec3(triangles[i].v0_), color});
+        vertices.push_back({vector_cast_vec3(triangles[i].v1_), color});
+        vertices.push_back({vector_cast_vec3(triangles[i].v2_), color});
+    }
+
+    for (int i = 0; i != triangles.size() * 3; ++i) {
+        indices.push_back(i);
+    }
+
+
 
     try {
         app.run();
