@@ -1411,7 +1411,7 @@ glm::vec3 vector_cast_vec3(Geo3D::Vector vec);
 int vulkan(const std::vector<Geo3D::Triangle>& triangles, std::vector<bool>& status) {
     HelloTriangleApplication app;
     vertices.reserve(triangles.size() * 3);
-    indices.reserve(triangles.size() * 3);
+    indices.reserve(triangles.size() * 3 * 2);
 
     glm::vec3 red  = {1.0f, 0.0f, 0.0f};
     glm::vec3 blue = {0.0f, 0.0f, 1.0f};
@@ -1430,7 +1430,12 @@ int vulkan(const std::vector<Geo3D::Triangle>& triangles, std::vector<bool>& sta
 
     }
 
+
     for (int i = 0; i != triangles.size() * 3; ++i) {
+        indices.push_back(i);
+    }
+
+    for (int i = triangles.size() * 3 - 1; i != -1; --i) {
         indices.push_back(i);
     }
 
