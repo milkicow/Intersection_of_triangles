@@ -1251,8 +1251,6 @@ private:
         glfwGetCursorPos(window, &x_prev, &y_prev);
         camera.viewer_position += camera.determine_move();
         camera.camera_direction = camera.determine_rotate(x_prev, y_prev);
-        std::cout << "camera.camera_direction = " << camera.camera_direction.x << " " << camera.camera_direction.y << " " << camera.camera_direction.z << std::endl;
-
 
         UniformBufferObject ubo{};
         ubo.model = glm::mat4(1.0f);
