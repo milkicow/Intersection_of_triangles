@@ -75,10 +75,10 @@ struct SwapChainSupportDetails {
     std::vector<VkPresentModeKHR> presentModes;
 };
 
-glm::vec3 viewer_position = glm::vec3(2.0f, 2.0f, 2.0f);
-glm::vec3 view_position =  glm::vec3(0.0f, 0.0f, 0.0f);
-static glm::vec3 camera_direction = glm::normalize (glm::vec3 {-2.0f, -2.0f, -2.0f});
-static glm::vec3 camera_up (0.0f, 0.0f, 1.0f);
+// glm::vec3 viewer_position = glm::vec3(2.0f, 2.0f, 2.0f);
+// glm::vec3 view_position =  glm::vec3(0.0f, 0.0f, 0.0f);
+// static glm::vec3 camera_direction = glm::normalize (glm::vec3 {-2.0f, -2.0f, -2.0f});
+// static glm::vec3 camera_up (0.0f, 0.0f, 1.0f);
 
 static double prev_x = 0.0;
 static double prev_y = 0.0;
@@ -192,7 +192,7 @@ private:
     uint32_t currentFrame = 0;
 
 // My class: need to create one caller for it and creating window 
-    Camera camera();
+    Camera camera{};
 
     void initWindow() {
         glfwInit();
@@ -231,7 +231,7 @@ private:
         glfwGetCursorPos(window, &prev_x, &prev_y);
         glfwSetKeyCallback (window, key_callback);
         glfwSetMouseButtonCallback(window, mouse_button_callback);
-        glfwSetCursorPosCallback (window, cursor_position_callback);
+        //glfwSetCursorPosCallback (window, cursor_position_callback);
 
         while (!glfwWindowShouldClose(window)) {
             glfwPollEvents();
@@ -1230,56 +1230,16 @@ private:
     }
 
     static void mouse_button_callback (GLFWwindow* window, int button, int action, int mods) noexcept {
-        if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
-            lpress = true;
-        else
-            lpress = false;
+        if (action == GLFW_PRESS)        Input::press_mouse_button(button);
+        else if (action == GLFW_RELEASE) Input::release_mouse_button(button);
+
     }
 
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
     {   
-        if (action == GLFW_PRESS || action == GLFW_REPEAT) input::buttons[key] = true;
-        else if (action == GLFW_RELEASE)                   input::buttons[key] = false;
-
-        // if (key == GLFW_KEY_W) {
-        //     input::buttons[]
-        //     //viewer_position += glm::normalize (camera_direction) * speed;
-        // }
-        // else if (key == GLFW_KEY_S) {
-        //     viewer_position -= glm::normalize (camera_direction) * speed;
-        // }
-        // else if (key == GLFW_KEY_A) {
-        //     viewer_position -= glm::normalize (glm::cross (camera_direction, camera_up)) * speed; 
-        // }
-        // else if (key == GLFW_KEY_D) {
-        //     viewer_position += glm::normalize (glm::cross (camera_direction, camera_up)) * speed;
-        // }
+        if (action == GLFW_PRESS || action == GLFW_REPEAT) Input::press_keyboard_key(key);
+        else if (action == GLFW_RELEASE)                   Input::release_keyboard_key(key);
     }
-
-    static void cursor_position_callback ( GLFWwindow * window, double xpos, double ypos)
-    {
-        if (lpress) {
-            static double phi = glm::radians (225.0f), ksi = glm::radians (-35.26f);
-
-            double delta_x = xpos - prev_x;
-            double delta_y = ypos - prev_y;
-
-            prev_x = xpos;
-            prev_y = ypos;
-
-            double sensivity = 0.001;
-
-            phi -= delta_x * sensivity;
-            ksi -= delta_y * sensivity;
-
-            camera_direction = glm::vec3 (glm::cos (ksi) * glm::cos (phi), glm::cos (ksi) * glm::sin (phi), glm::sin (ksi));
-        } 
-        else {
-            prev_x = xpos;
-            prev_y = ypos;
-        }
-    }
-
 
     void updateUniformBuffer(uint32_t currentImage) {
         static auto startTime = std::chrono::high_resolution_clock::now();
@@ -1287,9 +1247,16 @@ private:
         auto currentTime = std::chrono::high_resolution_clock::now();
         float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
 
+        double x_prev, y_prev;
+        glfwGetCursorPos(window, &x_prev, &y_prev);
+        camera.viewer_position += camera.determine_move();
+        camera.camera_direction = camera.determine_rotate(x_prev, y_prev);
+        std::cout << "camera.camera_direction = " << camera.camera_direction.x << " " << camera.camera_direction.y << " " << camera.camera_direction.z << std::endl;
+
+
         UniformBufferObject ubo{};
         ubo.model = glm::mat4(1.0f);
-        ubo.view = glm::lookAt(viewer_position, viewer_position + camera_direction, camera_up);
+        ubo.view = glm::lookAt(camera.viewer_position, camera.viewer_position + camera.camera_direction, camera.camera_up);
         ubo.proj = glm::perspective(glm::radians(45.0f), swapChainExtent.width / (float) swapChainExtent.height, 0.1f, 1000.0f);
         ubo.proj[1][1] *= -1;
 

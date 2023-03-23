@@ -1,53 +1,31 @@
 #pragma once
 #include <iostream>
+#define GLM_FORCE_RADIANS
+#define GLM_FORCE_DEPTH_ZERO_TO_ONE
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <array>
 
-const int NUMBER_OF_BUTTONS = 348; 
-static std::array<bool, NUMBER_OF_BUTTONS> buttons{};
 
 class Camera {
-
 private:
+    float speed = 0.1;
+
+public:
+    double xpos;
+    double ypos;
+
+    glm::vec3 determine_move(/*const std::array<bool, NUMBER_OF_KEYBOARD_KEYS>& keyboard_keys*/);
+    glm::vec3 determine_rotate(/*const std::array<bool, NUMBER_OF_MOUSE_BUTTONS>& mouse_buttons,*/ double prev_x, double prev_y);
+
     glm::vec3 viewer_position = glm::vec3(2.0f, 2.0f, 2.0f);
     glm::vec3 view_position =  glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 camera_direction = glm::normalize (glm::vec3 {-2.0f, -2.0f, -2.0f});
-    glm::vec3 camera_up (0.0f, 0.0f, 1.0f);
+    glm::vec3 camera_up = glm::vec3(0.0f, 0.0f, 1.0f);
 
-    float speed = 1.0;
 
-public:
-    glm::vec3 determine_move(const std::array<bool, NUMBER_OF_BUTTONS>& buttons);
-
+    // glm::vec3 get_viewer_position()  const { return viewer_position; }
+    // glm::vec3 get_view_position()    const { return view_position; }
+    // glm::vec3 get_camera_direction() const { return camera_direction; }
+    // glm::vec3 get_camera_up()        const { return camera_up; }
 };
-
-glm::vec3 Camera::determine_move(const std::array<bool, NUMBER_OF_BUTTONS>& buttons) {
-
-    glm::vec3 movement;
-
-    if (buttons[GLFW_KEY_W]) {
-        movement += glm::normalize (camera_direction) * speed;
-    }
-    else if (buttons[GLFW_KEY_S]) {
-        movement -= glm::normalize (camera_direction) * speed;
-    }
-    else if (buttons[GLFW_KEY_A]) {
-        movement -= glm::normalize (glm::cross (camera_direction, camera_up)) * speed;
-    }
-    else if (buttons[GLFW_KEY_D]) {
-        movement += glm::normalize (glm::cross (camera_direction, camera_up)) * speed;
-    }
-    else if (buttons[GLFW_KEY_UP]) {
-        
-    }
-    else if (buttons[GLFW_KEY_DOWN]) {
-
-    }
-    else if (buttons[GLFW_KEY_LEFT]) {
-
-    }
-    else if (buttons[GLFW_KEY_RIGHT]) {
-
-    }
-
-    return movement;
-}
-
