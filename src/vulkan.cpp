@@ -87,6 +87,7 @@ static bool lpress = false;
 struct Vertex {
     glm::vec3 pos;
     glm::vec3 color;
+    glm::vec3 normal;
 
     static VkVertexInputBindingDescription getBindingDescription() {
         VkVertexInputBindingDescription bindingDescription{};
@@ -97,8 +98,8 @@ struct Vertex {
         return bindingDescription;
     }
 
-    static std::array<VkVertexInputAttributeDescription, 2> getAttributeDescriptions() {
-        std::array<VkVertexInputAttributeDescription, 2> attributeDescriptions{};
+    static std::array<VkVertexInputAttributeDescription, 3> getAttributeDescriptions() {
+        std::array<VkVertexInputAttributeDescription, 3> attributeDescriptions{};
         attributeDescriptions[0].binding = 0;
         attributeDescriptions[0].location = 0;
         attributeDescriptions[0].format = VK_FORMAT_R32G32B32_SFLOAT;
@@ -108,6 +109,11 @@ struct Vertex {
         attributeDescriptions[1].location = 1;
         attributeDescriptions[1].format = VK_FORMAT_R32G32B32_SFLOAT;
         attributeDescriptions[1].offset = offsetof(Vertex, color);
+
+        attributeDescriptions[2].binding = 0;
+        attributeDescriptions[2].location = 2;
+        attributeDescriptions[2].format = VK_FORMAT_R32G32B32_SFLOAT;
+        attributeDescriptions[2].offset = offsetof(Vertex, normal);
 
         return attributeDescriptions;
     }
@@ -1407,6 +1413,8 @@ private:
 };
 
 glm::vec3 vector_cast_vec3(Geo3D::Vector vec);
+glm::vec3 get_normal(const Geo3D::Triangle& triangle);
+
 
 int vulkan(const std::vector<Geo3D::Triangle>& triangles, std::vector<bool>& status) {
     HelloTriangleApplication app;
@@ -1424,10 +1432,9 @@ int vulkan(const std::vector<Geo3D::Triangle>& triangles, std::vector<bool>& sta
         }
         else color = blue;
 
-        vertices.push_back({vector_cast_vec3(triangles[i].v0_), color});
-        vertices.push_back({vector_cast_vec3(triangles[i].v1_), color});
-        vertices.push_back({vector_cast_vec3(triangles[i].v2_), color});
-
+        vertices.push_back({vector_cast_vec3(triangles[i].v0_), color, get_normal(triangles[i])});
+        vertices.push_back({vector_cast_vec3(triangles[i].v1_), color, get_normal(triangles[i])});
+        vertices.push_back({vector_cast_vec3(triangles[i].v2_), color, get_normal(triangles[i])});
     }
 
 
@@ -1454,4 +1461,18 @@ glm::vec3 vector_cast_vec3(Geo3D::Vector vec) {
     tmp.x = vec.x_; tmp.y = vec.y_; tmp.z = vec.z_;
 
     return tmp;
+}
+
+glm::vec3 get_normal(const Geo3D::Triangle& triangle) {
+    glm::vec3 side10, side20;
+
+    side10.x = triangle.v1_.x_ - triangle.v0_.x_; 
+    side10.y = triangle.v1_.y_ - triangle.v0_.y_;
+    side10.z = triangle.v1_.z_ - triangle.v0_.z_;
+
+    side20.x = triangle.v2_.x_ - triangle.v0_.x_;
+    side20.y = triangle.v2_.y_ - triangle.v0_.y_;
+    side20.z = triangle.v2_.z_ - triangle.v0_.z_;
+
+    return glm::normalize(glm::cross(side10, side20));
 }
