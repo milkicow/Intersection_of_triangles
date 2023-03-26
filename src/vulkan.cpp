@@ -123,6 +123,7 @@ struct UniformBufferObject {
     glm::mat4 model;
     glm::mat4 view;
     glm::mat4 proj;
+    glm::vec3 viewPos;
 };
 
 std::vector<Vertex> vertices; // = {
@@ -1262,6 +1263,7 @@ private:
         ubo.model = glm::mat4(1.0f);
         ubo.view = glm::lookAt(camera.viewer_position, camera.viewer_position + camera.camera_direction, camera.camera_up);
         ubo.proj = glm::perspective(glm::radians(45.0f), swapChainExtent.width / (float) swapChainExtent.height, 0.1f, 1000.0f);
+        ubo.viewPos = camera.viewer_position;
         ubo.proj[1][1] *= -1;
 
         memcpy(uniformBuffersMapped[currentImage], &ubo, sizeof(ubo));

@@ -11,6 +11,10 @@ class Camera {
 private:
     float speed = 0.1;
 
+    // glm::mat4 projectionMatrix{1.f};
+    // glm::mat4 viewMatrix{1.f};
+    // glm::mat4 inverseViewMatrix{1.f};
+
 public:
     double xpos;
     double ypos;
@@ -22,6 +26,10 @@ public:
     glm::vec3 view_position =  glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 camera_direction = glm::normalize (glm::vec3 {-2.0f, -2.0f, -2.0f});
     glm::vec3 camera_up = glm::vec3(0.0f, 0.0f, 1.0f);
+
+    // const glm::mat4& get_projection() const { return projectionMatrix; }
+    // const glm::mat4& get_view() const { return viewMatrix; }
+    // const glm::mat4& get_inverse_view() const { return inverseViewMatrix; }
 
 
     // glm::vec3 get_viewer_position()  const { return viewer_position; }

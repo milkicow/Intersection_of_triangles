@@ -4,6 +4,7 @@ layout(binding = 0) uniform UniformBufferObject {
     mat4 model;
     mat4 view;
     mat4 proj;
+    vec3 viewPos;
 } ubo;
 
 layout(location = 0) in vec3 fragColor;
@@ -14,16 +15,25 @@ layout(location = 0) out vec4 outColor;
 
 void main() {
 
-    vec4 ambientLightColor = {1.0, 1.0, 1.0, 0.4};
+    vec4 ambientLightColor = {1.0, 1.0, 1.0, 0.05};
     vec3 lightPosition = {1.0, 1.0, 1.0};
-    vec4 lightColorU = {1.0, 1.0, 1.0, 1.0};
+    vec4 lightColor = {1.0, 1.0, 1.0, 1.0};
+    vec3 specularLight = vec3(0.0);
 
     vec3 directionToLight = lightPosition - fragPosWorld;
-    float attenuation = 1.0 / dot(directionToLight, directionToLight);
+    float attenuation = 1000.0 / dot(directionToLight, directionToLight);
+    vec3 surfaceNormal = normalize(fragNormalWorld);
 
-    vec3 lightColor = lightColorU.xyz * lightColorU.w * attenuation;
+    vec3 intensity = lightColor.xyz * lightColor.w * attenuation;
     vec3 ambientLight = ambientLightColor.xyz * ambientLightColor.w;
-    vec3 diffuseLight = lightColor * max(dot(normalize(fragNormalWorld), normalize(directionToLight)), 0);
+    vec3 diffuseLight = intensity * max(dot(surfaceNormal, normalize(directionToLight)), 0);
 
-    outColor = vec4((diffuseLight + ambientLight) * fragColor, 1.0);
+    vec3 viewDir = ubo.viewPos - fragPosWorld;
+    vec3 halfAngle = normalize(directionToLight + viewDir);
+    float blinnTerm = dot(surfaceNormal, halfAngle);
+    blinnTerm = clamp(blinnTerm, 0, 1);
+    blinnTerm = pow(blinnTerm, 35.0);
+    specularLight = intensity * blinnTerm;
+
+    outColor = vec4((ambientLight + diffuseLight + specularLight) * fragColor, 1.0);
 }
