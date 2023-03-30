@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.2) 
+cmake_minimum_required(VERSION 3.2)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 project(INTERSECTION_OF_TRIANGLES LANGUAGES CXX)
 
@@ -20,7 +21,7 @@ find_package(Vulkan REQUIRED)
 find_package(glfw3 3.3 REQUIRED)
 
 include_directories(${Vulkan_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} ${Vulkan_LIBRARIES} glfw)
+target_link_libraries(${PROJECT_NAME} ${Vulkan_LIBRARIES}  Vulkan::Vulkan glfw)
 target_include_directories(${PROJECT_NAME} PRIVATE ${Vulkan_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PRIVATE ./include)
 

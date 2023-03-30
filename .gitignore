@@ -2,3 +2,4 @@ tmp/*
 build
 .DS_Store
 *.spv
+.cache
