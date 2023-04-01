@@ -333,6 +333,7 @@ private:
 
         auto extensions = getRequiredExtensions();
         vk::InstanceCreateInfo createInfo(vk::InstanceCreateFlags(), &appInfo, validationLayers, extensions);
+        createInfo.flags |= vk::InstanceCreateFlagBits::eEnumeratePortabilityKHR;
 
         vk::DebugUtilsMessengerCreateInfoEXT debugCreateInfo{};
         if (enableValidationLayers) {
@@ -346,7 +347,8 @@ private:
         }
 
         vk::resultCheck(vk::createInstance(&createInfo, nullptr, &instance), "failed to create instance!");
-    }
+
+}
 
     void populateDebugMessengerCreateInfo(vk::DebugUtilsMessengerCreateInfoEXT& createInfo) {
       createInfo = vk::DebugUtilsMessengerCreateInfoEXT(vk::DebugUtilsMessengerCreateFlagsEXT(),
