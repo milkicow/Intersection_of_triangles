@@ -1,3 +1,4 @@
+#include <span>
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
@@ -49,20 +50,14 @@ const bool enableValidationLayers = true;
 #endif
 
 
-vk::Result CreateDebugUtilsMessengerEXT(vk::Instance instance, const vk::DebugUtilsMessengerCreateInfoEXT* pCreateInfo, const vk::AllocationCallbacks* pAllocator, vk::DebugUtilsMessengerEXT* pDebugMessenger) {
-    auto func = (PFN_vk::CreateDebugUtilsMessengerEXT) vk::GetInstanceProcAddr(instance, "vk::CreateDebugUtilsMessengerEXT");
-    if (func != nullptr) {
-        return func(instance, pCreateInfo, pAllocator, pDebugMessenger);
-    } else {
-        return vk::Result::eErrorExtensionNotPresent;
-    }
+void CreateDebugUtilsMessengerEXT(vk::Instance instance, const vk::DebugUtilsMessengerCreateInfoEXT* pCreateInfo, const vk::AllocationCallbacks* pAllocator, vk::DebugUtilsMessengerEXT* pDebugMessenger) {
+    vk::DispatchLoaderDynamic dynamic_loader{ instance, vkGetInstanceProcAddr };
+    vk::resultCheck(instance.createDebugUtilsMessengerEXT(pCreateInfo, pAllocator, pDebugMessenger, dynamic_loader), "failed to create debug utils messenger");
 }
 
 void DestroyDebugUtilsMessengerEXT(vk::Instance instance, vk::DebugUtilsMessengerEXT debugMessenger, const vk::AllocationCallbacks* pAllocator) {
-    auto func = (PFN_vk::DestroyDebugUtilsMessengerEXT) vk::GetInstanceProcAddr(instance, "vk::DestroyDebugUtilsMessengerEXT");
-    if (func != nullptr) {
-        func(instance, debugMessenger, pAllocator);
-    }
+    vk::DispatchLoaderDynamic dynamic_loader{ instance, vkGetInstanceProcAddr };
+    instance.destroyDebugUtilsMessengerEXT(debugMessenger, pAllocator, dynamic_loader);
 }
 
 struct QueueFamilyIndices {
@@ -366,7 +361,7 @@ private:
         vk::DebugUtilsMessengerCreateInfoEXT createInfo;
         populateDebugMessengerCreateInfo(createInfo);
 
-        vk::resultCheck(CreateDebugUtilsMessengerEXT(instance, &createInfo, nullptr, &debugMessenger), "failed to set up debug messenger!");
+        CreateDebugUtilsMessengerEXT(instance, &createInfo, nullptr, &debugMessenger);
     }
 
     void createSurface() {
