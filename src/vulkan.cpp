@@ -1,6 +1,4 @@
-#include <span>
-#define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
+#include "window.hpp"
 
 #include <vulkan/vulkan.hpp>
 #include <vulkan/vulkan_handles.hpp>
@@ -137,17 +135,20 @@ std::vector<uint16_t> indices; // =
 //     0, 1, 2, 2, 3, 0
 // };
 
+using namespace vulkan_engine;
+
 class HelloTriangleApplication {
 public:
     void run() {
-        initWindow();
+        //initWindow();
         initVulkan();
         mainLoop();
         cleanup();
     }
 
 private:
-    GLFWwindow* window;
+//    GLFWwindow* window;
+    Window window{ WIDTH, HEIGHT, "vulkan" };
 
     vk::Instance instance;
     vk::DebugUtilsMessengerEXT debugMessenger;
@@ -198,23 +199,22 @@ private:
     bool framebufferResized = false;
     uint32_t currentFrame = 0;
 
-// My class: need to create one caller for it and creating window 
     Camera camera{};
 
-    void initWindow() {
-        glfwInit();
-
-        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-        
-        window = glfwCreateWindow(WIDTH, HEIGHT, "Vulkan", nullptr, nullptr);
-        glfwSetWindowUserPointer(window, this);
-        glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
-    }
+//    void initWindow() {
+//        glfwInit();
+//
+//        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+//
+//        window = glfwCreateWindow(WIDTH, HEIGHT, "Vulkan", nullptr, nullptr);
+//        glfwSetWindowUserPointer(window, this);
+//        glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
+//    }
 
     void initVulkan() {
         createInstance();
         setupDebugMessenger();
-        createSurface();
+        window.createWindowSurface(instance, reinterpret_cast<VkSurfaceKHR *>(&surface));
         pickPhysicalDevice();
         createLogicalDevice();
         createSwapChain();
@@ -235,12 +235,12 @@ private:
     }
 
     void mainLoop() {
-        glfwGetCursorPos(window, &prev_x, &prev_y);
-        glfwSetKeyCallback (window, key_callback);
-        glfwSetMouseButtonCallback(window, mouse_button_callback);
+        glfwGetCursorPos(window.getGLFWwindow(), &prev_x, &prev_y);
+        glfwSetKeyCallback (window.getGLFWwindow(), key_callback);
+        glfwSetMouseButtonCallback(window.getGLFWwindow(), mouse_button_callback);
         //glfwSetCursorPosCallback (window, cursor_position_callback);
 
-        while (!glfwWindowShouldClose(window)) {
+        while (!window.shouldClose()) {
             glfwPollEvents();
             drawFrame();
         }
@@ -285,9 +285,7 @@ private:
         instance.destroySurfaceKHR(surface, nullptr);
         instance.destroy();
 
-        glfwDestroyWindow(window);
-
-        glfwTerminate();
+        window.~Window();
     }
 
     void cleanupSwapChain() {
@@ -308,9 +306,9 @@ private:
 
     void recreateSwapChain() {
         int width = 0, height = 0;
-        glfwGetFramebufferSize(window, &width, &height);
+        glfwGetFramebufferSize(window.getGLFWwindow(), &width, &height);
         while (width == 0 || height == 0) {
-            glfwGetFramebufferSize(window, &width, &height);
+            glfwGetFramebufferSize(window.getGLFWwindow(), &width, &height);
             glfwWaitEvents();
         }
         device.waitIdle();
@@ -366,12 +364,15 @@ private:
         CreateDebugUtilsMessengerEXT(instance, &createInfo, nullptr, &debugMessenger);
     }
 
-    void createSurface() {
-      // if SEGFAULT change reinterpret_cast on VkSurfaceKHR tmp; surface = tmp; !
-        if (glfwCreateWindowSurface(instance, window, nullptr, reinterpret_cast<VkSurfaceKHR*>(&surface)) != VK_SUCCESS) {
-            throw std::runtime_error("failed to create window surface!");
-        }
-    }
+//    void createSurface() {
+////      // if SEGFAULT change reinterpret_cast on VkSurfaceKHR tmp; surface = tmp; !
+////        if (glfwCreateWindowSurface(instance, window, nullptr, reinterpret_cast<VkSurfaceKHR*>(&surface)) != VK_SUCCESS) {
+////
+////            throw std::runtime_error("failed to create window surface!");
+////        }
+//
+//
+//    }
 
     void pickPhysicalDevice() {
         auto devices = instance.enumeratePhysicalDevices();
@@ -1122,7 +1123,7 @@ private:
         float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
 
         double x_prev, y_prev;
-        glfwGetCursorPos(window, &x_prev, &y_prev);
+        glfwGetCursorPos(window.getGLFWwindow(), &x_prev, &y_prev);
         camera.viewer_position += camera.determine_move();
         camera.camera_direction = camera.determine_rotate(x_prev, y_prev);
 
@@ -1190,7 +1191,7 @@ private:
             return capabilities.currentExtent;
         } else {
             int width, height;
-            glfwGetFramebufferSize(window, &width, &height);
+            glfwGetFramebufferSize(window.getGLFWwindow(), &width, &height);
 
             vk::Extent2D actualExtent = {
                 static_cast<uint32_t>(width),
