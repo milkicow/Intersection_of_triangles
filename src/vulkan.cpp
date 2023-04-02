@@ -167,7 +167,7 @@ private:
     vk::PipelineLayout pipelineLayout;
     vk::Pipeline graphicsPipeline;
 
-    vk::CommandPool commandPool;
+    //vk::CommandPool commandPool;
 
     vk::Image depthImage;
     vk::DeviceMemory depthImageMemory;
@@ -502,12 +502,12 @@ private:
           vk::AttachmentLoadOp::eDontCare,
           vk::AttachmentStoreOp::eDontCare,
           vk::ImageLayout::eUndefined,
-          vk::ImageLayout::eAttachmentOptimal
+          vk::ImageLayout::eDepthStencilAttachmentOptimal
       );
 
         vk::AttachmentReference colorAttachmentRef{ 0, vk::ImageLayout::eColorAttachmentOptimal };
 
-        vk::AttachmentReference depthAttachmentRef{ 1, vk::ImageLayout::eStencilAttachmentOptimal};
+        vk::AttachmentReference depthAttachmentRef{ 1, vk::ImageLayout::eDepthStencilAttachmentOptimal};
 
         vk::SubpassDescription subpass {
             vk::SubpassDescriptionFlags(),
@@ -966,7 +966,7 @@ private:
         commandBuffers.resize(MAX_FRAMES_IN_FLIGHT);
 
         vk::CommandBufferAllocateInfo allocInfo{
-            commandPool,
+            device.getCommandPool(),
             vk::CommandBufferLevel::ePrimary,
             (uint32_t) commandBuffers.size()
         };

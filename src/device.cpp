@@ -105,7 +105,7 @@ void Device::createCommandpool() {
         QueueFamilyIndices queueFamilyIndices = findQueueFamilies(physicalDevice_);
 
         vk::CommandPoolCreateInfo poolInfo{
-            vk::CommandPoolCreateFlags(),
+            vk::CommandPoolCreateFlagBits::eResetCommandBuffer,
             queueFamilyIndices.graphicsFamily.value()
         };
 
