@@ -78,40 +78,40 @@ static double prev_x = 0.0;
 static double prev_y = 0.0;
 static bool lpress = false;
 
-struct Vertex {
-    glm::vec3 pos;
-    glm::vec3 color;
-    glm::vec3 normal;
-
-    static vk::VertexInputBindingDescription getBindingDescription() {
-        vk::VertexInputBindingDescription bindingDescription{};
-        bindingDescription.binding = 0;
-        bindingDescription.stride = sizeof(Vertex);
-        bindingDescription.inputRate = vk::VertexInputRate::eVertex;
-
-        return bindingDescription;
-    }
-
-    static std::array<vk::VertexInputAttributeDescription, 3> getAttributeDescriptions() {
-        std::array<vk::VertexInputAttributeDescription, 3> attributeDescriptions{};
-        attributeDescriptions[0].binding = 0;
-        attributeDescriptions[0].location = 0;
-        attributeDescriptions[0].format = vk::Format::eR32G32B32Sfloat;
-        attributeDescriptions[0].offset = offsetof(Vertex, pos);
-
-        attributeDescriptions[1].binding = 0;
-        attributeDescriptions[1].location = 1;
-        attributeDescriptions[1].format = vk::Format::eR32G32B32Sfloat;
-        attributeDescriptions[1].offset = offsetof(Vertex, color);
-
-        attributeDescriptions[2].binding = 0;
-        attributeDescriptions[2].location = 2;
-        attributeDescriptions[2].format = vk::Format::eR32G32B32Sfloat;
-        attributeDescriptions[2].offset = offsetof(Vertex, normal);
-
-        return attributeDescriptions;
-    }
-};
+//struct Vertex {
+//    glm::vec3 pos;
+//    glm::vec3 color;
+//    glm::vec3 normal;
+//
+//    static vk::VertexInputBindingDescription getBindingDescription() {
+//        vk::VertexInputBindingDescription bindingDescription{};
+//        bindingDescription.binding = 0;
+//        bindingDescription.stride = sizeof(Vertex);
+//        bindingDescription.inputRate = vk::VertexInputRate::eVertex;
+//
+//        return bindingDescription;
+//    }
+//
+//    static std::array<vk::VertexInputAttributeDescription, 3> getAttributeDescriptions() {
+//        std::array<vk::VertexInputAttributeDescription, 3> attributeDescriptions{};
+//        attributeDescriptions[0].binding = 0;
+//        attributeDescriptions[0].location = 0;
+//        attributeDescriptions[0].format = vk::Format::eR32G32B32Sfloat;
+//        attributeDescriptions[0].offset = offsetof(Vertex, pos);
+//
+//        attributeDescriptions[1].binding = 0;
+//        attributeDescriptions[1].location = 1;
+//        attributeDescriptions[1].format = vk::Format::eR32G32B32Sfloat;
+//        attributeDescriptions[1].offset = offsetof(Vertex, color);
+//
+//        attributeDescriptions[2].binding = 0;
+//        attributeDescriptions[2].location = 2;
+//        attributeDescriptions[2].format = vk::Format::eR32G32B32Sfloat;
+//        attributeDescriptions[2].offset = offsetof(Vertex, normal);
+//
+//        return attributeDescriptions;
+//    }
+//};
 
 struct UniformBufferObject {
     glm::mat4 model;
@@ -120,13 +120,13 @@ struct UniformBufferObject {
     glm::vec3 viewPos;
 };
 
-std::vector<Vertex> vertices; // = {
+//std::vector<Vertex> vertices; // = {
 //     {{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
 //     {{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}},
 //     {{0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}},
 //     {{-0.5f, 0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}}
 // };
-std::vector<uint16_t> indices; // = 
+//std::vector<uint16_t> indices; // =
 // {
 //     0, 1, 2, 2, 3, 0
 // };
@@ -181,10 +181,10 @@ private:
 //    vk::DeviceMemory depthImageMemory;
 //    vk::ImageView depthImageView;
 
-    vk::Buffer vertexBuffer;
-    vk::DeviceMemory vertexBufferMemory;
-    vk::Buffer indexBuffer;
-    vk::DeviceMemory indexBufferMemory;
+//    vk::Buffer vertexBuffer;
+//    vk::DeviceMemory vertexBufferMemory;
+//    vk::Buffer indexBuffer;
+//    vk::DeviceMemory indexBufferMemory;
 
     std::vector<vk::Buffer> uniformBuffers;
     std::vector<vk::DeviceMemory> uniformBuffersMemory;
@@ -221,8 +221,8 @@ private:
 //        createGraphicsPipeline();
 //        createDepthResources();
 //        createFramebuffers();
-        createVertexBuffer();
-        createIndexBuffer();
+//        createVertexBuffer();
+//        createIndexBuffer();
         createUniformBuffers();
 //        createDescriptorPool();
 //        createDescriptorSets();
@@ -254,11 +254,11 @@ private:
 //        device.getDevice().destroyDescriptorPool(descriptorPool, nullptr);
 //        device.getDevice().destroyDescriptorSetLayout(descriptorSetLayout, nullptr);
 
-        device.getDevice().destroyBuffer(indexBuffer, nullptr);
-        device.getDevice().freeMemory(indexBufferMemory, nullptr);
-
-        device.getDevice().destroyBuffer(vertexBuffer, nullptr);
-        device.getDevice().freeMemory(vertexBufferMemory, nullptr);
+//        device.getDevice().destroyBuffer(indexBuffer, nullptr);
+//        device.getDevice().freeMemory(indexBufferMemory, nullptr);
+//
+//        device.getDevice().destroyBuffer(vertexBuffer, nullptr);
+//        device.getDevice().freeMemory(vertexBufferMemory, nullptr);
 
 //        device.getDevice().destroyPipeline(graphicsPipeline, nullptr);
 //        device.getDevice().destroyPipelineLayout(pipelineLayout, nullptr);
@@ -791,43 +791,43 @@ private:
 //        device.getDevice().bindImageMemory(image, imageMemory, 0);
 //    }
 
-    void createVertexBuffer() {
-        vk::DeviceSize bufferSize = sizeof(vertices[0]) * vertices.size();
+//    void createVertexBuffer() {
+//        vk::DeviceSize bufferSize = sizeof(vertices[0]) * vertices.size();
+//
+//        vk::Buffer stagingBuffer;
+//        vk::DeviceMemory stagingBufferMemory;
+//        device.createBuffer(bufferSize,vk::BufferUsageFlagBits::eTransferSrc, vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent, stagingBuffer, stagingBufferMemory);
+//
+//        auto data = device.getDevice().mapMemory(stagingBufferMemory, 0, bufferSize);
+//        memcpy(data, vertices.data(), (size_t) bufferSize);
+//        device.getDevice().unmapMemory(stagingBufferMemory);
+//
+//        device.createBuffer(bufferSize, vk::BufferUsageFlagBits::eTransferDst  | vk::BufferUsageFlagBits::eVertexBuffer, vk::MemoryPropertyFlagBits::eDeviceLocal, vertexBuffer, vertexBufferMemory);
+//
+//        device.copyBuffer(stagingBuffer, vertexBuffer, bufferSize);
+//
+//        device.getDevice().destroyBuffer(stagingBuffer);
+//        device.getDevice().freeMemory(stagingBufferMemory);
+//    }
 
-        vk::Buffer stagingBuffer;
-        vk::DeviceMemory stagingBufferMemory;
-        device.createBuffer(bufferSize,vk::BufferUsageFlagBits::eTransferSrc, vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent, stagingBuffer, stagingBufferMemory);
-
-        auto data = device.getDevice().mapMemory(stagingBufferMemory, 0, bufferSize);
-        memcpy(data, vertices.data(), (size_t) bufferSize);
-        device.getDevice().unmapMemory(stagingBufferMemory);
-
-        device.createBuffer(bufferSize, vk::BufferUsageFlagBits::eTransferDst  | vk::BufferUsageFlagBits::eVertexBuffer, vk::MemoryPropertyFlagBits::eDeviceLocal, vertexBuffer, vertexBufferMemory);
-
-        device.copyBuffer(stagingBuffer, vertexBuffer, bufferSize);
-
-        device.getDevice().destroyBuffer(stagingBuffer);
-        device.getDevice().freeMemory(stagingBufferMemory);
-    }
-
-    void createIndexBuffer() {
-        vk::DeviceSize bufferSize = sizeof(indices[0]) * indices.size();
-
-        vk::Buffer stagingBuffer;
-        vk::DeviceMemory stagingBufferMemory;
-        device.createBuffer(bufferSize, vk::BufferUsageFlagBits::eTransferSrc, vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent, stagingBuffer, stagingBufferMemory);
-
-        auto data = device.getDevice().mapMemory(stagingBufferMemory, 0, bufferSize);
-        memcpy(data, indices.data(), (size_t) bufferSize);
-        device.getDevice().unmapMemory(stagingBufferMemory);
-
-        device.createBuffer(bufferSize, vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eIndexBuffer, vk::MemoryPropertyFlagBits::eDeviceLocal, indexBuffer, indexBufferMemory);
-
-        device.copyBuffer(stagingBuffer, indexBuffer, bufferSize);
-
-        device.getDevice().destroyBuffer(stagingBuffer);
-        device.getDevice().freeMemory(stagingBufferMemory);
-    }
+//    void createIndexBuffer() {
+//        vk::DeviceSize bufferSize = sizeof(indices[0]) * indices.size();
+//
+//        vk::Buffer stagingBuffer;
+//        vk::DeviceMemory stagingBufferMemory;
+//        device.createBuffer(bufferSize, vk::BufferUsageFlagBits::eTransferSrc, vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent, stagingBuffer, stagingBufferMemory);
+//
+//        auto data = device.getDevice().mapMemory(stagingBufferMemory, 0, bufferSize);
+//        memcpy(data, indices.data(), (size_t) bufferSize);
+//        device.getDevice().unmapMemory(stagingBufferMemory);
+//
+//        device.createBuffer(bufferSize, vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eIndexBuffer, vk::MemoryPropertyFlagBits::eDeviceLocal, indexBuffer, indexBufferMemory);
+//
+//        device.copyBuffer(stagingBuffer, indexBuffer, bufferSize);
+//
+//        device.getDevice().destroyBuffer(stagingBuffer);
+//        device.getDevice().freeMemory(stagingBufferMemory);
+//    }
 
     void createUniformBuffers() {
         vk::DeviceSize bufferSize = sizeof(UniformBufferObject);
