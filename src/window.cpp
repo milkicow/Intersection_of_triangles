@@ -14,7 +14,7 @@ void Window::initWindow() {
 
 void Window::framebufferResizeCallback(GLFWwindow* window, int width, int height) {
     auto vulkan_engine_window = reinterpret_cast<Window *> (glfwGetWindowUserPointer(window));
-    vulkan_engine_window->frameBufferResized = true;
+    vulkan_engine_window->setFrameBufferRisizedFlag();
     vulkan_engine_window->width_  = width;
     vulkan_engine_window->height_ = height;
 }

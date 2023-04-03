@@ -23,9 +23,10 @@ public:
 
     uint32_t getWidth()  const { return width_; }
     uint32_t getHeight() const { return height_; }
+    bool wasFrameBufferResized() const { return frameBufferResized_; }
 
-    void resetFrameBufferRisizedFlag() { frameBufferResized = false; }
-    bool wasWindowResized() { return frameBufferResized; }
+    void resetFrameBufferRisizedFlag() { frameBufferResized_ = false; }
+    void setFrameBufferRisizedFlag()   { frameBufferResized_ = true; }
 
     GLFWwindow * getGLFWwindow() { return window_; }
     bool shouldClose() { return glfwWindowShouldClose(window_); }
@@ -35,7 +36,7 @@ private:
     std::string windowName_;
     GLFWwindow * window_;
 
-    bool frameBufferResized = false;
+    bool frameBufferResized_ = false;
 
     static void framebufferResizeCallback(GLFWwindow* window, int width, int height);
     void initWindow();

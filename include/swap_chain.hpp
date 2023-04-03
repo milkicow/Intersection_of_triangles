@@ -22,7 +22,7 @@ public:
         createSyncObjects();
     };
 
-    //~SwapChain();
+    ~SwapChain();
     void cleanup();
     
     vk::SwapchainKHR getSwapChain() const { return swapChain_; }

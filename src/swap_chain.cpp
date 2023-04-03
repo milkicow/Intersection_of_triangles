@@ -4,22 +4,17 @@
 
 namespace vulkan_engine {
 
-//SwapChain::~SwapChain() {
-//    device_.getDevice().destroyRenderPass(renderPass_, nullptr);
-//
-//    for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
-//        device_.getDevice().destroySemaphore(renderFinishedSemaphores_[i], nullptr);
-//        device_.getDevice().destroySemaphore(imageAvailableSemaphores_[i], nullptr);
-//        device_.getDevice().destroyFence(inFlightFences_[i], nullptr);
-//    }
-//
-//
-//for (auto imageView : swapChainImageViews_) {
-//    vkDestroyImageView(device_.getDevice(), imageView, nullptr);
-//  }
-//
-//}
+SwapChain::~SwapChain() {
+    cleanup();
 
+    device_.getDevice().destroyRenderPass(renderPass_, nullptr);
+
+    for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
+        device_.getDevice().destroySemaphore(renderFinishedSemaphores_[i], nullptr);
+        device_.getDevice().destroySemaphore(imageAvailableSemaphores_[i], nullptr);
+        device_.getDevice().destroyFence(inFlightFences_[i], nullptr);
+    }
+}
 
 void SwapChain::cleanup() {
         device_.getDevice().destroyImageView(depthImageView_, nullptr);
@@ -36,7 +31,6 @@ void SwapChain::cleanup() {
         }
         device_.getDevice().destroySwapchainKHR(swapChain_, nullptr);
 }
-
 
 void SwapChain::createSwapChain() {
     SwapChainSupportDetails swapChainSupport = device_.querySwapChainSupport(device_.getPhysicalDevice());
@@ -275,7 +269,8 @@ void SwapChain::recreate() {
     }
     device_.getDevice().waitIdle();
 
-    SwapChain::~SwapChain();
+//    SwapChain::~SwapChain();
+    cleanup();
 
     createSwapChain();
     createImageViews();

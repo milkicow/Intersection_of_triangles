@@ -194,7 +194,6 @@ private:
 //    std::vector<vk::Semaphore> renderFinishedSemaphores;
 //    std::vector<vk::Fence> inFlightFences;
 
-    bool framebufferResized = false;
     uint32_t currentFrame = 0;
 
     Camera camera{};
@@ -241,10 +240,7 @@ private:
     }
 
     void cleanup() {
-        swapChain.cleanup();
-
-        //swapChain.cleanUp();
-
+//        swapChain.cleanup();
 
         for (size_t i = 0; i < swapChain.MAX_FRAMES_IN_FLIGHT; i++) {
             device.getDevice().destroyBuffer(uniformBuffers[i], nullptr);
@@ -261,21 +257,10 @@ private:
 
         device.getDevice().destroyPipeline(graphicsPipeline, nullptr);
         device.getDevice().destroyPipelineLayout(pipelineLayout, nullptr);
-        device.getDevice().destroyRenderPass(swapChain.getRenderPass(), nullptr);
-
-        for (size_t i = 0; i < swapChain.MAX_FRAMES_IN_FLIGHT; i++) {
-            device.getDevice().destroySemaphore(swapChain.getRenderFinishedSemaphores()[i], nullptr);
-            device.getDevice().destroySemaphore(swapChain.getImageAvailableSemaphores()[i], nullptr);
-            device.getDevice().destroyFence(swapChain.getInFlightFences()[i], nullptr);
-        }
-
-        //swapChain.~SwapChain();
-        device.~Device();
-        window.~Window();
     }
 
 //    void cleanupSwapChain() {
-//        device.getDevice().destroyImageView(depthImageView, nullptr);
+//        device.getDevice().destroyImageView(swapChain.getDepthImageView(), nullptr);
 //
 //        device.getDevice().destroyImage(depthImage, nullptr);
 //        device.getDevice().freeMemory(depthImageMemory, nullptr);
@@ -1082,8 +1067,8 @@ private:
 
         result = device.getPresentQueue().presentKHR(&presentInfo);
 
-        if (result == vk::Result::eErrorOutOfDateKHR || result == vk::Result::eSuboptimalKHR || framebufferResized) {
-            framebufferResized = false;
+        if (result == vk::Result::eErrorOutOfDateKHR || result == vk::Result::eSuboptimalKHR || window.wasFrameBufferResized()) {
+            window.resetFrameBufferRisizedFlag();
             swapChain.recreate();
         } else if (result != vk::Result::eSuccess) {
             throw std::runtime_error("failed to present swap chain image!");
@@ -1125,10 +1110,10 @@ private:
         memcpy(uniformBuffersMapped[currentImage], &ubo, sizeof(ubo));
     }
 
-    static void framebufferResizeCallback(GLFWwindow* window, int width, int height) {
-        auto app = reinterpret_cast<HelloTriangleApplication*>(glfwGetWindowUserPointer(window));
-        app->framebufferResized = true;
-    }
+//    static void framebufferResizeCallback(GLFWwindow* window, int width, int height) {
+//        auto app = reinterpret_cast<HelloTriangleApplication*>(glfwGetWindowUserPointer(window));
+//        app->
+//    }
 
     vk::ShaderModule createShaderModule(const std::vector<char>& code) {
         vk::ShaderModuleCreateInfo createInfo{};
