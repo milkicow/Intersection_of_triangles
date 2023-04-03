@@ -3,7 +3,10 @@
 
 namespace vulkan_engine {
 
-Model::Model(Device &device) : device_(device) {
+Model::Model(Device &device, std::vector<Model::Vertex> vertices, std::vector<uint16_t> indices) : device_(device) {
+    vertices_ = std::move(vertices);
+    indices_ = std::move(indices);
+
     createVertexBuffer();
     createIndexBuffer();
 }

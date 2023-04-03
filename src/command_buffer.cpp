@@ -7,6 +7,7 @@ namespace vulkan_engine {
 
 CommandBuffers::CommandBuffers(Device & device, SwapChain & swapChain, Pipeline & pipeline, Model & model, DescriptorSets & descriptorSets)
     : device_(device), swapChain_(swapChain), pipeline_(pipeline), model_(model), descriptorSets_(descriptorSets) {
+
     commandBuffers_.resize(swapChain_.MAX_FRAMES_IN_FLIGHT);
 
     vk::CommandBufferAllocateInfo allocInfo{

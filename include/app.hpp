@@ -10,6 +10,8 @@
 #include "command_buffer.hpp"
 #include "camera.hpp"
 #include "input.hpp"
+#include <_types/_uint16_t.h>
+#include <vector>
 
 
 #define GLM_FORCE_RADIANS
@@ -32,10 +34,10 @@ public:
         //initWindow();
         //initVulkan();
         mainLoop();
-        cleanup();
+        //cleanup();
     }
 
-
+    Application(std::vector<Model::Vertex> vertices, std::vector<uint16_t> indices) : model(device, vertices, indices) {}
 
 private:
     Camera camera{};
@@ -44,7 +46,7 @@ private:
     SwapChain swapChain { window, device };
     DescriptorSetLayout descriptorSetLayout { device };
     Pipeline pipeline { device, swapChain, descriptorSetLayout, "../../shaders/vert.spv", "../../shaders/frag.spv" };
-    Model model { device };
+    Model model;
     UniformBuffer uniformBuffer { device, swapChain, camera, window };
     DescriptorPool descriptorPool { device, swapChain };
     DescriptorSets descriptorSets { device, swapChain, uniformBuffer, descriptorSetLayout, descriptorPool };

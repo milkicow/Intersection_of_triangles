@@ -22,7 +22,7 @@ struct Vertex {
     static std::array<vk::VertexInputAttributeDescription, 3> getAttributeDescriptions();
 };
    
-    Model(Device & device);
+    Model(Device & device, std::vector<Model::Vertex> vertices, std::vector<uint16_t> indices);
     ~Model();
 
     Model(const Model&) = delete;

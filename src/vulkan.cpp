@@ -1259,6 +1259,9 @@
 
 #include "app.hpp"
 #include "triangle.hpp"
+#include <_types/_uint16_t.h>
+#include <_types/_uint32_t.h>
+#include <vector>
 
 
 
@@ -1269,10 +1272,13 @@ glm::vec3 get_normal(const Geo3D::Triangle& triangle);
 
 
 int vulkan(const std::vector<Geo3D::Triangle>& triangles, std::vector<bool>& status) {
-    vulkan_engine::Application app;
+    //vulkan_engine::Application app;
 
-    app.model.vertices_.reserve(triangles.size() * 3);
-    app.model.indices_.reserve(triangles.size() * 3 * 2);
+    std::vector<vulkan_engine::Model::Vertex> vertices;
+    std::vector<uint16_t> indices;
+
+    vertices.reserve(triangles.size() * 3);
+    indices.reserve(triangles.size() * 3 * 2);
 
     glm::vec3 red  = {1.0f, 0.0f, 0.0f};
     glm::vec3 blue = {0.0f, 0.0f, 1.0f};
@@ -1285,19 +1291,21 @@ int vulkan(const std::vector<Geo3D::Triangle>& triangles, std::vector<bool>& sta
         }
         else color = blue;
 
-        app.model.vertices_.push_back({vector_cast_vec3(triangles[i].v0_), color, get_normal(triangles[i])});
-        app.model.vertices_.push_back({vector_cast_vec3(triangles[i].v1_), color, get_normal(triangles[i])});
-        app.model.vertices_.push_back({vector_cast_vec3(triangles[i].v2_), color, get_normal(triangles[i])});
+        vertices.push_back({vector_cast_vec3(triangles[i].v0_), color, get_normal(triangles[i])});
+        vertices.push_back({vector_cast_vec3(triangles[i].v1_), color, get_normal(triangles[i])});
+        vertices.push_back({vector_cast_vec3(triangles[i].v2_), color, get_normal(triangles[i])});
     }
 
 
     for (int i = 0; i != triangles.size() * 3; ++i) {
-        app.model.indices_.push_back(i);
+        indices.push_back(i);
     }
 
     for (int i = triangles.size() * 3 - 1; i != -1; --i) {
-        app.model.indices_.push_back(i);
+        indices.push_back(i);
     }
+
+    vulkan_engine::Application app(vertices, indices);
 
     try {
         app.run();
@@ -1305,7 +1313,6 @@ int vulkan(const std::vector<Geo3D::Triangle>& triangles, std::vector<bool>& sta
         std::cerr << e.what() << std::endl;
         return EXIT_FAILURE;
     }
-
     return EXIT_SUCCESS;
 }
 
@@ -1328,4 +1335,5 @@ glm::vec3 get_normal(const Geo3D::Triangle& triangle) {
     side20.z = triangle.v2_.z_ - triangle.v0_.z_;
 
     return glm::normalize(glm::cross(side10, side20));
+
 }
