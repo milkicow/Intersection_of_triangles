@@ -113,12 +113,12 @@ static bool lpress = false;
 //    }
 //};
 
-struct UniformBufferObject {
-    glm::mat4 model;
-    glm::mat4 view;
-    glm::mat4 proj;
-    glm::vec3 viewPos;
-};
+//struct UniformBufferObject {
+//    glm::mat4 model;
+//    glm::mat4 view;
+//    glm::mat4 proj;
+//    glm::vec3 viewPos;
+//};
 
 //std::vector<Vertex> vertices; // = {
 //     {{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
@@ -186,9 +186,9 @@ private:
 //    vk::Buffer indexBuffer;
 //    vk::DeviceMemory indexBufferMemory;
 
-    std::vector<vk::Buffer> uniformBuffers;
-    std::vector<vk::DeviceMemory> uniformBuffersMemory;
-    std::vector<void*> uniformBuffersMapped;
+//    std::vector<vk::Buffer> uniformBuffers;
+//    std::vector<vk::DeviceMemory> uniformBuffersMemory;
+//    std::vector<void*> uniformBuffersMapped;
 
 //    vk::DescriptorPool descriptorPool;
 //    std::vector<vk::DescriptorSet> descriptorSets;
@@ -223,7 +223,7 @@ private:
 //        createFramebuffers();
 //        createVertexBuffer();
 //        createIndexBuffer();
-        createUniformBuffers();
+//        createUniformBuffers();
 //        createDescriptorPool();
 //        createDescriptorSets();
         createCommandBuffers();
@@ -247,10 +247,10 @@ private:
     void cleanup() {
 //        swapChain.cleanup();
 
-        for (size_t i = 0; i < swapChain.MAX_FRAMES_IN_FLIGHT; i++) {
-            device.getDevice().destroyBuffer(uniformBuffers[i], nullptr);
-            device.getDevice().freeMemory(uniformBuffersMemory[i], nullptr);
-        }
+//        for (size_t i = 0; i < swapChain.MAX_FRAMES_IN_FLIGHT; i++) {
+//            device.getDevice().destroyBuffer(uniformBuffers[i], nullptr);
+//            device.getDevice().freeMemory(uniformBuffersMemory[i], nullptr);
+//        }
 //        device.getDevice().destroyDescriptorPool(descriptorPool, nullptr);
 //        device.getDevice().destroyDescriptorSetLayout(descriptorSetLayout, nullptr);
 
@@ -829,19 +829,19 @@ private:
 //        device.getDevice().freeMemory(stagingBufferMemory);
 //    }
 
-    void createUniformBuffers() {
-        vk::DeviceSize bufferSize = sizeof(UniformBufferObject);
-
-        uniformBuffers.resize(swapChain.MAX_FRAMES_IN_FLIGHT);
-        uniformBuffersMemory.resize(swapChain.MAX_FRAMES_IN_FLIGHT);
-        uniformBuffersMapped.resize(swapChain.MAX_FRAMES_IN_FLIGHT);
-
-        for (size_t i = 0; i < swapChain.MAX_FRAMES_IN_FLIGHT; i++) {
-            device.createBuffer(bufferSize, vk::BufferUsageFlagBits::eUniformBuffer, vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent, uniformBuffers[i], uniformBuffersMemory[i]);
-
-            uniformBuffersMapped[i] = device.getDevice().mapMemory(uniformBuffersMemory[i], 0, bufferSize);
-        }
-    }
+//    void createUniformBuffers() {
+//        vk::DeviceSize bufferSize = sizeof(UniformBufferObject);
+//
+//        uniformBuffers.resize(swapChain.MAX_FRAMES_IN_FLIGHT);
+//        uniformBuffersMemory.resize(swapChain.MAX_FRAMES_IN_FLIGHT);
+//        uniformBuffersMapped.resize(swapChain.MAX_FRAMES_IN_FLIGHT);
+//
+//        for (size_t i = 0; i < swapChain.MAX_FRAMES_IN_FLIGHT; i++) {
+//            device.createBuffer(bufferSize, vk::BufferUsageFlagBits::eUniformBuffer, vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent, uniformBuffers[i], uniformBuffersMemory[i]);
+//
+//            uniformBuffersMapped[i] = device.getDevice().mapMemory(uniformBuffersMemory[i], 0, bufferSize);
+//        }
+//    }
 
 //    void createDescriptorPool() {
 //        vk::DescriptorPoolSize poolSize{

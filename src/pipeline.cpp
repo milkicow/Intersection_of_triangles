@@ -3,8 +3,8 @@
 
 namespace vulkan_engine {
 
-Pipeline::Pipeline(vulkan_engine::Device &device, std::string &vertFilepath, std::string &fragFilepath)
-    : device_(device), vertFilepath_(vertFilepath), fragFilepath_(fragFilepath) {
+Pipeline::Pipeline(Device &device, SwapChain & swapChain, std::string &vertFilepath, std::string &fragFilepath)
+    : device_(device), swapChain_(swapChain), vertFilepath_(vertFilepath), fragFilepath_(fragFilepath) {
                                                     
     auto vertShaderCode = readFile(vertFilepath_); // "../../shaders/vert.spv"
     auto fragShaderCode = readFile(fragFilepath_); // "../../shaders/frag.spv" 
@@ -28,8 +28,8 @@ Pipeline::Pipeline(vulkan_engine::Device &device, std::string &vertFilepath, std
 
     vk::PipelineShaderStageCreateInfo shaderStages[] = {vertShaderStageInfo, fragShaderStageInfo};
 
-    auto bindingDescription = Vertex::getBindingDescription();
-    auto attributeDescriptions = Vertex::getAttributeDescriptions();
+    auto bindingDescription = Model::Vertex::getBindingDescription();
+    auto attributeDescriptions = Model::Vertex::getAttributeDescriptions();
 
     vk::PipelineVertexInputStateCreateInfo vertexInputInfo{
         vk::PipelineVertexInputStateCreateFlags(),
@@ -117,7 +117,7 @@ Pipeline::Pipeline(vulkan_engine::Device &device, std::string &vertFilepath, std
         &colorBlending,
         &dynamicState,
         pipelineLayout_,
-        swapChain.getRenderPass()
+        swapChain_.getRenderPass()
     };
 
     vk::resultCheck(device.getDevice().createGraphicsPipelines(VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline_), "failed to create graphics pipeline!");
