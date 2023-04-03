@@ -5,8 +5,10 @@
 #include "pipeline.hpp"
 #include "descriptor.hpp"
 #include "uniform_buffer.hpp"
+#include "command_buffer.hpp"
 
 
+#include <__node_handle>
 #include <string>
 #include <vulkan/vulkan.hpp>
 #include <vulkan/vulkan_handles.hpp>
@@ -143,7 +145,7 @@ class HelloTriangleApplication {
 public:
     void run() {
         //initWindow();
-        initVulkan();
+        //initVulkan();
         mainLoop();
         cleanup();
     }
@@ -159,9 +161,8 @@ public:
     UniformBuffer uniformBuffer { device, swapChain };
     DescriptorPool descriptorPool { device, swapChain };
     DescriptorSets descriptorSets { device, swapChain, uniformBuffer, descriptorSetLayout, descriptorPool };
-
-    // descriptorSet !
-
+    CommandBuffers commandBuffers { device, swapChain, pipeline, model, descriptorSets };
+    Camera camera{};
 
 
     //vk::Instance instance;
@@ -204,15 +205,14 @@ public:
 //    vk::DescriptorPool descriptorPool;
 //    std::vector<vk::DescriptorSet> descriptorSets;
 
-    std::vector<vk::CommandBuffer> commandBuffers;
+//    std::vector<vk::CommandBuffer> commandBuffers;
 
 //    std::vector<vk::Semaphore> imageAvailableSemaphores;
 //    std::vector<vk::Semaphore> renderFinishedSemaphores;
 //    std::vector<vk::Fence> inFlightFences;
 
-    uint32_t currentFrame = 0;
+//    uint32_t currentFrame = 0;
 
-    Camera camera{};
 
 private:
 //    void initWindow() {
@@ -238,7 +238,7 @@ private:
 //        createUniformBuffers();
 //        createDescriptorPool();
 //        createDescriptorSets();
-        createCommandBuffers();
+//        createCommandBuffers();
 //        createSyncObjects();
     }
 
@@ -970,58 +970,58 @@ private:
 //        device.freeCommandBuffers(commandPool, 1, &commandBuffer);
 //    }
 
-    void createCommandBuffers() {
-        commandBuffers.resize(swapChain.MAX_FRAMES_IN_FLIGHT);
+//    void createCommandBuffers() {
+//        commandBuffers.resize(swapChain.MAX_FRAMES_IN_FLIGHT);
+//
+//        vk::CommandBufferAllocateInfo allocInfo{
+//            device.getCommandPool(),
+//            vk::CommandBufferLevel::ePrimary,
+//            (uint32_t) commandBuffers.size()
+//        };
+//
+//        vk::resultCheck(device.getDevice().allocateCommandBuffers(&allocInfo, commandBuffers.data()), "failed to allocate command buffers!");
+//    }
 
-        vk::CommandBufferAllocateInfo allocInfo{
-            device.getCommandPool(),
-            vk::CommandBufferLevel::ePrimary,
-            (uint32_t) commandBuffers.size()
-        };
-
-        vk::resultCheck(device.getDevice().allocateCommandBuffers(&allocInfo, commandBuffers.data()), "failed to allocate command buffers!");
-    }
-
-    void recordCommandBuffer(vk::CommandBuffer commandBuffer, uint32_t imageIndex) {
-        vk::CommandBufferBeginInfo beginInfo{};
-
-        vk::resultCheck(commandBuffer.begin(&beginInfo), "failed to begin recording command buffer!");
-
-        std::array<vk::ClearValue, 2> clearValues{};
-        clearValues[0].setColor({0.0f, 0.0f, 0.0f, 1.0f});
-        clearValues[1].setDepthStencil({1.0f, 0});
-
-        vk::RenderPassBeginInfo renderPassInfo{
-            swapChain.getRenderPass(),
-            swapChain.getFramebuffers()[imageIndex],
-            {{0,0}, swapChain.getExtent()},
-            clearValues
-        };
-
-        commandBuffer.beginRenderPass(&renderPassInfo, vk::SubpassContents::eInline);
-        commandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, pipeline.getGraphicsPipeline());
-
-        vk::Viewport viewport{
-            0.0f, 0.0f,
-            static_cast<float>(swapChain.getExtent().width),
-            static_cast<float>(swapChain.getExtent().height),
-            0.0f, 1.0f
-        };
-        commandBuffer.setViewport(0, 1, &viewport);
-
-        vk::Rect2D scissor{ {0, 0}, swapChain.getExtent() };
-        commandBuffer.setScissor(0, 1, &scissor);
-
-        vk::Buffer vertexBuffers[] = {model.getVertexBuffer()};
-        vk::DeviceSize offsets[] = {0};
-        commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
-        commandBuffer.bindIndexBuffer(model.getIndexBuffer(), 0, vk::IndexType::eUint16);
-        commandBuffer.bindDescriptorSets(vk::PipelineBindPoint::eGraphics, pipeline.getPipelineLayout(), 0, 1, &descriptorSets.getDescriptorSets()[currentFrame], 0, nullptr);
-        commandBuffer.drawIndexed(static_cast<uint32_t>(model.indices_.size()), 1, 0, 0, 0);
-
-        commandBuffer.endRenderPass();
-        commandBuffer.end();
-    }
+//    void recordCommandBuffer(vk::CommandBuffer commandBuffer, uint32_t imageIndex) {
+//        vk::CommandBufferBeginInfo beginInfo{};
+//
+//        vk::resultCheck(commandBuffer.begin(&beginInfo), "failed to begin recording command buffer!");
+//
+//        std::array<vk::ClearValue, 2> clearValues{};
+//        clearValues[0].setColor({0.0f, 0.0f, 0.0f, 1.0f});
+//        clearValues[1].setDepthStencil({1.0f, 0});
+//
+//        vk::RenderPassBeginInfo renderPassInfo{
+//            swapChain.getRenderPass(),
+//            swapChain.getFramebuffers()[imageIndex],
+//            {{0,0}, swapChain.getExtent()},
+//            clearValues
+//        };
+//
+//        commandBuffer.beginRenderPass(&renderPassInfo, vk::SubpassContents::eInline);
+//        commandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, pipeline.getGraphicsPipeline());
+//
+//        vk::Viewport viewport{
+//            0.0f, 0.0f,
+//            static_cast<float>(swapChain.getExtent().width),
+//            static_cast<float>(swapChain.getExtent().height),
+//            0.0f, 1.0f
+//        };
+//        commandBuffer.setViewport(0, 1, &viewport);
+//
+//        vk::Rect2D scissor{ {0, 0}, swapChain.getExtent() };
+//        commandBuffer.setScissor(0, 1, &scissor);
+//
+//        vk::Buffer vertexBuffers[] = {model.getVertexBuffer()};
+//        vk::DeviceSize offsets[] = {0};
+//        commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
+//        commandBuffer.bindIndexBuffer(model.getIndexBuffer(), 0, vk::IndexType::eUint16);
+//        commandBuffer.bindDescriptorSets(vk::PipelineBindPoint::eGraphics, pipeline.getPipelineLayout(), 0, 1, &descriptorSets.getDescriptorSets()[currentFrame], 0, nullptr);
+//        commandBuffer.drawIndexed(static_cast<uint32_t>(model.indices_.size()), 1, 0, 0, 0);
+//
+//        commandBuffer.endRenderPass();
+//        commandBuffer.end();
+//    }
 
 //    void createSyncObjects() {
 //        imageAvailableSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
@@ -1043,10 +1043,10 @@ private:
 
 
     void drawFrame() {
-        vk::resultCheck(device.getDevice().waitForFences(1, &swapChain.getInFlightFences()[currentFrame], VK_TRUE, UINT64_MAX), "failed to wait for Fences!");
+        vk::resultCheck(device.getDevice().waitForFences(1, &swapChain.getInFlightFences()[commandBuffers.currentFrame_], VK_TRUE, UINT64_MAX), "failed to wait for Fences!");
 
         uint32_t imageIndex;
-        vk::Result result = device.getDevice().acquireNextImageKHR(swapChain.getSwapChain(), UINT64_MAX, swapChain.getImageAvailableSemaphores()[currentFrame], nullptr, &imageIndex);
+        vk::Result result = device.getDevice().acquireNextImageKHR(swapChain.getSwapChain(), UINT64_MAX, swapChain.getImageAvailableSemaphores()[commandBuffers.currentFrame_], nullptr, &imageIndex);
 
         if (result == vk::Result::eErrorOutOfDateKHR) {
             swapChain.recreate();
@@ -1055,24 +1055,24 @@ private:
             throw std::runtime_error("failed to acquire swap chain image!");
         }
 
-        updateUniformBuffer(currentFrame);
+        updateUniformBuffer(commandBuffers.currentFrame_);
 
-        vk::resultCheck(device.getDevice().resetFences(1, &swapChain.getInFlightFences()[currentFrame]), "failed to reset Fences!");
+        vk::resultCheck(device.getDevice().resetFences(1, &swapChain.getInFlightFences()[commandBuffers.currentFrame_]), "failed to reset Fences!");
 
-        commandBuffers[currentFrame].reset();
-        recordCommandBuffer(commandBuffers[currentFrame], imageIndex);
+        commandBuffers.getCommandBuffers()[commandBuffers.currentFrame_].reset();
+        commandBuffers.record(commandBuffers.getCommandBuffers()[commandBuffers.currentFrame_], imageIndex);
 
-        vk::Semaphore waitSemaphores[] = {swapChain.getImageAvailableSemaphores()[currentFrame]};
+        vk::Semaphore waitSemaphores[] = {swapChain.getImageAvailableSemaphores()[commandBuffers.currentFrame_]};
         vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
-        vk::Semaphore signalSemaphores[] = {swapChain.getRenderFinishedSemaphores()[currentFrame]};
+        vk::Semaphore signalSemaphores[] = {swapChain.getRenderFinishedSemaphores()[commandBuffers.currentFrame_]};
 
         vk::SubmitInfo submitInfo{
             1, waitSemaphores, waitStages,
-            1, &commandBuffers[currentFrame],
+            1, &commandBuffers.getCommandBuffers()[commandBuffers.currentFrame_],
             1, signalSemaphores
         };
 
-        vk::resultCheck(device.getGraphicsQueue().submit(1, &submitInfo, swapChain.getInFlightFences()[currentFrame]), "failed to submit draw command buffer!");
+        vk::resultCheck(device.getGraphicsQueue().submit(1, &submitInfo, swapChain.getInFlightFences()[commandBuffers.currentFrame_]), "failed to submit draw command buffer!");
 
         vk::SwapchainKHR swapChains[] = { swapChain.getSwapChain() };
 
@@ -1091,7 +1091,7 @@ private:
             throw std::runtime_error("failed to present swap chain image!");
         }
 
-        currentFrame = (currentFrame + 1) % swapChain.MAX_FRAMES_IN_FLIGHT;
+        commandBuffers.currentFrame_ = (commandBuffers.currentFrame_ + 1) % swapChain.MAX_FRAMES_IN_FLIGHT;
     }
 
     static void mouse_button_callback (GLFWwindow* window, int button, int action, int mods) noexcept {
