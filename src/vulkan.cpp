@@ -1,46 +1,46 @@
-#include "model.hpp"
-#include "window.hpp"
-#include "device.hpp"
-#include "swap_chain.hpp"
-#include "pipeline.hpp"
-#include "descriptor.hpp"
-#include "uniform_buffer.hpp"
-#include "command_buffer.hpp"
+//#include "model.hpp"
+//#include "window.hpp"
+//#include "device.hpp"
+//#include "swap_chain.hpp"
+//#include "pipeline.hpp"
+//#include "descriptor.hpp"
+//#include "uniform_buffer.hpp"
+//#include "command_buffer.hpp"
+//
+//
+//#include <__node_handle>
+//#include <string>
+//#include <vulkan/vulkan.hpp>
+//#include <vulkan/vulkan_handles.hpp>
+//#include <vulkan/vulkan_enums.hpp>
+//
+//#define GLM_FORCE_RADIANS
+//#define GLM_FORCE_DEPTH_ZERO_TO_ONE
+//#include <glm/glm.hpp>
+//#include <glm/gtc/matrix_transform.hpp>
+//
+//#include <iostream>
+//#include <fstream>
+//#include <stdexcept>
+//#include <vector>
+//#include <cstring>
+//#include <cstdlib>
+//#include <optional>
+//#include <set>
+//#include <cstdint>
+//#include <limits>
+//#include <array>
+//#include <algorithm>
+//#include <chrono>
+//#include <string>
+//
+//#include "triangle.hpp"
+//#include "vector.hpp"
+//#include "camera.hpp"
+//#include "input.hpp"
 
-
-#include <__node_handle>
-#include <string>
-#include <vulkan/vulkan.hpp>
-#include <vulkan/vulkan_handles.hpp>
-#include <vulkan/vulkan_enums.hpp>
-
-#define GLM_FORCE_RADIANS
-#define GLM_FORCE_DEPTH_ZERO_TO_ONE
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
-#include <iostream>
-#include <fstream>
-#include <stdexcept>
-#include <vector>
-#include <cstring>
-#include <cstdlib>
-#include <optional>
-#include <set>
-#include <cstdint>
-#include <limits>
-#include <array>
-#include <algorithm>
-#include <chrono>
-#include <string>
-
-#include "triangle.hpp"
-#include "vector.hpp"
-#include "camera.hpp"
-#include "input.hpp"
-
-const uint32_t WIDTH = 800;
-const uint32_t HEIGHT = 600;
+//const uint32_t WIDTH = 800;
+//const uint32_t HEIGHT = 600;
 
 //const int MAX_FRAMES_IN_FLIGHT = 2;
 
@@ -82,9 +82,9 @@ const uint32_t HEIGHT = 600;
 // static glm::vec3 camera_direction = glm::normalize (glm::vec3 {-2.0f, -2.0f, -2.0f});
 // static glm::vec3 camera_up (0.0f, 0.0f, 1.0f);
 
-static double prev_x = 0.0;
-static double prev_y = 0.0;
-static bool lpress = false;
+//static double prev_x = 0.0;
+//static double prev_y = 0.0;
+//static bool lpress = false;
 
 //struct Vertex {
 //    glm::vec3 pos;
@@ -139,30 +139,29 @@ static bool lpress = false;
 //     0, 1, 2, 2, 3, 0
 // };
 
-using namespace vulkan_engine;
+//using namespace vulkan_engine;
 
-class HelloTriangleApplication {
-public:
-    void run() {
-        //initWindow();
-        //initVulkan();
-        mainLoop();
-        cleanup();
-    }
+//class HelloTriangleApplication {
+//public:
+//    void run() {
+//        //initWindow();
+//        //initVulkan();
+//        mainLoop();
+//        cleanup();
+//    }
 
 //    GLFWwindow* window;
-
-    Window window { WIDTH, HEIGHT, "vulkan" };
-    Device device { window };
-    SwapChain swapChain { window, device };
-    DescriptorSetLayout descriptorSetLayout { device };
-    Pipeline pipeline { device, swapChain, descriptorSetLayout, "../../shaders/vert.spv", "../../shaders/frag.spv" };
-    Model model { device };
-    UniformBuffer uniformBuffer { device, swapChain };
-    DescriptorPool descriptorPool { device, swapChain };
-    DescriptorSets descriptorSets { device, swapChain, uniformBuffer, descriptorSetLayout, descriptorPool };
-    CommandBuffers commandBuffers { device, swapChain, pipeline, model, descriptorSets };
-    Camera camera{};
+//    Camera camera{};
+//    Window window { WIDTH, HEIGHT, "vulkan" };
+//    Device device { window };
+//    SwapChain swapChain { window, device };
+//    DescriptorSetLayout descriptorSetLayout { device };
+//    Pipeline pipeline { device, swapChain, descriptorSetLayout, "../../shaders/vert.spv", "../../shaders/frag.spv" };
+//    Model model { device };
+//    UniformBuffer uniformBuffer { device, swapChain, camera, window };
+//    DescriptorPool descriptorPool { device, swapChain };
+//    DescriptorSets descriptorSets { device, swapChain, uniformBuffer, descriptorSetLayout, descriptorPool };
+//    CommandBuffers commandBuffers { device, swapChain, pipeline, model, descriptorSets };
 
 
     //vk::Instance instance;
@@ -214,7 +213,7 @@ public:
 //    uint32_t currentFrame = 0;
 
 
-private:
+//private:
 //    void initWindow() {
 //        glfwInit();
 //
@@ -225,7 +224,7 @@ private:
 //        glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
 //    }
 
-    void initVulkan() {
+//    void initVulkan() {
 //        createSwapChain();
 //        createImageViews();
 //        createRenderPass();
@@ -240,23 +239,23 @@ private:
 //        createDescriptorSets();
 //        createCommandBuffers();
 //        createSyncObjects();
-    }
+//    }
 
-    void mainLoop() {
-        glfwGetCursorPos(window.getGLFWwindow(), &prev_x, &prev_y);
-        glfwSetKeyCallback (window.getGLFWwindow(), key_callback);
-        glfwSetMouseButtonCallback(window.getGLFWwindow(), mouse_button_callback);
-        //glfwSetCursorPosCallback (window, cursor_position_callback);
+//    void mainLoop() {
+//        glfwGetCursorPos(window.getGLFWwindow(), &prev_x, &prev_y);
+//        glfwSetKeyCallback (window.getGLFWwindow(), key_callback);
+//        glfwSetMouseButtonCallback(window.getGLFWwindow(), mouse_button_callback);
+//        //glfwSetCursorPosCallback (window, cursor_position_callback);
+//
+//        while (!window.shouldClose()) {
+//            glfwPollEvents();
+//            drawFrame();
+//        }
+//
+//        device.getDevice().waitIdle();
+//    }
 
-        while (!window.shouldClose()) {
-            glfwPollEvents();
-            drawFrame();
-        }
-
-        device.getDevice().waitIdle();
-    }
-
-    void cleanup() {
+//    void cleanup() {
 //        swapChain.cleanup();
 
 //        for (size_t i = 0; i < swapChain.MAX_FRAMES_IN_FLIGHT; i++) {
@@ -274,7 +273,7 @@ private:
 
 //        device.getDevice().destroyPipeline(graphicsPipeline, nullptr);
 //        device.getDevice().destroyPipelineLayout(pipelineLayout, nullptr);
-    }
+//    }
 
 //    void cleanupSwapChain() {
 //        device.getDevice().destroyImageView(swapChain.getDepthImageView(), nullptr);
@@ -751,9 +750,9 @@ private:
 //        throw std::runtime_error("failed to find supported format!");
 //    }
 
-    bool hasStencilComponent(vk::Format format) {
-        return format == vk::Format::eD32SfloatS8Uint || format == vk::Format::eD24UnormS8Uint;
-    }
+//    bool hasStencilComponent(vk::Format format) {
+//        return format == vk::Format::eD32SfloatS8Uint || format == vk::Format::eD24UnormS8Uint;
+//    }
 
 //    vk::ImageView createImageView(vk::Image image, vk::Format format, vk::ImageAspectFlags aspectFlags) {
 //        vk::ImageViewCreateInfo viewInfo{
@@ -1042,90 +1041,90 @@ private:
 //    }
 
 
-    void drawFrame() {
-        vk::resultCheck(device.getDevice().waitForFences(1, &swapChain.getInFlightFences()[commandBuffers.currentFrame_], VK_TRUE, UINT64_MAX), "failed to wait for Fences!");
+//    void drawFrame() {
+//        vk::resultCheck(device.getDevice().waitForFences(1, &swapChain.getInFlightFences()[commandBuffers.currentFrame_], VK_TRUE, UINT64_MAX), "failed to wait for Fences!");
+//
+//        uint32_t imageIndex;
+//        vk::Result result = device.getDevice().acquireNextImageKHR(swapChain.getSwapChain(), UINT64_MAX, swapChain.getImageAvailableSemaphores()[commandBuffers.currentFrame_], nullptr, &imageIndex);
+//
+//        if (result == vk::Result::eErrorOutOfDateKHR) {
+//            swapChain.recreate();
+//            return;
+//        } else if (result != vk::Result::eSuccess && result != vk::Result::eSuboptimalKHR) {
+//            throw std::runtime_error("failed to acquire swap chain image!");
+//        }
+//
+//        updateUniformBuffer(commandBuffers.currentFrame_);
+//
+//        vk::resultCheck(device.getDevice().resetFences(1, &swapChain.getInFlightFences()[commandBuffers.currentFrame_]), "failed to reset Fences!");
+//
+//        commandBuffers.getCommandBuffers()[commandBuffers.currentFrame_].reset();
+//        commandBuffers.record(commandBuffers.getCommandBuffers()[commandBuffers.currentFrame_], imageIndex);
+//
+//        vk::Semaphore waitSemaphores[] = {swapChain.getImageAvailableSemaphores()[commandBuffers.currentFrame_]};
+//        vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
+//        vk::Semaphore signalSemaphores[] = {swapChain.getRenderFinishedSemaphores()[commandBuffers.currentFrame_]};
+//
+//        vk::SubmitInfo submitInfo{
+//            1, waitSemaphores, waitStages,
+//            1, &commandBuffers.getCommandBuffers()[commandBuffers.currentFrame_],
+//            1, signalSemaphores
+//        };
+//
+//        vk::resultCheck(device.getGraphicsQueue().submit(1, &submitInfo, swapChain.getInFlightFences()[commandBuffers.currentFrame_]), "failed to submit draw command buffer!");
+//
+//        vk::SwapchainKHR swapChains[] = { swapChain.getSwapChain() };
+//
+//        vk::PresentInfoKHR presentInfo{
+//            signalSemaphores,
+//            swapChains,
+//            imageIndex
+//        };
+//
+//        result = device.getPresentQueue().presentKHR(&presentInfo);
+//
+//        if (result == vk::Result::eErrorOutOfDateKHR || result == vk::Result::eSuboptimalKHR || window.wasFrameBufferResized()) {
+//            window.resetFrameBufferRisizedFlag();
+//            swapChain.recreate();
+//        } else if (result != vk::Result::eSuccess) {
+//            throw std::runtime_error("failed to present swap chain image!");
+//        }
+//
+//        commandBuffers.currentFrame_ = (commandBuffers.currentFrame_ + 1) % swapChain.MAX_FRAMES_IN_FLIGHT;
+//    }
+//
+//    static void mouse_button_callback (GLFWwindow* window, int button, int action, int mods) noexcept {
+//        if (action == GLFW_PRESS)        Input::press_mouse_button(button);
+//        else if (action == GLFW_RELEASE) Input::release_mouse_button(button);
+//
+//    }
+//
+//    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+//    {
+//        if (action == GLFW_PRESS || action == GLFW_REPEAT) Input::press_keyboard_key(key);
+//        else if (action == GLFW_RELEASE)                   Input::release_keyboard_key(key);
+//    }
 
-        uint32_t imageIndex;
-        vk::Result result = device.getDevice().acquireNextImageKHR(swapChain.getSwapChain(), UINT64_MAX, swapChain.getImageAvailableSemaphores()[commandBuffers.currentFrame_], nullptr, &imageIndex);
-
-        if (result == vk::Result::eErrorOutOfDateKHR) {
-            swapChain.recreate();
-            return;
-        } else if (result != vk::Result::eSuccess && result != vk::Result::eSuboptimalKHR) {
-            throw std::runtime_error("failed to acquire swap chain image!");
-        }
-
-        updateUniformBuffer(commandBuffers.currentFrame_);
-
-        vk::resultCheck(device.getDevice().resetFences(1, &swapChain.getInFlightFences()[commandBuffers.currentFrame_]), "failed to reset Fences!");
-
-        commandBuffers.getCommandBuffers()[commandBuffers.currentFrame_].reset();
-        commandBuffers.record(commandBuffers.getCommandBuffers()[commandBuffers.currentFrame_], imageIndex);
-
-        vk::Semaphore waitSemaphores[] = {swapChain.getImageAvailableSemaphores()[commandBuffers.currentFrame_]};
-        vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
-        vk::Semaphore signalSemaphores[] = {swapChain.getRenderFinishedSemaphores()[commandBuffers.currentFrame_]};
-
-        vk::SubmitInfo submitInfo{
-            1, waitSemaphores, waitStages,
-            1, &commandBuffers.getCommandBuffers()[commandBuffers.currentFrame_],
-            1, signalSemaphores
-        };
-
-        vk::resultCheck(device.getGraphicsQueue().submit(1, &submitInfo, swapChain.getInFlightFences()[commandBuffers.currentFrame_]), "failed to submit draw command buffer!");
-
-        vk::SwapchainKHR swapChains[] = { swapChain.getSwapChain() };
-
-        vk::PresentInfoKHR presentInfo{
-            signalSemaphores,
-            swapChains,
-            imageIndex
-        };
-
-        result = device.getPresentQueue().presentKHR(&presentInfo);
-
-        if (result == vk::Result::eErrorOutOfDateKHR || result == vk::Result::eSuboptimalKHR || window.wasFrameBufferResized()) {
-            window.resetFrameBufferRisizedFlag();
-            swapChain.recreate();
-        } else if (result != vk::Result::eSuccess) {
-            throw std::runtime_error("failed to present swap chain image!");
-        }
-
-        commandBuffers.currentFrame_ = (commandBuffers.currentFrame_ + 1) % swapChain.MAX_FRAMES_IN_FLIGHT;
-    }
-
-    static void mouse_button_callback (GLFWwindow* window, int button, int action, int mods) noexcept {
-        if (action == GLFW_PRESS)        Input::press_mouse_button(button);
-        else if (action == GLFW_RELEASE) Input::release_mouse_button(button);
-
-    }
-
-    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-    {   
-        if (action == GLFW_PRESS || action == GLFW_REPEAT) Input::press_keyboard_key(key);
-        else if (action == GLFW_RELEASE)                   Input::release_keyboard_key(key);
-    }
-
-    void updateUniformBuffer(uint32_t currentImage) {
-        static auto startTime = std::chrono::high_resolution_clock::now();
-
-        auto currentTime = std::chrono::high_resolution_clock::now();
-        float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
-
-        double x_prev, y_prev;
-        glfwGetCursorPos(window.getGLFWwindow(), &x_prev, &y_prev);
-        camera.viewer_position += camera.determine_move();
-        camera.camera_direction = camera.determine_rotate(x_prev, y_prev);
-
-        UniformBuffer::UniformBufferObject ubo{};
-        ubo.model = glm::mat4(1.0f);
-        ubo.view = glm::lookAt(camera.viewer_position, camera.viewer_position + camera.camera_direction, camera.camera_up);
-        ubo.proj = glm::perspective(glm::radians(45.0f), swapChain.getExtent().width / (float) swapChain.getExtent().height, 0.1f, 1000.0f);
-        ubo.viewPos = camera.viewer_position;
-        ubo.proj[1][1] *= -1;
-
-        memcpy(uniformBuffer.getUniformBeffersMapped()[currentImage], &ubo, sizeof(ubo));
-    }
+//    void updateUniformBuffer(uint32_t currentImage) {
+//        static auto startTime = std::chrono::high_resolution_clock::now();
+//
+//        auto currentTime = std::chrono::high_resolution_clock::now();
+//        float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
+//
+//        double x_prev, y_prev;
+//        glfwGetCursorPos(window.getGLFWwindow(), &x_prev, &y_prev);
+//        camera.viewer_position += camera.determine_move();
+//        camera.camera_direction = camera.determine_rotate(x_prev, y_prev);
+//
+//        UniformBuffer::UniformBufferObject ubo{};
+//        ubo.model = glm::mat4(1.0f);
+//        ubo.view = glm::lookAt(camera.viewer_position, camera.viewer_position + camera.camera_direction, camera.camera_up);
+//        ubo.proj = glm::perspective(glm::radians(45.0f), swapChain.getExtent().width / (float) swapChain.getExtent().height, 0.1f, 1000.0f);
+//        ubo.viewPos = camera.viewer_position;
+//        ubo.proj[1][1] *= -1;
+//
+//        memcpy(uniformBuffer.getUniformBeffersMapped()[currentImage], &ubo, sizeof(ubo));
+//    }
 
 //    static void framebufferResizeCallback(GLFWwindow* window, int width, int height) {
 //        auto app = reinterpret_cast<HelloTriangleApplication*>(glfwGetWindowUserPointer(window));
@@ -1253,14 +1252,24 @@ private:
 //
 //        return VK_FALSE;
 //    }
-};
+//};
+
+
+
+
+#include "app.hpp"
+#include "triangle.hpp"
+
+
+
+
 
 glm::vec3 vector_cast_vec3(Geo3D::Vector vec);
 glm::vec3 get_normal(const Geo3D::Triangle& triangle);
 
 
 int vulkan(const std::vector<Geo3D::Triangle>& triangles, std::vector<bool>& status) {
-    HelloTriangleApplication app;
+    vulkan_engine::Application app;
 
     app.model.vertices_.reserve(triangles.size() * 3);
     app.model.indices_.reserve(triangles.size() * 3 * 2);

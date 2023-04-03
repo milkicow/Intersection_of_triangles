@@ -6,6 +6,8 @@
 #include "pipeline.hpp"
 #include "swap_chain.hpp"
 #include "descriptor.hpp"
+#include "camera.hpp"
+
 #include "vulkan/vulkan.hpp"
 
 
