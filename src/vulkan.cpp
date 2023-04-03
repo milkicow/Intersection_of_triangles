@@ -1,8 +1,13 @@
+#include "model.hpp"
 #include "window.hpp"
 #include "device.hpp"
 #include "swap_chain.hpp"
 #include "pipeline.hpp"
+#include "descriptor.hpp"
+#include "uniform_buffer.hpp"
 
+
+#include <string>
 #include <vulkan/vulkan.hpp>
 #include <vulkan/vulkan_handles.hpp>
 #include <vulkan/vulkan_enums.hpp>
@@ -25,6 +30,7 @@
 #include <array>
 #include <algorithm>
 #include <chrono>
+#include <string>
 
 #include "triangle.hpp"
 #include "vector.hpp"
@@ -142,12 +148,17 @@ public:
         cleanup();
     }
 
-private:
 //    GLFWwindow* window;
 
     Window window { WIDTH, HEIGHT, "vulkan" };
     Device device { window };
     SwapChain swapChain { window, device };
+    DescriptorSetLayout descriptorSetLayout { device };
+    Pipeline pipeline { device, swapChain, descriptorSetLayout, "../../shaders/vert.spv", "../../shaders/frag.spv" };
+    Model model { device };
+    UniformBuffer uniformBuffer { device, swapChain };
+    DescriptorPool descriptorPool { device, swapChain };
+    DescriptorSets descriptorSets { device, swapChain, uniformBuffer, descriptorSetLayout, descriptorPool };
 
     // descriptorSet !
 
@@ -203,6 +214,7 @@ private:
 
     Camera camera{};
 
+private:
 //    void initWindow() {
 //        glfwInit();
 //
@@ -987,7 +999,7 @@ private:
         };
 
         commandBuffer.beginRenderPass(&renderPassInfo, vk::SubpassContents::eInline);
-        commandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, graphicsPipeline);
+        commandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, pipeline.getGraphicsPipeline());
 
         vk::Viewport viewport{
             0.0f, 0.0f,
@@ -1000,12 +1012,12 @@ private:
         vk::Rect2D scissor{ {0, 0}, swapChain.getExtent() };
         commandBuffer.setScissor(0, 1, &scissor);
 
-        vk::Buffer vertexBuffers[] = {vertexBuffer};
+        vk::Buffer vertexBuffers[] = {model.getVertexBuffer()};
         vk::DeviceSize offsets[] = {0};
         commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
-        commandBuffer.bindIndexBuffer(indexBuffer, 0, vk::IndexType::eUint16);
-        commandBuffer.bindDescriptorSets(vk::PipelineBindPoint::eGraphics, pipelineLayout, 0, 1, &descriptorSets[currentFrame], 0, nullptr);
-        commandBuffer.drawIndexed(static_cast<uint32_t>(indices.size()), 1, 0, 0, 0);
+        commandBuffer.bindIndexBuffer(model.getIndexBuffer(), 0, vk::IndexType::eUint16);
+        commandBuffer.bindDescriptorSets(vk::PipelineBindPoint::eGraphics, pipeline.getPipelineLayout(), 0, 1, &descriptorSets.getDescriptorSets()[currentFrame], 0, nullptr);
+        commandBuffer.drawIndexed(static_cast<uint32_t>(model.indices_.size()), 1, 0, 0, 0);
 
         commandBuffer.endRenderPass();
         commandBuffer.end();
@@ -1105,14 +1117,14 @@ private:
         camera.viewer_position += camera.determine_move();
         camera.camera_direction = camera.determine_rotate(x_prev, y_prev);
 
-        UniformBufferObject ubo{};
+        UniformBuffer::UniformBufferObject ubo{};
         ubo.model = glm::mat4(1.0f);
         ubo.view = glm::lookAt(camera.viewer_position, camera.viewer_position + camera.camera_direction, camera.camera_up);
         ubo.proj = glm::perspective(glm::radians(45.0f), swapChain.getExtent().width / (float) swapChain.getExtent().height, 0.1f, 1000.0f);
         ubo.viewPos = camera.viewer_position;
         ubo.proj[1][1] *= -1;
 
-        memcpy(uniformBuffersMapped[currentImage], &ubo, sizeof(ubo));
+        memcpy(uniformBuffer.getUniformBeffersMapped()[currentImage], &ubo, sizeof(ubo));
     }
 
 //    static void framebufferResizeCallback(GLFWwindow* window, int width, int height) {
@@ -1249,8 +1261,9 @@ glm::vec3 get_normal(const Geo3D::Triangle& triangle);
 
 int vulkan(const std::vector<Geo3D::Triangle>& triangles, std::vector<bool>& status) {
     HelloTriangleApplication app;
-    vertices.reserve(triangles.size() * 3);
-    indices.reserve(triangles.size() * 3 * 2);
+
+    app.model.vertices_.reserve(triangles.size() * 3);
+    app.model.indices_.reserve(triangles.size() * 3 * 2);
 
     glm::vec3 red  = {1.0f, 0.0f, 0.0f};
     glm::vec3 blue = {0.0f, 0.0f, 1.0f};
@@ -1263,18 +1276,18 @@ int vulkan(const std::vector<Geo3D::Triangle>& triangles, std::vector<bool>& sta
         }
         else color = blue;
 
-        vertices.push_back({vector_cast_vec3(triangles[i].v0_), color, get_normal(triangles[i])});
-        vertices.push_back({vector_cast_vec3(triangles[i].v1_), color, get_normal(triangles[i])});
-        vertices.push_back({vector_cast_vec3(triangles[i].v2_), color, get_normal(triangles[i])});
+        app.model.vertices_.push_back({vector_cast_vec3(triangles[i].v0_), color, get_normal(triangles[i])});
+        app.model.vertices_.push_back({vector_cast_vec3(triangles[i].v1_), color, get_normal(triangles[i])});
+        app.model.vertices_.push_back({vector_cast_vec3(triangles[i].v2_), color, get_normal(triangles[i])});
     }
 
 
     for (int i = 0; i != triangles.size() * 3; ++i) {
-        indices.push_back(i);
+        app.model.indices_.push_back(i);
     }
 
     for (int i = triangles.size() * 3 - 1; i != -1; --i) {
-        indices.push_back(i);
+        app.model.indices_.push_back(i);
     }
 
     try {

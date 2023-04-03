@@ -1,5 +1,6 @@
 #pragma once
 
+#include "descriptor.hpp"
 #include "device.hpp"
 #include "model.hpp"
 #include "swap_chain.hpp"
@@ -13,16 +14,20 @@ namespace vulkan_engine {
 class Pipeline {
 public:
 
-    Pipeline(Device & device, SwapChain & swapChain, std::string & vertFilepath, std::string & fragFilepath);
+    Pipeline(Device & device, SwapChain & swapChain, DescriptorSetLayout & descriptorSetLayout, std::string vertFilepath, std::string fragFilepath);
     ~Pipeline();
 
     Pipeline &operator=(const Pipeline&) = delete;
     Pipeline(const Pipeline&) = delete;
 
+    vk::PipelineLayout getPipelineLayout() const { return pipelineLayout_; }
+    vk::Pipeline getGraphicsPipeline() const { return graphicsPipeline_; }
+
 private:
     
     Device & device_;
     SwapChain & swapChain_;
+    DescriptorSetLayout & descriptorSetLayout_;
     std::string vertFilepath_;
     std::string fragFilepath_;
 

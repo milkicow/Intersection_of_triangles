@@ -1,10 +1,11 @@
 #include "pipeline.hpp"
+#include "descriptor.hpp"
 #include <vulkan/vulkan_handles.hpp>
 
 namespace vulkan_engine {
 
-Pipeline::Pipeline(Device &device, SwapChain & swapChain, std::string &vertFilepath, std::string &fragFilepath)
-    : device_(device), swapChain_(swapChain), vertFilepath_(vertFilepath), fragFilepath_(fragFilepath) {
+Pipeline::Pipeline(Device &device, SwapChain & swapChain, DescriptorSetLayout & descriptorSetLayout, std::string vertFilepath, std::string fragFilepath)
+    : device_(device), swapChain_(swapChain), descriptorSetLayout_(descriptorSetLayout), vertFilepath_(vertFilepath), fragFilepath_(fragFilepath) {
                                                     
     auto vertShaderCode = readFile(vertFilepath_); // "../../shaders/vert.spv"
     auto fragShaderCode = readFile(fragFilepath_); // "../../shaders/frag.spv" 
@@ -98,7 +99,7 @@ Pipeline::Pipeline(Device &device, SwapChain & swapChain, std::string &vertFilep
     vk::PipelineLayoutCreateInfo pipelineLayoutInfo{
         vk::PipelineLayoutCreateFlags(),
         1,
-        &descriptorSetLayout
+        descriptorSetLayout.getDescriptorSetLayout_()
     };
 
     vk::resultCheck(device.getDevice().createPipelineLayout(&pipelineLayoutInfo, nullptr, &pipelineLayout_), "failed to create pipeline layout!");

@@ -10,7 +10,7 @@ UniformBuffer::UniformBuffer(Device & device, SwapChain & swapChain) : device_(d
     uniformBuffersMapped_.resize(swapChain.MAX_FRAMES_IN_FLIGHT);
 
     for (size_t i = 0; i < swapChain.MAX_FRAMES_IN_FLIGHT; i++) {
-        device.createBuffer(bufferSize, vk::BufferUsageFlagBits::eUniformBuffer, vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent, uniformBuffers[i], uniformBuffersMemory[i]);
+        device.createBuffer(bufferSize, vk::BufferUsageFlagBits::eUniformBuffer, vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent, uniformBuffers_[i], uniformBuffersMemory_[i]);
 
         uniformBuffersMapped_[i] = device.getDevice().mapMemory(uniformBuffersMemory_[i], 0, bufferSize);
     }

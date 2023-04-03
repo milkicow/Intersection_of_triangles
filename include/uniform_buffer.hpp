@@ -21,14 +21,19 @@ public:
     UniformBuffer(const UniformBuffer&) = delete;
     UniformBuffer &operator=(const UniformBuffer&) = delete;
 
+    std::vector<vk::Buffer> getUniformBuffers() const { return uniformBuffers_; }
+    auto getSizeOfUniformBufferObject() const { return sizeof(UniformBufferObject); }
 
-private:
+    std::vector<void*> getUniformBeffersMapped() const { return uniformBuffersMapped_; }
+
     struct UniformBufferObject {
         glm::mat4 model;
         glm::mat4 view;
         glm::mat4 proj;
         glm::vec3 viewPos;
     };
+
+private:
     
     Device & device_;
     SwapChain & swapChain_;
