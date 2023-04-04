@@ -30,12 +30,7 @@ static bool lpress = false;
 
 class Application {
 public:
-    void run() {
-        //initWindow();
-        //initVulkan();
-        mainLoop();
-        //cleanup();
-    }
+    void run();
 
     Application(std::vector<Model::Vertex> vertices, std::vector<uint16_t> indices) : model(device, vertices, indices) {}
 
@@ -52,9 +47,7 @@ private:
     DescriptorSets descriptorSets { device, swapChain, uniformBuffer, descriptorSetLayout, descriptorPool };
     CommandBuffers commandBuffers { device, swapChain, pipeline, model, descriptorSets };
     
-    void mainLoop();
     void drawFrame();
-//    void cleanup();
 
     static void mouse_button_callback (GLFWwindow* window, int button, int action, int mods) noexcept;
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);

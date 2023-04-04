@@ -1,7 +1,6 @@
 #include "intersect.hpp"
 #include "octree.hpp"
 
-
 int vulkan(const std::vector<Geo3D::Triangle>& triangles, std::vector<bool>& status);
 
 namespace Geo3D 

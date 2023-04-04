@@ -14,8 +14,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++17  " )
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 set(SOURCE ${PROJECT_SOURCE_DIR}/main.cpp)
-aux_source_directory(./src SRC_LIST)
-add_executable(${PROJECT_NAME} ${SOURCE} ${SRC_LIST})
+aux_source_directory(./src SOURCES)
+
+add_executable(${PROJECT_NAME} ${SOURCE} ${SOURCES})
 
 find_package(Vulkan REQUIRED)
 find_package(glfw3 3.3 REQUIRED)
@@ -46,7 +47,7 @@ target_link_libraries(${PROJECT_NAME} ${Vulkan_LIBRARIES}  Vulkan::Vulkan glfw)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${Vulkan_INCLUDE_DIRS})
 
-target_include_directories(${PROJECT_NAME} PRIVATE ./include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/include)
 
 install(TARGETS ${PROJECT_NAME}
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}

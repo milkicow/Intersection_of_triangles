@@ -11,7 +11,6 @@ find_package(glfw3 3.3 REQUIRED)
 
 include_directories(${Vulkan_INCLUDE_DIRS})
 target_include_directories(tests PRIVATE ${Vulkan_INCLUDE_DIRS})
-target_include_directories(tests PRIVATE ./include)
  
 target_link_libraries(tests PRIVATE ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES} ${Vulkan_LIBRARIES} glfw pthread)
 

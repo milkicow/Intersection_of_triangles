@@ -2,7 +2,7 @@
 
 namespace vulkan_engine {
 
-void Application::mainLoop() {
+void Application::run() {
     glfwGetCursorPos(window.getGLFWwindow(), &prev_x, &prev_y);
     glfwSetKeyCallback (window.getGLFWwindow(), key_callback);
     glfwSetMouseButtonCallback(window.getGLFWwindow(), mouse_button_callback);
@@ -67,27 +67,6 @@ void Application::drawFrame() {
 
     commandBuffers.currentFrame_ = (commandBuffers.currentFrame_ + 1) % swapChain.MAX_FRAMES_IN_FLIGHT;
 }
-
-
-//void Application::cleanup() {
-////        swapChain.cleanup();
-//
-////        for (size_t i = 0; i < swapChain.MAX_FRAMES_IN_FLIGHT; i++) {
-////            device.getDevice().destroyBuffer(uniformBuffers[i], nullptr);
-////            device.getDevice().freeMemory(uniformBuffersMemory[i], nullptr);
-////        }
-////        device.getDevice().destroyDescriptorPool(descriptorPool, nullptr);
-////        device.getDevice().destroyDescriptorSetLayout(descriptorSetLayout, nullptr);
-//
-////        device.getDevice().destroyBuffer(indexBuffer, nullptr);
-////        device.getDevice().freeMemory(indexBufferMemory, nullptr);
-////
-////        device.getDevice().destroyBuffer(vertexBuffer, nullptr);
-////        device.getDevice().freeMemory(vertexBufferMemory, nullptr);
-//
-////        device.getDevice().destroyPipeline(graphicsPipeline, nullptr);
-////        device.getDevice().destroyPipelineLayout(pipelineLayout, nullptr);
-//}
 
 void Application::mouse_button_callback (GLFWwindow* window, int button, int action, int mods) noexcept {
     if (action == GLFW_PRESS)        Input::press_mouse_button(button);
