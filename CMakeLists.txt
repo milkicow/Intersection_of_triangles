@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS        OFF)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++17  " )
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 set(SOURCE ${PROJECT_SOURCE_DIR}/main.cpp)
 aux_source_directory(./src SRC_LIST)
@@ -19,10 +19,33 @@ add_executable(${PROJECT_NAME} ${SOURCE} ${SRC_LIST})
 
 find_package(Vulkan REQUIRED)
 find_package(glfw3 3.3 REQUIRED)
+find_program(glslc NAMES glslc HINTS Vulkan::glslc REQUIRED)
+
+
+
+function(add_spirv_shader TARGET_NAME INPUT_FILE)
+  add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}.spv
+    COMMAND ${glslc} ${INPUT_FILE} -o ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}.spv
+    MAIN_DEPENDENCY ${INPUT_FILE}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  )
+  add_custom_target(${TARGET_NAME} ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}.spv)
+
+  set(${TARGET_NAME}_OUTPUTS ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}.spv PARENT_SCOPE)
+endfunction()
+
+
+add_spirv_shader(vert shaders/shader.vert)
+add_spirv_shader(frag shaders/shader.frag)
+add_custom_target(shaders ALL DEPENDS vert frag)
 
 include_directories(${Vulkan_INCLUDE_DIRS})
+
 target_link_libraries(${PROJECT_NAME} ${Vulkan_LIBRARIES}  Vulkan::Vulkan glfw)
+
 target_include_directories(${PROJECT_NAME} PRIVATE ${Vulkan_INCLUDE_DIRS})
+
 target_include_directories(${PROJECT_NAME} PRIVATE ./include)
 
 install(TARGETS ${PROJECT_NAME}
@@ -30,3 +53,4 @@ install(TARGETS ${PROJECT_NAME}
         COMPONENT ${PROJECT_NAME})
 
 add_subdirectory(test)
+

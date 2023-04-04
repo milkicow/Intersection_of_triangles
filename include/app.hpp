@@ -45,7 +45,7 @@ private:
     Device device { window };
     SwapChain swapChain { window, device };
     DescriptorSetLayout descriptorSetLayout { device };
-    Pipeline pipeline { device, swapChain, descriptorSetLayout, "../../shaders/vert.spv", "../../shaders/frag.spv" };
+    Pipeline pipeline { device, swapChain, descriptorSetLayout, "vert.spv", "frag.spv" };
     Model model;
     UniformBuffer uniformBuffer { device, swapChain, camera, window };
     DescriptorPool descriptorPool { device, swapChain };
