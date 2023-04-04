@@ -1,6 +1,4 @@
 #include "app.hpp"
-#define LOX printf("NORMALLY in %d\n", __LINE__);
-
 
 namespace vulkan_engine {
 
@@ -8,7 +6,6 @@ void Application::mainLoop() {
     glfwGetCursorPos(window.getGLFWwindow(), &prev_x, &prev_y);
     glfwSetKeyCallback (window.getGLFWwindow(), key_callback);
     glfwSetMouseButtonCallback(window.getGLFWwindow(), mouse_button_callback);
-    //glfwSetCursorPosCallback (window, cursor_position_callback);
 
     while (!window.shouldClose()) {
         glfwPollEvents();
@@ -18,79 +15,79 @@ void Application::mainLoop() {
     device.getDevice().waitIdle();
 }
 
-void Application::drawFrame() { //  ! seg fault somewhere here !
-    LOX
+void Application::drawFrame() {
+
     vk::resultCheck(device.getDevice().waitForFences(1, &swapChain.getInFlightFences()[commandBuffers.currentFrame_], VK_TRUE, UINT64_MAX), "failed to wait for Fences!");
-    LOX
+
     uint32_t imageIndex;
     vk::Result result = device.getDevice().acquireNextImageKHR(swapChain.getSwapChain(), UINT64_MAX, swapChain.getImageAvailableSemaphores()[commandBuffers.currentFrame_], nullptr, &imageIndex);
-    LOX
+
     if (result == vk::Result::eErrorOutOfDateKHR) {
         swapChain.recreate();
         return;
     } else if (result != vk::Result::eSuccess && result != vk::Result::eSuboptimalKHR) {
         throw std::runtime_error("failed to acquire swap chain image!");
     }
-    LOX
+
     uniformBuffer.update(commandBuffers.currentFrame_);
-    LOX
+
     vk::resultCheck(device.getDevice().resetFences(1, &swapChain.getInFlightFences()[commandBuffers.currentFrame_]), "failed to reset Fences!");
-    LOX
+
     commandBuffers.getCommandBuffers()[commandBuffers.currentFrame_].reset();
     commandBuffers.record(commandBuffers.getCommandBuffers()[commandBuffers.currentFrame_], imageIndex);
-    LOX
+
     vk::Semaphore waitSemaphores[] = {swapChain.getImageAvailableSemaphores()[commandBuffers.currentFrame_]};
     vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
     vk::Semaphore signalSemaphores[] = {swapChain.getRenderFinishedSemaphores()[commandBuffers.currentFrame_]};
-    LOX
+
     vk::SubmitInfo submitInfo{
         1, waitSemaphores, waitStages,
-        1, &commandBuffers.getCommandBuffers()[commandBuffers.currentFrame_], // seems like problem
+        1, &commandBuffers.getCommandBuffers()[commandBuffers.currentFrame_],
         1, signalSemaphores
     };
-    LOX
-    vk::resultCheck(device.getGraphicsQueue().submit(1, &submitInfo, swapChain.getInFlightFences()[commandBuffers.currentFrame_]), "failed to submit draw command buffer!"); // seg fault there !
-    LOX
+
+    vk::resultCheck(device.getGraphicsQueue().submit(1, &submitInfo, swapChain.getInFlightFences()[commandBuffers.currentFrame_]), "failed to submit draw command buffer!");
+
     vk::SwapchainKHR swapChains[] = { swapChain.getSwapChain() };
-    LOX
+
     vk::PresentInfoKHR presentInfo{
         signalSemaphores,
         swapChains,
         imageIndex
     };
-    LOX
+
     result = device.getPresentQueue().presentKHR(&presentInfo);
-    LOX
+
     if (result == vk::Result::eErrorOutOfDateKHR || result == vk::Result::eSuboptimalKHR || window.wasFrameBufferResized()) {
         window.resetFrameBufferRisizedFlag();
         swapChain.recreate();
     } else if (result != vk::Result::eSuccess) {
         throw std::runtime_error("failed to present swap chain image!");
     }
-    LOX
+
     commandBuffers.currentFrame_ = (commandBuffers.currentFrame_ + 1) % swapChain.MAX_FRAMES_IN_FLIGHT;
 }
 
 
-void Application::cleanup() {
-//        swapChain.cleanup();
-
-//        for (size_t i = 0; i < swapChain.MAX_FRAMES_IN_FLIGHT; i++) {
-//            device.getDevice().destroyBuffer(uniformBuffers[i], nullptr);
-//            device.getDevice().freeMemory(uniformBuffersMemory[i], nullptr);
-//        }
-//        device.getDevice().destroyDescriptorPool(descriptorPool, nullptr);
-//        device.getDevice().destroyDescriptorSetLayout(descriptorSetLayout, nullptr);
-
-//        device.getDevice().destroyBuffer(indexBuffer, nullptr);
-//        device.getDevice().freeMemory(indexBufferMemory, nullptr);
+//void Application::cleanup() {
+////        swapChain.cleanup();
 //
-//        device.getDevice().destroyBuffer(vertexBuffer, nullptr);
-//        device.getDevice().freeMemory(vertexBufferMemory, nullptr);
-
-//        device.getDevice().destroyPipeline(graphicsPipeline, nullptr);
-//        device.getDevice().destroyPipelineLayout(pipelineLayout, nullptr);
-}
+////        for (size_t i = 0; i < swapChain.MAX_FRAMES_IN_FLIGHT; i++) {
+////            device.getDevice().destroyBuffer(uniformBuffers[i], nullptr);
+////            device.getDevice().freeMemory(uniformBuffersMemory[i], nullptr);
+////        }
+////        device.getDevice().destroyDescriptorPool(descriptorPool, nullptr);
+////        device.getDevice().destroyDescriptorSetLayout(descriptorSetLayout, nullptr);
+//
+////        device.getDevice().destroyBuffer(indexBuffer, nullptr);
+////        device.getDevice().freeMemory(indexBufferMemory, nullptr);
+////
+////        device.getDevice().destroyBuffer(vertexBuffer, nullptr);
+////        device.getDevice().freeMemory(vertexBufferMemory, nullptr);
+//
+////        device.getDevice().destroyPipeline(graphicsPipeline, nullptr);
+////        device.getDevice().destroyPipelineLayout(pipelineLayout, nullptr);
+//}
 
 void Application::mouse_button_callback (GLFWwindow* window, int button, int action, int mods) noexcept {
     if (action == GLFW_PRESS)        Input::press_mouse_button(button);
