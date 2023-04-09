@@ -51,12 +51,12 @@ public:
     Device(const Device&&) = delete;
     Device & operator=(const Device&&) = delete;
 
-    vk::CommandPool getCommandPool()       const { return commandPool_; }
-    vk::Device getDevice()                 const { return device_; }
-    vk::SurfaceKHR getSurface()            const { return surface_; }
-    vk::Queue getGraphicsQueue()           const { return graphicsQueue_; }
-    vk::Queue getPresentQueue()            const { return presentQueue_; }
-    vk::PhysicalDevice getPhysicalDevice() const { return physicalDevice_; }
+    const vk::CommandPool& getCommandPool()       const & { return commandPool_; }
+    const vk::Device& getDevice()                 const & { return device_; }
+    const vk::SurfaceKHR& getSurface()            const & { return surface_; }
+    const vk::Queue& getGraphicsQueue()           const & { return graphicsQueue_; }
+    const vk::Queue& getPresentQueue()            const & { return presentQueue_; }
+    const vk::PhysicalDevice& getPhysicalDevice() const & { return physicalDevice_; }
     
     uint32_t findMemoryType(uint32_t typeFilter, vk::MemoryPropertyFlags properties);
     vk::Format findSupportedFormat(const std::vector<vk::Format>& candidates, vk::ImageTiling tiling, vk::FormatFeatureFlags features);

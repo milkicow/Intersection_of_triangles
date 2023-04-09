@@ -27,14 +27,14 @@ public:
     ~SwapChain();
     void cleanup();
     
-    vk::SwapchainKHR getSwapChain() const { return swapChain_; }
-    vk::RenderPass getRenderPass() const { return renderPass_; }
-    std::vector<vk::Framebuffer> getFramebuffers() const { return swapChainFramebuffers_; }
-    vk::Extent2D getExtent() const { return swapChainExtent_; }
+    const vk::SwapchainKHR& getSwapChain() const & { return swapChain_; }
+    const vk::RenderPass& getRenderPass() const & { return renderPass_; }
+    const std::vector<vk::Framebuffer>& getFramebuffers() const & { return swapChainFramebuffers_; }
+    const vk::Extent2D getExtent() const & { return swapChainExtent_; }
     
-    std::vector<vk::Semaphore> getImageAvailableSemaphores() const { return imageAvailableSemaphores_; }
-    std::vector<vk::Semaphore> getRenderFinishedSemaphores() const { return renderFinishedSemaphores_; }
-    std::vector<vk::Fence>     getInFlightFences() const           { return inFlightFences_; }
+    const std::vector<vk::Semaphore>& getImageAvailableSemaphores() const & { return imageAvailableSemaphores_; }
+    const std::vector<vk::Semaphore>& getRenderFinishedSemaphores() const & { return renderFinishedSemaphores_; }
+    const std::vector<vk::Fence>&     getInFlightFences() const & { return inFlightFences_; }
     
     void recreate();
 

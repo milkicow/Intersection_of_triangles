@@ -51,7 +51,7 @@ DescriptorPool::~DescriptorPool() {
 DescriptorSets::DescriptorSets(Device & device, SwapChain & swapChain, UniformBuffer & uniformBuffer, DescriptorSetLayout & descripterSetLayout, DescriptorPool & descripterPool) :
     device_(device), swapChain_(swapChain), uniformBuffer_(uniformBuffer), descriptorSetLayout_(descripterSetLayout), descriptorPool_(descripterPool) {
     
-    std::vector<vk::DescriptorSetLayout> layouts(swapChain.MAX_FRAMES_IN_FLIGHT, *(descriptorSetLayout_.getDescriptorSetLayout_()));
+    std::vector<vk::DescriptorSetLayout> layouts(swapChain.MAX_FRAMES_IN_FLIGHT, descriptorSetLayout_.getDescriptorSetLayout_());
     vk::DescriptorSetAllocateInfo allocInfo{
         descriptorPool_.getDescriptorPool(),
         static_cast<uint32_t>(swapChain.MAX_FRAMES_IN_FLIGHT),

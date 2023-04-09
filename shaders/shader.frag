@@ -15,13 +15,13 @@ layout(location = 0) out vec4 outColor;
 
 void main() {
 
-    vec4 ambientLightColor = {1.0, 1.0, 1.0, 0.05};
+    vec4 ambientLightColor = {1.0, 1.0, 1.0, 0.2};
     vec3 lightPosition = {1.0, 1.0, 1.0};
-    vec4 lightColor = {1.0, 1.0, 1.0, 1.0};
+    vec4 lightColor = {1.0, 1.0, 1.0, 100.0};
     vec3 specularLight = vec3(0.0);
 
     vec3 directionToLight = lightPosition - fragPosWorld;
-    float attenuation = 1000.0 / dot(directionToLight, directionToLight);
+    float attenuation = 100.0 / dot(directionToLight, directionToLight);
     vec3 surfaceNormal = normalize(fragNormalWorld);
 
     vec3 intensity = lightColor.xyz * lightColor.w * attenuation;

@@ -27,9 +27,9 @@ public:
     UniformBuffer(const UniformBuffer&) = delete;
     UniformBuffer &operator=(const UniformBuffer&) = delete;
 
-    std::vector<vk::Buffer> getUniformBuffers() const { return uniformBuffers_; }
+    const std::vector<vk::Buffer>& getUniformBuffers() const & { return uniformBuffers_; }
     auto getSizeOfUniformBufferObject() const { return sizeof(UniformBufferObject); }
-    std::vector<void*> getUniformBeffersMapped() const { return uniformBuffersMapped_; }
+    const std::vector<void*>& getUniformBeffersMapped() const & { return uniformBuffersMapped_; }
 
     void update(uint32_t currentImage);
 

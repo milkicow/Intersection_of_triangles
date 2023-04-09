@@ -31,8 +31,8 @@ struct Vertex {
     std::vector<Vertex> vertices_;
     std::vector<uint16_t> indices_;
 
-    vk::Buffer getVertexBuffer() const { return vertexBuffer_; }
-    vk::Buffer getIndexBuffer()  const { return indexBuffer_;  }
+    const vk::Buffer& getVertexBuffer() const & { return vertexBuffer_; }
+    const vk::Buffer& getIndexBuffer()  const & { return indexBuffer_;  }
 private:
     vk::Buffer vertexBuffer_;
     vk::DeviceMemory vertexBufferMemory_;

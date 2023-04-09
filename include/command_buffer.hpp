@@ -24,7 +24,7 @@ public:
     CommandBuffers(const CommandBuffers&) = delete;
     CommandBuffers &operator=(const CommandBuffers&) = delete;
 
-    std::vector<vk::CommandBuffer> &getCommandBuffers() { return commandBuffers_; }
+    const std::vector<vk::CommandBuffer>& getCommandBuffers() const & { return commandBuffers_; }
 
     void record(vk::CommandBuffer commandBuffer, uint32_t imageIndex);
   

@@ -20,7 +20,7 @@ public:
     DescriptorSetLayout(const DescriptorSetLayout&) = delete;
     DescriptorSetLayout &operator=(const DescriptorSetLayout&) = delete;
 
-    vk::DescriptorSetLayout* getDescriptorSetLayout_() { return &descriptorSetLayout_; }
+    const vk::DescriptorSetLayout& getDescriptorSetLayout_() const & { return descriptorSetLayout_; }
     
 private:
     vk::DescriptorSetLayout descriptorSetLayout_;
@@ -39,7 +39,7 @@ public:
     DescriptorPool(const DescriptorPool&) = delete;
     DescriptorPool &operator=(const DescriptorPool&) = delete;
 
-    vk::DescriptorPool getDescriptorPool() const { return descriptorPool_; }
+    const vk::DescriptorPool& getDescriptorPool() const & { return descriptorPool_; }
 
 
 private:
@@ -58,7 +58,7 @@ public:
     DescriptorSets(const DescriptorSets&) = delete;
     DescriptorSets &operator=(const DescriptorSets&) = delete;
 
-    std::vector<vk::DescriptorSet> getDescriptorSets() const { return descriptorSets_; }
+    const std::vector<vk::DescriptorSet>& getDescriptorSets() const & { return descriptorSets_; }
 
 private:
     std::vector<vk::DescriptorSet> descriptorSets_;

@@ -99,7 +99,7 @@ Pipeline::Pipeline(Device &device, SwapChain & swapChain, DescriptorSetLayout & 
     vk::PipelineLayoutCreateInfo pipelineLayoutInfo{
         vk::PipelineLayoutCreateFlags(),
         1,
-        descriptorSetLayout.getDescriptorSetLayout_()
+        &descriptorSetLayout.getDescriptorSetLayout_()
     };
 
     vk::resultCheck(device.getDevice().createPipelineLayout(&pipelineLayoutInfo, nullptr, &pipelineLayout_), "failed to create pipeline layout!");

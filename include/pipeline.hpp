@@ -20,8 +20,8 @@ public:
     Pipeline &operator=(const Pipeline&) = delete;
     Pipeline(const Pipeline&) = delete;
 
-    vk::PipelineLayout getPipelineLayout() const { return pipelineLayout_; }
-    vk::Pipeline getGraphicsPipeline() const { return graphicsPipeline_; }
+    const vk::PipelineLayout& getPipelineLayout() const & { return pipelineLayout_; }
+    const vk::Pipeline& getGraphicsPipeline() const & { return graphicsPipeline_; }
 
 private:
     

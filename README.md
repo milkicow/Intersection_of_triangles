@@ -28,8 +28,8 @@ The following applications have to be installed:
 
 ## Preview
 
-![](pictures/1.jpg)
-![](pictures/2.jpg)
+![](pictures/3.jpg)
+![](pictures/4.jpg)
 
 ## Compiling 
 

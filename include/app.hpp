@@ -42,7 +42,7 @@ private:
     DescriptorSetLayout descriptorSetLayout { device };
     Pipeline pipeline { device, swapChain, descriptorSetLayout, "vert.spv", "frag.spv" };
     Model model;
-    UniformBuffer uniformBuffer { device, swapChain, camera, window };
+    UniformBuffer uniformBuffer   { device, swapChain, camera, window };
     DescriptorPool descriptorPool { device, swapChain };
     DescriptorSets descriptorSets { device, swapChain, uniformBuffer, descriptorSetLayout, descriptorPool };
     CommandBuffers commandBuffers { device, swapChain, pipeline, model, descriptorSets };
